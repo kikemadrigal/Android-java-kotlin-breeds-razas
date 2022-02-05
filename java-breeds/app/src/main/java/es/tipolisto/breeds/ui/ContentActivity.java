@@ -35,8 +35,9 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     private int score=0;
     private GameFragment gameFragment;
     //Para manejar la música:
-    private MediaPlayerClient mediaPlayerClient;
     //Para manejar las preferenvias
+    private MediaPlayerClient mediaPlayerClient;
+    private MediaPlayerClient mediaPlayerClientEffects;
     private PreferencesManagaer preferencesManagaer;
     String modo;
     @Override
@@ -52,7 +53,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mediaPlayerClient.playSound("button");
+                mediaPlayerClientEffects.playSound("button");
                 mostrarDialogoSalir();
             }
         });
@@ -83,6 +84,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     protected void onResume() {
         super.onResume();
         mediaPlayerClient=new MediaPlayerClient(getBaseContext());
+        mediaPlayerClientEffects=new MediaPlayerClient(getBaseContext());
         preferencesManagaer=new PreferencesManagaer(this);
         if(modo.equals("cat") || modo.equals("dog"))
             mediaPlayerClient.playInGame();
@@ -92,6 +94,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     protected void onStop() {
         super.onStop();
         mediaPlayerClient.releaseSound();
+        mediaPlayerClientEffects.releaseSound();
     }
 
 
@@ -151,7 +154,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        mediaPlayerClient.playSound("button");
+        mediaPlayerClientEffects.playSound("button");
         switch (item.getItemId()) {
             case R.id.cat:
                 modo="cat";
@@ -186,12 +189,12 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         //Si se ha perdido una vida, el sonido será de fallo
         if (this.lives>lives){
             Toast.makeText(this, "Failure!!", Toast.LENGTH_LONG).show();
-            mediaPlayerClient.playSound("failure");
+            mediaPlayerClientEffects.playSound("failure");
         }
         //Si se ha sumado puntos es que hemos acertado
         if (this.score<score){
             Toast.makeText(this, "Success!!", Toast.LENGTH_LONG).show();
-            mediaPlayerClient.playSound("success");
+            mediaPlayerClientEffects.playSound("success");
         }
         this.lives=lives;
         this.score=score;

@@ -4,7 +4,7 @@
 
 Movil
 
-<img src="docs/movil.PNG" height="300px" />
+<img src="docs/movil.PNG" height="300px" align="left" />
 
 SplashScreen
 
@@ -26,4 +26,4 @@ GameActivity
 
  SettingsActivity
 
- 
+ <BR clear="left">

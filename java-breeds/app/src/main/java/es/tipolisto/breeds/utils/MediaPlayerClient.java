@@ -8,16 +8,31 @@ import android.media.MediaPlayer;
 import es.tipolisto.breeds.R;
 import es.tipolisto.breeds.data.PreferencesManagaer;
 
+
 public class MediaPlayerClient {
-    //private static MediaPlayerClient instance;
+    //La otra clase para reproducir audi se llama AudioTrack: https://developer.android.com/reference/android/media/AudioTrack?hl=es-419
     private MediaPlayer mediaPlayer;
     private Context context;
     private PreferencesManagaer preferencesManagaer;
+
     public MediaPlayerClient(Context context){
         mediaPlayer=new MediaPlayer();
         this.context=context;
         preferencesManagaer=new PreferencesManagaer(context);
+        //Es posible crear un efecto fade in y fade out con VolumeShaper pero el dispositivo tiene que ser mayor de android 8.0 api 26
+        /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            VolumeShaper.Configuration config =
+                    new VolumeShaper.Configuration.Builder()
+                            .setDuration(3000)
+                            .setCurve(new float[] {0.f, 1.f}, new float[] {0.f, 1.f})
+                            .setInterpolatorType(VolumeShaper.Configuration.INTERPOLATOR_TYPE_STEP)
+                            .build();
+            VolumeShaper volumeShaper= mediaPlayer.createVolumeShaper(config);;
+            mediaPlayer.setNextMediaPlayer(mediaPlayer);
+        }*/
+
     }
+
 
 
     /*public static MediaPlayerClient getInstance(){
@@ -33,6 +48,9 @@ public class MediaPlayerClient {
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.start();
         mediaPlayer.setLooping(true);
+
+
+
 
     }
     public void playInGame(){
