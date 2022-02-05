@@ -1,11 +1,14 @@
 package es.tipolisto.breeds.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 
@@ -21,13 +24,16 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import es.tipolisto.breeds.R;
+import es.tipolisto.breeds.data.PreferencesManagaer;
 import es.tipolisto.breeds.databinding.FragmentGameBinding;
 import es.tipolisto.breeds.model.Cat;
 import es.tipolisto.breeds.model.DogResponse;
-import es.tipolisto.breeds.services.ArrayDataSource;
+import es.tipolisto.breeds.data.ArrayDataSource;
 import es.tipolisto.breeds.services.ICatsApiService;
 import es.tipolisto.breeds.services.IDogApiService;
 import es.tipolisto.breeds.services.RetrofitClient;
+import es.tipolisto.breeds.utils.MediaPlayerClient;
+import es.tipolisto.breeds.utils.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,25 +48,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GameFragment extends Fragment {
     private FragmentGameBinding binding=null;
+    private int[] buttons=new int[3];
+    //El modo nos sirve como bandera para hacer las peticiones REST de los gatos o los perros
     private String modo;
     private String breed_name;
-    private int[] buttons=new int[3];
     private int lives=7;
     private int score=0;
 
+    //private MediaPlayerClient mediaPlayerClient;
+
     private OnGameFragmentChange fragmentChange;
+
 
     private static final String ARG_PARAM1 = "modo";
     public GameFragment() {
 
     }
-    /*public static GameFragment newInstance(String modo) {
-        GameFragment fragment = new GameFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, modo);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,10 +76,13 @@ public class GameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //mediaPlayerClient=new MediaPlayerClient(getContext());
 
         binding=FragmentGameBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -152,24 +158,35 @@ public class GameFragment extends Fragment {
     //La imagen La obtendremos desde internet, después actualizamos el texto de los radiobuttons con las razas
     private void actualizarImagenYRadioButtonsGatos(){
         binding.progressBar.setVisibility(View.VISIBLE);
+        String breed_id="";
+
         //Para obtenr un gato la API necesita que le metamos una raza en la URL
-        //1.Obtenemos una raza aleatoria de la base de datos
-        int numeroAleatorio=(int) (Math.random() * ArrayDataSource.catBreeds.length-1) + 1;
+        //1.Obtenemos una raza aleatoria
+        int numeroAleatorio=(int) (Math.random() * ArrayDataSource.catIds.length-1) + 1;
+        //2.Los arrays tenian alamacenados todas las razas y idds
+        breed_id=ArrayDataSource.catIds[numeroAleatorio];
         breed_name=ArrayDataSource.catBreeds[numeroAleatorio];
-        Log.d("Mensaje","Raza: "+breed_name);
-        //Retorfit nos devuelve la foto
+
+        Log.d("Mensaje","Raza: id: "+breed_id+",name: "+breed_name);
+        //3:le ponemos la raza a los radiobutons
+        asignarValoresRadioButtons();
+
+        //Obtenemos la imagen
         Retrofit retrofit= RetrofitClient.getRetrofit("https://api.thecatapi.com/v1/");
         ICatsApiService iCatsApiService=retrofit.create(ICatsApiService.class);
-        //Call<List<Cat>> callCat=iCatsApiService.getcatByBreed(breed_name);
-        Call<List<Cat>> callCat=iCatsApiService.getcatByBreed("Donskoy");
+        //Con el retorfit tan solo obtenemos el path de la imagen de internet y se la metemeos al imageView
+        Call<List<Cat>> callCat=iCatsApiService.getcatById(breed_id);
         callCat.enqueue(new Callback<List<Cat>>() {
             @Override
             public void onResponse(Call<List<Cat>> call, Response<List<Cat>> response) {
                 //La url en realidad devuelve un array con 1 solo objeto cat
                 List<Cat> listcats=response.body();
-                Picasso.get().load(listcats.get(0).getUrl()).into(binding.imageCat);
-                //3:le ponemos la raza a los radiobutons
-                asignarValoresRadioButtons();
+                //Picasso suele enviar errores, si no se pone el try catch no funciona el programa
+                try {
+                    Picasso.get().load(listcats.get(0).getUrl()).into(binding.imageCat);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 binding.progressBar.setVisibility(View.GONE);
             }
             @Override
@@ -263,16 +280,12 @@ public class GameFragment extends Fragment {
                 }
                 break;
         }
-        if(!breed_name.equals(breed_name)){
-            //binding.radioButton1.setText();
-        }
-
     }
 
 
 
 
-
+    //Cuando haya un click aumentaremos los puntos o disminimos las vidas
     public void onRadioButtonClicked(View view) {
         String textoSeleccionado="";
         // Is the button now checked?
@@ -283,53 +296,41 @@ public class GameFragment extends Fragment {
         switch(view.getId()) {
             case R.id.radio_button1:
                 if (checked){
-                    //Toast.makeText(this, "Click en 1", Toast.LENGTH_LONG).show();
                     textoSeleccionado=binding.radioButton1.getText().toString();
                 }
                 break;
             case R.id.radio_button2:
                 if (checked){
-                    //Toast.makeText(this, "Click en 2", Toast.LENGTH_LONG).show();
                     textoSeleccionado=binding.radioButton2.getText().toString();
                 }
 
                 break;
             case R.id.radio_button3:
                 if (checked){
-                    //Toast.makeText(this, "Click en 3", Toast.LENGTH_LONG).show();
                     textoSeleccionado=binding.radioButton3.getText().toString();
                 }
                 break;
         }
         if (textoSeleccionado.equals(breed_name)){
-            Toast.makeText(getContext(), "Exito!!", Toast.LENGTH_LONG).show();
-            //score=Integer.valueOf(binding.textViewScoreCat.getText().toString());
             score+=1;
-
-            //binding.textViewScoreCat.setText(String.valueOf(score));
         }else{
-            Toast.makeText(getContext(), "Fallo!!", Toast.LENGTH_LONG).show();
             lives-=1;
-            if (lives<=0){
-                Intent intent=new Intent(getContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }else{
-                //binding.textViewLivesCat.setText(String.valueOf(lives));
-            }
-
-
         }
+        //Nos conectamos al contenedor para informarle de que hay cambios
         fragmentChange.updateLivesAndPoints(lives,score);
+        //Ponemos los botones a falso
         binding.radioButton1.setChecked(false);
         binding.radioButton2.setChecked(false);
         binding.radioButton3.setChecked(false);
+        //Reiniciamos
         if(modo.equals("cat"))
             actualizarImagenYRadioButtonsGatos();
         else if(modo.equals("dog"))
             actualizarImagenYRadioButtonsPerros();
 
     }
+
+
 
     /**
      * Para Crear un escuchador de cambios dentro del fragment tenemos que crear una interface

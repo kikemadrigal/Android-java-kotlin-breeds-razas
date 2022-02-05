@@ -24,7 +24,7 @@ public class DogRecyclerViewAdapter extends RecyclerView.Adapter<DogRecyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recylcer_view_card, null, false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_view, null, false);
         return new ViewHolder(view);
     }
 
@@ -40,19 +40,23 @@ public class DogRecyclerViewAdapter extends RecyclerView.Adapter<DogRecyclerView
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
         ImageView imageView;
-        TextView textViewName;
+        TextView textView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView=(ImageView) itemView.findViewById(R.id.imageViewRecyclerView);
-            textViewName=(TextView) itemView.findViewById(R.id.textViewNameRecyclerView);
+            textView=(TextView) itemView.findViewById(R.id.textViewRecyclerView);
         }
         public void render(String dogImage){
-            Picasso.get().load(dogImage).into(imageView);
+            try{
+                Picasso.get().load(dogImage).into(imageView);
+            }catch (Exception ex){
+
+            }
             //Obtenemos el nombre de la raza que está en la URL
             int posicion4barra=dogImage.indexOf("/",25);
             int posicion5Barra=dogImage.indexOf("/",32);
             String breed_name=dogImage.substring(posicion4barra+1,posicion5Barra);
-            textViewName.setText(breed_name);
+            textView.setText(breed_name);
         }
     }
 }

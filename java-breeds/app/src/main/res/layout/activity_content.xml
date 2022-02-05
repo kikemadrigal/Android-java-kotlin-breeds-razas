@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewContent"/>-->
+
+    <!--Le ponemos un ID para ocultarlo según nos convenga-->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"

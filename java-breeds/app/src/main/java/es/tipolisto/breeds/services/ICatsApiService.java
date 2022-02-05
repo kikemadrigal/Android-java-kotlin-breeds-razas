@@ -17,12 +17,16 @@ public interface ICatsApiService {
     @GET("breeds/?api_key=4c16cae4-2d03-4e0d-8c71-09e88c6e768f")
     Call<List<Cat>> getAllCats();
 
-    //Se obtiene un objeto cat a partir de la raza que le mandamos por la url
-    //https://api.thecatapi.com/v1/images/search?api_key=4c16cae4-2d03-4e0d-8c71-09e88c6e768f&breed_name=Burmilla
-    //@GET("images/search?api_key=4c16cae4-2d03-4e0d-8c71-09e88c6e768f&breed_name=Burmilla")
-    @GET("images/search?api_key=4c16cae4-2d03-4e0d-8c71-09e88c6e768f")
-    Call<List<Cat>> getcatByBreed(@Query("name") String breed_name);
+    //Devuelve todas los ids
+    //https://api.thecatapi.com/v1/breeds
 
-    //buscar raza por nombre
+    //Devuelve una lista con un objeto cat a partir del id que le mandamos por la url (consulta hashmap)
+    //https://api.thecatapi.com/v1/images/search?breed_ids=dons
+    @GET("images/search")
+    Call<List<Cat>> getcatById(@Query("breed_ids") String breed_id);
+
+    //Devulve descripcion y datos de una raza
     //https://api.thecatapi.com/v1/breeds/search?name=donskoy&api_key=4c16cae4-2d03-4e0d-8c71-09e88c6e768f
+
+
 }

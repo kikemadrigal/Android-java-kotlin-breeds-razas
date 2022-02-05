@@ -1,5 +1,6 @@
 package es.tipolisto.breeds.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import java.util.List;
 
 import es.tipolisto.breeds.R;
-import es.tipolisto.breeds.databinding.ItemRecyclerViewBinding;
 import es.tipolisto.breeds.model.Cat;
 
 public class CatRecyclerViewAdapter extends RecyclerView.Adapter<CatRecyclerViewAdapter.ViewHolder> {
@@ -29,7 +27,7 @@ public class CatRecyclerViewAdapter extends RecyclerView.Adapter<CatRecyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recylcer_view_card, null, false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_view, null, false);
         //bindind = ItemRecyclerViewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
         return new ViewHolder(view);
@@ -46,13 +44,12 @@ public class CatRecyclerViewAdapter extends RecyclerView.Adapter<CatRecyclerView
     }
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
-
         ImageView imageView;
-        TextView textViewId,TexViewName,textViewUrl;
+        TextView TexView;
         public ViewHolder(View view){
             super(view);
             imageView=(ImageView) view.findViewById(R.id.imageViewRecyclerView);
-            TexViewName=(TextView) view.findViewById(R.id.textViewNameRecyclerView);
+            TexView=(TextView) view.findViewById(R.id.textViewRecyclerView);
         }
         public void render(Cat cat){
             try {
@@ -60,7 +57,8 @@ public class CatRecyclerViewAdapter extends RecyclerView.Adapter<CatRecyclerView
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            TexViewName.setText(cat.getName());
+            TexView.setText(cat.getName());
+            Log.d("Mensaje","Mensaje de adapter: "+cat.getName());
         }
 
     }

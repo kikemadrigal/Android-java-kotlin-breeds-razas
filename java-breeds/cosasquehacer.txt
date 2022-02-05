@@ -1,3 +1,12 @@
 1.la lista de perros siempre devuelve la misma raza de perros
 2.La lista de perros no tiene los cardviews centrados.
 3.En la lista de gatos revisa que los gatos devueltos sean de esa raza
+
+
+-----
+
+uso de:
+Patrón singleton: X en MediaPlayerClient y en RetrofitClient
+Fragments: X
+Constraint loyout: X
+
