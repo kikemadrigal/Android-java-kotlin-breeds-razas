@@ -14,6 +14,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+
     <style name="Theme.Breeds.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -31,4 +33,5 @@
     <style name="ButtonhTheme" parent="Theme.Breeds" >
         <item name="android:windowBackground">@drawable/background_button</item>
     </style>
+
 </resources>

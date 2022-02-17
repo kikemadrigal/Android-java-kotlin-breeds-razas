@@ -1,75 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.SettingsFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.fragments.SettingsFragment">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:textAlignment="center"
         android:text="Settings"
-        android:textSize="20dp"/>
+        android:textAlignment="center"
+        android:textSize="20dp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:background="@color/purple_200"/>
+        android:background="@drawable/background_button"/>
 
 
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textAlignment="center"
-            android:hint="You record"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewSettingsRecords"
-            android:layout_margin="20dp"
-            android:textAlignment="center"
-            android:hint="0"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete record"
-        android:layout_margin="20dp"
-        android:background="@drawable/background_button"
-        android:id="@+id/buttonSettingsDeleteRecords"/>
 
     <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchSettingsMusicOnOff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/switchSettingsMusicOnOff"
-        android:text="Music on/off"
-        android:layout_margin="20dp" />
+        android:layout_margin="20dp"
+        android:text="Music on/off" />
 
+    <TextView
+        android:id="@+id/textViewWebSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/web_settings" />
+
+    <TextView
+        android:id="@+id/textViewEmailSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/email_settings" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Development: tipolisto\nWeb:juegos.tipolisto.es/breeds"
-        />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:backgroundTint="@color/purple_200"
-        android:background="?android:attr/listDivider" />
+        android:text="@string/description_settings" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

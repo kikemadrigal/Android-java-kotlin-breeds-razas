@@ -6,7 +6,7 @@ import android.media.MediaPlayer;
 
 
 import es.tipolisto.breeds.R;
-import es.tipolisto.breeds.data.PreferencesManagaer;
+import es.tipolisto.breeds.data.preferences.PreferencesManagaer;
 
 
 public class MediaPlayerClient {

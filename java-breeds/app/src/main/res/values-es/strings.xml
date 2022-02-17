@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Razas</string>
+    <string name="web_settings">Web: <a href="http://juegos.tipolisto.es/breeds">http://juegos.tipolisto.es/breeds</a></string>
+    <string name="email_settings">Contacta <a href="mailto:kikemadrigal@hotmail.com?Subject=breedsGame" target="_top">kikemadrigal@hotmail.com</a></string>
+    <string name="description_settings">Elige si quieres adivinar la raza del gato o del perro.\nTienes 7 vidas.\nElige configuración para cambiar las carácteristicas del juego.</string>
+    <string name="delete_record">Borrar record</string>
+    <string name="press_to_play">Presione para empezar</string>
+    <string name="lives">Vidas:</string>
+    <string name="score">Puntuación:</string>
+    <string name="Payment_method_only">Solo disponible en la aplicación de pago, por favor vaya a configuracion</string>
+    <string name="new_record_message">"Has hecho un nuevo record!!: </string>
+    <string name="exit_lost_score">¿Estas seguro que deseas salir?, perderás la puntuación</string>
+    <string name="message">message</string>
+    <string name="Introduce_your_name">Introduce your name</string>
+    <string name="failure">Fallo!!</string>
+    <string name="success">Acierto!!</string>
+    <string name="necessary_internet">No es psible continuar sin conexión a internet</string>
+
+</resources>

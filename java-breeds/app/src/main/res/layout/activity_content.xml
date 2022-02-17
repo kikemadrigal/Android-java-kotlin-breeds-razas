@@ -8,12 +8,7 @@
     tools:context=".ui.ContentActivity"
     android:orientation="vertical">
     <include android:id="@+id/toolbar" layout="@layout/toolbar" />
-    <!--<TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewContent"/>-->
 
-    <!--Le ponemos un ID para ocultarlo según nos convenga-->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -25,7 +20,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lives: "
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/lives"
             android:textSize="20dp" />
 
         <TextView
@@ -38,7 +34,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  Score: "
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/score"
             android:textSize="20dp" />
 
         <TextView

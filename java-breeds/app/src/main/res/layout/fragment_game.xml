@@ -4,30 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.GameFragment">
-
-
-
+    tools:context=".ui.fragments.GameFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        app:cardCornerRadius="30dp"
         android:animateLayoutChanges="true"
-        app:cardElevation="6dp"
         app:cardBackgroundColor="@color/white_blue"
-        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="6dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageCat"
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            />
+            android:layout_margin="20dp" />
     </androidx.cardview.widget.CardView>
 
 
@@ -36,7 +32,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2">

@@ -1,15 +1,21 @@
 <resources>
     <string name="app_name">Breeds</string>
+    <string name="web_settings">Web: <a href="http://juegos.tipolisto.es/breeds">http://juegos.tipolisto.es/breeds</a></string>
+    <string name="email_settings">Contact <a href="mailto:kikemadrigal@hotmail.com?Subject=breedsGame" target="_top">breeds@tipolisto.es</a></string>
+    <string name="description_settings">Choose if you want to guess the breed of the cat or the dog.\nYou have 7 lives.\nChoose settings to change the characteristics of the game.</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_animal_list">AnimalListActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="delete_record">Delete record</string>
+    <string name="press_to_play">Press to play</string>
+    <string name="lives">Lives:</string>
+    <string name="score">Score:</string>
+    <string name="Payment_method_only">Only available in the paid app, please go to settings</string>
+    <string name="new_record_message">"has made a new record!!: </string>
+    <string name="exit_lost_score">Are you sure you want to exit?, you will lose the score</string>
+    <string name="message">message</string>
+    <string name="Introduce_your_name">Introduce your name</string>
+    <string name="failure">Failure!!</string>
+    <string name="success">Success!!</string>
+    <string name="necessary_internet">Unable to continue without internet connection</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_game">GameActivity</string>
+
 </resources>

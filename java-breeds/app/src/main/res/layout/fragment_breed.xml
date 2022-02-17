@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    tools:context=".ui.BreedFragment"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/imageViewBreedFragment"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewBreedFragment"
+            android:layout_marginHorizontal="20dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:id="@+id/textViewWikipediaBreedFragment"
+            android:layout_marginHorizontal="20dp"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/ratingsBar">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="indoor:"
+                />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBarIndoor"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="adaptability:"
+                />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBarAdaptability"
+                android:numStars="8"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="affection_level:"
+                />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBaraAffectionLevel"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="child_friendly:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarChildFriendly"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="cat_friendly:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarCatFriendly"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="dog_friendly:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarDogFriendly"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="energy_level:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarEnergyLevel"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="grooming:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarGrooming"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="health_issues:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarHealthIssues"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="intelligence:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarIntelligence"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="shedding_evel:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarSheddingLevel"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="social_needs:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarSocialNeeds"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="stranger_friendly:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarStrangerFriendly"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="vocalisation:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarVocalisation"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="experimental:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarExperimental"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="hairless:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarHairless"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="natural:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarNatural"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="rare:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarRare"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="rex:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarRex"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="suppressed_tail:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarSuppressedTail"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/white_blue"
+                android:text="short_legs:" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="8"
+                android:stepSize="1.25"
+                android:id="@+id/ratingBarShortLegs"
+                android:isIndicator="true"
+                android:layout_marginHorizontal="10dp" />
+        </LinearLayout>
+
+
+
+
+
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>
