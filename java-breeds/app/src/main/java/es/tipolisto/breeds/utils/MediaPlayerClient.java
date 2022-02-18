@@ -80,6 +80,9 @@ public class MediaPlayerClient {
         if (sound.equals("failure")) mediaPlayer = MediaPlayer.create(context, R.raw.failure);
         mediaPlayer.start();
     }
+    public void stopSound(){
+        if(mediaPlayer.isPlaying()) mediaPlayer.stop();
+    }
     public void releaseSound(){
         if (!preferencesManagaer.getMusicOnOff()) return;
         if(mediaPlayer.isPlaying())

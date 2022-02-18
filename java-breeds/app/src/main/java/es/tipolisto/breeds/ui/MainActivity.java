@@ -36,15 +36,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //PreferencesManagaer preferencesManagaer=new PreferencesManagaer(this);
-        //boolean themeDark=preferencesManagaer.getDarkOnOff())
-
-        /*if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+        PreferencesManagaer preferencesManagaer=new PreferencesManagaer(this);
+        if(preferencesManagaer.getDarkOnOff()){
             setTheme(R.style.ThemeDark);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }else{
             setTheme(R.style.ThemeBreeds);
-        }*/
-
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         if (!Util.isNetworkConnected(getApplicationContext())) Dialog.showDialogNecessaryInternet(this);
 
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //MediaPlayerClient.playSound(getBaseContext(),mediaPlayer,"button");
                 mediaPlayerClient.playSound("button" );
-                mediaPlayerClient.releaseSound();
+                mediaPlayerClient.stopSound();
                 Intent intent=new Intent(MainActivity.this, ContentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("modo", "nothing");
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //MediaPlayerClient.playSound(getBaseContext(),mediaPlayer,"button");
                 mediaPlayerClient.playSound("button" );
-                mediaPlayerClient.releaseSound();
+                mediaPlayerClient.stopSound();
                 Intent intent=new Intent(MainActivity.this, ContentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("modo", "nothing");

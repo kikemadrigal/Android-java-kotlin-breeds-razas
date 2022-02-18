@@ -28,15 +28,21 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
-
         preferencesManagaer=new PreferencesManagaer(getContext());
         binding= FragmentSettingsBinding.inflate(inflater, container, false);
         preferencesManagaer=new PreferencesManagaer(getContext());
 
         if(preferencesManagaer.getMusicOnOff()) binding.switchSettingsMusicOnOff.setChecked(true);
         else binding.switchSettingsMusicOnOff.setChecked(false);
+        Log.d("Mensaje","Al comienzo El modo es "+String.valueOf(preferencesManagaer.getDarkOnOff()));
+        if(preferencesManagaer.getDarkOnOff()) binding.switchSettingsDarkTheme.setChecked(true);
+        else binding.switchSettingsDarkTheme.setChecked(false);
+        /*if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.ThemeDark);
+        }else{
+            setTheme(R.style.ThemeBreeds);
+        }*/
+
         binding.textViewWebSettings.setMovementMethod(LinkMovementMethod.getInstance());
         binding.textViewEmailSettings.setMovementMethod(LinkMovementMethod.getInstance());
         return binding.getRoot();
@@ -48,11 +54,8 @@ public class SettingsFragment extends Fragment {
 
 
 
-        Log.d("Mensaje","Al comienzo El modo es "+String.valueOf(preferencesManagaer.getDarkOnOff()));
-        if(preferencesManagaer.getDarkOnOff()) binding.switchSettingsDarkTheme.setChecked(true);
 
 
-        else binding.switchSettingsDarkTheme.setChecked(false);
         binding.switchSettingsMusicOnOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,26 +88,22 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("Mensaje","El modo es "+String.valueOf(preferencesManagaer.getDarkOnOff()));
-               /* if (preferencesManagaer.getDarkOnOff()){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    preferencesManagaer.saveDarkOnOff(true);
-                    binding.switchSettingsDarkTheme.setChecked(false);
-                }else{
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    preferencesManagaer.saveDarkOnOff(false);
-                    binding.switchSettingsDarkTheme.setChecked(true);
-                }*/
 
                 if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
-                    getActivity().setTheme(R.style.ThemeDark);
-                    binding.switchSettingsDarkTheme.setChecked(true);
-                    preferencesManagaer.saveDarkOnOff(true);
-                }else{
                     getActivity().setTheme(R.style.ThemeBreeds);
                     binding.switchSettingsDarkTheme.setChecked(false);
                     preferencesManagaer.saveDarkOnOff(false);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }else{
+                    getActivity().setTheme(R.style.ThemeDark);
+                    binding.switchSettingsDarkTheme.setChecked(true);
+                    preferencesManagaer.saveDarkOnOff(true);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
+
             }
         });
     }
+
+
 }
