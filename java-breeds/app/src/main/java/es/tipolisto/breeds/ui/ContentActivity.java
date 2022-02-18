@@ -46,7 +46,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     private int lives=7;
     private int score=0;
     private String modo;
-    private String screeen;
+    private String screen;
     private boolean returnMenu;
     private GameFragment gameFragment;
     private AnimalListFragment animalListFragment;
@@ -61,7 +61,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     public ContentActivity(){
         lives=7;
         score=0;
-        screeen="game";
+        screen="game";
         returnMenu=false;
     }
 
@@ -93,29 +93,29 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         Bundle bundle=getIntent().getExtras();
         if (bundle != null) {
             modo=bundle.getString("modo");
-            screeen=bundle.getString("screen");
+            screen=bundle.getString("screen");
             //Log.d("Mensaje","Mensaje de contentactivity, obtenido el modo: "+modo);
-            if (screeen.equals("game")) {
-                screeen="game";
+            if (screen.equals("game")) {
+                //screen="game";
                 binding.linearLayout.setVisibility(View.VISIBLE);
                 cambiarFragment(gameFragment);
             }
-            else if (screeen.equals("settings")) {
-                screeen="settings";
+            else if (screen.equals("settings")) {
+                //screen="settings";
                 binding.linearLayout.setVisibility(View.GONE);
                 cambiarFragment(settingsFragment);
             }
-            else if (screeen.equals("records")) {
-                screeen="records";
+            else if (screen.equals("records")) {
+                //screen="records";
                 binding.linearLayout.setVisibility(View.GONE);
                 cambiarFragment(recordsFragment);
             }
-            else if(screeen.equals("animalList")){
-                screeen="animalList";
+            else if(screen.equals("animalList")){
+                //screen="animalList";
                 binding.linearLayout.setVisibility(View.VISIBLE);
                 cambiarFragment(animalListFragment);
-            } else if(screeen.equals("breed")){
-                screeen="breed";
+            } else if(screen.equals("breed")){
+                //screen="breed";
                 binding.linearLayout.setVisibility(View.VISIBLE);
                 cambiarFragment(breedFragment);
             }
@@ -178,6 +178,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
         if (modo.equals("cat")){
             menu.findItem(R.id.cat).setVisible(true);
             menu.findItem(R.id.dog).setVisible(false);
@@ -200,16 +201,16 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         switch (item.getItemId()) {
             case R.id.cat:
                 modo="cat";
-                screeen="animalList";
+                //screeen="animalList";
                 cambiarFragment(animalListFragment);
                 break;
             case R.id.dog:
                 modo="dog";
-                screeen="animalList";
+                screen="animalList";
                 cambiarFragment(animalListFragment);
                 break;
             case R.id.game:
-                screeen="game";
+                screen="game";
                 Log.d("Mensaje", "Clik en returmenu");
                 returnMenu=true;
                 cambiarFragment(gameFragment);
@@ -235,13 +236,18 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         binding.textViewLives.setText(String.valueOf(lives));
         //Si se ha quedo sin vidas mostramos un alertDialog
         if (this.lives<=0){
-            //Si no hay record
-            if (!checkRecord()){
-                showDialogGameOver(this);
-                //Todo: crear contador de milisegundos
-
+            //Si la puntuación no es 0
+            if (score>0) {
+                int highScore= preferencesManagaer.getHighRecord();
+                //Comprobamos que hay un nuevo rcord
+                if (score>highScore){
+                    showDialogNewRecord(this,score);
+                }else{
+                    showDialogGameOver(this);
+                }
             }else{
-                mostrarDiaNuevorecord();
+                // exitTomenu();
+                cambiarFragment(gameFragment);
             }
         }
     }
@@ -249,7 +255,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     private void cambiarFragment(Fragment fragment) {
         Bundle bundle=new Bundle();
         bundle.putString("modo",modo);
-        bundle.putString("screen",screeen);
+        bundle.putString("screen",screen);
         bundle.putBoolean("returnMenu",returnMenu);
         fragment.setArguments(bundle);
 
@@ -269,15 +275,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         }
         super.onBackPressed();
     }
-    public void mostrarDiaNuevorecord() {
-        if (score>0) {
-            showDialogNewRecord(this,score);
-            cambiarFragment(gameFragment);
-        }else{
-            exitTomenu();
-        }
-        super.onBackPressed();
-    }
+
     private void exitTomenu(){
         Intent intent=new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -285,35 +283,6 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     }
 
 
-    private boolean checkRecord() {
-        int highScore= preferencesManagaer.getHighRecord();
-        //Log.d("Mensaje","checkRecord dice: "+String.valueOf(highScore));
-        //int highScore=sharedPreferences.getInt("highscore",0);
-        boolean newRecord=false;
-        if (score>highScore){
-            newRecord=true;
-            //Guardamos el nuevo record
-            preferencesManagaer.saveNewRecord(score);
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Breeds says");
-            builder.setMessage("New record: "+String.valueOf(score));
-            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                    Intent intent=new Intent(getApplicationContext(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            });
-            builder.create().show();
-            //Si no hay nuevo highscore salimos
-        }else{
-            /*Intent intent=new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);*/
-        }
-        return newRecord;
-    }
 
     @Override
     public void onClickRecyclerAnimalList(String breed) {

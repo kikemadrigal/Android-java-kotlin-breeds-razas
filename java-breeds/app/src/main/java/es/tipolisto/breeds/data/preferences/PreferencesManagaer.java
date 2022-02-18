@@ -38,4 +38,12 @@ public class PreferencesManagaer {
         return sharedPref.getBoolean("musicOnOff",false);
     }
 
+    public void saveDarkOnOff(boolean darkOnOff){
+        editor.putBoolean("darkOnOff", darkOnOff);
+        editor.commit();
+    }
+    public boolean getDarkOnOff(){
+        return sharedPref.getBoolean("darkOnOff",false);
+    }
+
 }

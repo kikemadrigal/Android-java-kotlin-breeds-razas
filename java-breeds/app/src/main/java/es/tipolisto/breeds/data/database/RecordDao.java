@@ -19,11 +19,17 @@ public interface RecordDao {
     Long insert(RecordEntity user);
 
     @Query("SELECT * FROM RecordEntity WHERE id=(:userEntityId)")
-    RecordEntity getRecord(int userEntityId);
+    RecordEntity getIdRecord(int userEntityId);
+
+    @Query("SELECT * FROM RecordEntity WHERE name LIKE (:userEntityName)")
+    RecordEntity getNameRecord(String userEntityName);
 
     @Query("SELECT * FROM RecordEntity")
     List<RecordEntity> getAllRecordEntities();
 
+    //Obtener los últimos 10 registros ordenados por record de mayor a menor
+    @Query("SELECT * FROM RecordEntity ORDER  BY score DESC LIMIT 10")
+    List<RecordEntity> getLast10RecordEntities();
 
     @Query("SELECT * FROM RecordEntity WHERE name IN (:name)")
     List<RecordEntity> loadAllByIds(int[] name);
@@ -38,4 +44,8 @@ public interface RecordDao {
 
     @Delete
     void delete(RecordEntity user);
+
+    //Borramos todos los que sean menores de una puntuación
+    @Query("DELETE FROM RecordEntity WHERE SCORE<(:score)")
+    int deleteAllMinor(int score);
 }

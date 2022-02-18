@@ -2,6 +2,7 @@ package es.tipolisto.breeds.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 
 
@@ -15,6 +16,8 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import es.tipolisto.breeds.R;
+import es.tipolisto.breeds.data.preferences.PreferencesManagaer;
 import es.tipolisto.breeds.ui.adapters.CatRecyclerViewAdapter;
 import es.tipolisto.breeds.databinding.ActivityMainBinding;
 import es.tipolisto.breeds.ui.dialogs.Dialog;
@@ -33,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //PreferencesManagaer preferencesManagaer=new PreferencesManagaer(this);
+        //boolean themeDark=preferencesManagaer.getDarkOnOff())
+
+        /*if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.ThemeDark);
+        }else{
+            setTheme(R.style.ThemeBreeds);
+        }*/
 
 
         if (!Util.isNetworkConnected(getApplicationContext())) Dialog.showDialogNecessaryInternet(this);
@@ -68,9 +79,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //MediaPlayerClient.playSound(getBaseContext(),mediaPlayer,"button");
                 mediaPlayerClient.playSound("button" );
+                mediaPlayerClient.releaseSound();
                 Intent intent=new Intent(MainActivity.this, ContentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("modo", "cat");
+                intent.putExtra("modo", "nothing");
                 intent.putExtra("screen", "records");
                 startActivity(intent);
                 finish();
@@ -81,9 +93,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //MediaPlayerClient.playSound(getBaseContext(),mediaPlayer,"button");
                 mediaPlayerClient.playSound("button" );
+                mediaPlayerClient.releaseSound();
                 Intent intent=new Intent(MainActivity.this, ContentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("modo", "cat");
+                intent.putExtra("modo", "nothing");
                 intent.putExtra("screen", "settings");
                 startActivity(intent);
                 finish();

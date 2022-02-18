@@ -584,15 +584,21 @@ public class ArrayDataSource {
     private static HashMap<Integer,String> hasMapRecordList=new HashMap<Integer,String>();
     public static HashMap<Integer, String> getMaprecordList() {
         hasMapRecordList.clear();
-        hasMapRecordList.put( 1,"Neo");
+        hasMapRecordList.put( 4,"Neo");
         hasMapRecordList.put( 2,"Tinity");
         hasMapRecordList.put( 3,"Morfeo");
-        hasMapRecordList.put( 4,"Cifra");
-        hasMapRecordList.put( 5,"Smith agent");
-        hasMapRecordList.put( 6,"Oraculo");
-        hasMapRecordList.put( 7,"MEROVINGIO");
-        hasMapRecordList.put( 8,"PERSEPHONE");
-        hasMapRecordList.put( 9,"Arquitect");
+        hasMapRecordList.put( 1,"Cifra");
+        hasMapRecordList.put( 3,"Smith agent");
+        hasMapRecordList.put( 5,"Oraculo");
+        hasMapRecordList.put( 6,"Merovingio");
+        hasMapRecordList.put( 2,"Persephone");
+        hasMapRecordList.put( 1,"Arquitect");
+        hasMapRecordList.put( 4,"Anakin Skywalker");
+        hasMapRecordList.put( 5,"Luke Skywalker");
+        hasMapRecordList.put( 6,"Han solo");
+        hasMapRecordList.put( 8,"Leia Organa");
+        hasMapRecordList.put( 11,"Yoda");
+        hasMapRecordList.put( 24,"Chewbacca");
 
         return hasMapRecordList;
     };
