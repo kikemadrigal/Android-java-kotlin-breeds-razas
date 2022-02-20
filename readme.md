@@ -24,20 +24,20 @@ To help you, you have some small icons in the action bar at the top that allow y
 
 <br />
 
-<img src="images/docs/movil.PNG" height="200px" align="left" />
-<img src="images/docs/splash.PNG" height="200px" />
-<img src="images/docs/main.PNG" height="200px" />
+<img src="docs/images/movil.PNG" height="200px" align="left" />
+<img src="docs/images/splash.PNG" height="200px" />
+<img src="docs/images/main.PNG" height="200px" />
 <br />
-<img src="images/docs/records.PNG" height="200px" />
-<img src="images/docs/settings.PNG" height="200px" />
+<img src="docs/images/records.PNG" height="200px" />
+<img src="docs/images/settings.PNG" height="200px" />
 <br />
-<img src="images/docs/cat.PNG" height="200px" />
-<img src="images/docs/listcats.PNG" height="200px" />
-<img src="images/docs/breed-cat.PNG" height="200px" />
+<img src="docs/images/cat.PNG" height="200px" />
+<img src="docs/images/listcats.PNG" height="200px" />
+<img src="docs/images/breed-cat.PNG" height="200px" />
 <br />
-<img src="images/docs/dog.PNG" height="200px" />
-<img src="images/docs/listdogs.PNG" height="200px" />
-<img src="images/docs/lbreed-dog.PNG" height="200px" />
+<img src="docs/images/dog.PNG" height="200px" />
+<img src="docs/images/listdogs.PNG" height="200px" />
+<img src="docs/images/lbreed-dog.PNG" height="200px" />
 
     
 
