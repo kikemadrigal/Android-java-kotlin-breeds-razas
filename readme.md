@@ -37,7 +37,7 @@ To help you, you have some small icons in the action bar at the top that allow y
 <br />
 <img src="docs/images/dog.PNG" height="200px" />
 <img src="docs/images/listdogs.PNG" height="200px" />
-<img src="docs/images/lbreed-dog.PNG" height="200px" />
+<img src="docs/images/breed-dog.PNG" height="200px" />
 
     
 
