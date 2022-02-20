@@ -3,12 +3,12 @@ package es.tipolisto.breeds.ui.viewmodels;
 import androidx.lifecycle.ViewModel;
 
 import es.tipolisto.breeds.data.model.BreedsDog;
-import es.tipolisto.breeds.data.model.Cat;
+import es.tipolisto.breeds.data.model.CatSimple;
 
 public class ContentActivityViewModel extends ViewModel {
     private int lives;
     private int score;
-    private Cat cat;
+    private CatSimple cat;
     private BreedsDog breedsDog;
 
     public int getLives() {
@@ -27,11 +27,11 @@ public class ContentActivityViewModel extends ViewModel {
         this.score = score;
     }
 
-    public Cat getCat() {
+    public CatSimple getCat() {
         return cat;
     }
 
-    public void setCat(Cat cat) {
+    public void setCat(CatSimple cat) {
         this.cat = cat;
     }
 

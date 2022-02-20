@@ -2,10 +2,11 @@ package es.tipolisto.breeds.ui.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class RecordsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        // View view=inflater.inflate(R.layout.fragment_records, container, false);
         binding= FragmentRecordsBinding.inflate(inflater, container, false);
@@ -45,21 +46,12 @@ public class RecordsFragment extends Fragment {
         int score=preferencesManagaer.getHighRecord();
         String name=preferencesManagaer.getnameRecord();
         binding.textViewSettingsRecords.setText(name+": "+String.valueOf(score));
-        //todo:comprobar si su nombre tiene que estar en la tabla de records
         //Aignamos el comportamiento a los botones
-        binding.buttonSettingsDeleteRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferencesManagaer.deletePreferences();
-                binding.textViewSettingsRecords.setText(String.valueOf(preferencesManagaer.getHighRecord()));
-            }
+        binding.buttonSettingsDeleteRecords.setOnClickListener(view -> {
+            preferencesManagaer.deletePreferences();
+            binding.textViewSettingsRecords.setText(String.valueOf(preferencesManagaer.getHighRecord()));
         });
-        binding.buttonSubmitInternetRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), R.string.Payment_method_only, Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.buttonSubmitInternetRecords.setOnClickListener(view -> Toast.makeText(getContext(), R.string.Payment_method_only, Toast.LENGTH_SHORT).show());
 
         AppDatabase db = Room.databaseBuilder(getContext(),AppDatabase.class, "database")
                 .allowMainThreadQueries()
@@ -86,10 +78,10 @@ public class RecordsFragment extends Fragment {
             }
         }
         //Obtener puntución más baja
-        Log.d("Mensaje", "la puntuación mas baja es "+listRecordsEntity.get(8).getScore()+" id "+listRecordsEntity.get(8).getId()+ "name "+listRecordsEntity.get(8).getName());
+        //Log.d("Mensaje", "la puntuación mas baja es "+listRecordsEntity.get(8).getScore()+" id "+listRecordsEntity.get(8).getId()+ "name "+listRecordsEntity.get(8).getName());
         //Borramos todos los registros en la base de datos cuya puntuación se menor que la mas baja de la tabla
         int deletes=recordDao.deleteAllMinor(listRecordsEntity.get(8).getScore());
-        Log.d("Mensaje", "borrado "+String.valueOf(deletes));
+        //Log.d("Mensaje", "borrado "+deletes);
         //Volvemos a pedir la lista con la pinfomación acualizada
         listRecordsEntity=recordDao.getLast10RecordEntities();
         RecordListViewAdapter recordListViewAdapter=new RecordListViewAdapter(getContext(), listRecordsEntity);

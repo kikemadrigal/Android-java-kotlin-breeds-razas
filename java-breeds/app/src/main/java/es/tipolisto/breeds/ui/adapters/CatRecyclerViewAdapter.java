@@ -14,12 +14,12 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import es.tipolisto.breeds.R;
-import es.tipolisto.breeds.data.model.CatListResponse;
+import es.tipolisto.breeds.data.model.Cat;
 
 public class CatRecyclerViewAdapter extends RecyclerView.Adapter<CatRecyclerViewAdapter.ViewHolder> {
 
-    List<CatListResponse> catList;
-    public CatRecyclerViewAdapter(List<CatListResponse> catList){
+    List<Cat> catList;
+    public CatRecyclerViewAdapter(List<Cat> catList){
         this.catList=catList;
     }
 
@@ -46,10 +46,10 @@ public class CatRecyclerViewAdapter extends RecyclerView.Adapter<CatRecyclerView
         TextView TexView;
         public ViewHolder(View view){
             super(view);
-            imageView=(ImageView) view.findViewById(R.id.imageViewRecyclerView);
-            TexView=(TextView) view.findViewById(R.id.textViewRecyclerView);
+            imageView=view.findViewById(R.id.imageViewRecyclerView);
+            TexView=view.findViewById(R.id.textViewRecyclerView);
         }
-        public void render(CatListResponse catListResponse){
+        public void render(Cat catListResponse){
             try {
                 Picasso.get().load(catListResponse.getImage().getUrl()).into(imageView);
             } catch (Exception e) {

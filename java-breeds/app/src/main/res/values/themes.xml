@@ -24,21 +24,21 @@
     </style>
 
 
-    <style name="Theme.Breeds.NoActionBar">
+    <!--<style name="Theme.Breeds.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.Breeds.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.Breeds.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Breeds.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
     
     
-    <style name="SplashTheme" parent="Theme.Breeds" >
+    <style name="SplashTheme" parent="ThemeBreeds" >
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <style name="ButtonhTheme" parent="Theme.Breeds" >
+    <style name="ButtonhTheme" parent="ThemeBreeds" >
         <item name="android:windowBackground">@drawable/background_button</item>
     </style>
 

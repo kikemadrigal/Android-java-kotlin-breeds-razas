@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +21,12 @@ import java.util.List;
 
 import es.tipolisto.breeds.R;
 
-import es.tipolisto.breeds.data.model.CatListResponse;
+
 import es.tipolisto.breeds.ui.adapters.CatRecyclerViewAdapter;
 import es.tipolisto.breeds.ui.adapters.DogRecyclerViewAdapter;
 import es.tipolisto.breeds.ui.adapters.RecyclerViewClickListener;
-import es.tipolisto.breeds.data.network.RetrofitClient;
 import es.tipolisto.breeds.databinding.FragmentAnimalListBinding;
-import es.tipolisto.breeds.data.model.DogResponse;
+import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.ui.viewmodels.AnimalListFragmentViewModel;
 
 public class AnimalListFragment extends Fragment {
@@ -35,12 +34,11 @@ public class AnimalListFragment extends Fragment {
     private AnimalListFragmentViewModel viewModel;
 
     private String modo;
-    private RecyclerView recyclerView;
     private OnClickItemRecycler onClickItemRecycler;
     private static final String ARG_PARAM1 = "modo";
-    private RetrofitClient retrofitClient;
-    //Esto es para rcuperar la posición después de una rotación o ir a otro fragment
-    private LinearLayoutManager linearLayoutManager;
+
+
+
 
     public AnimalListFragment() {
     }
@@ -50,7 +48,6 @@ public class AnimalListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments()!=null){
             modo=getArguments().getString(ARG_PARAM1);
-            retrofitClient=new RetrofitClient();
         }
     }
     @Override
@@ -63,9 +60,9 @@ public class AnimalListFragment extends Fragment {
         }
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@Nullable LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding= FragmentAnimalListBinding.inflate(inflater, container, false);
+        binding= FragmentAnimalListBinding.inflate( inflater, container, false);
         binding.recyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getContext(), binding.recyclerView, new RecyclerViewClickListener.OnItemViewClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -75,7 +72,7 @@ public class AnimalListFragment extends Fragment {
                 if (textView!=null){
                     onClickItemRecycler.onClickRecyclerAnimalList(textView.getText().toString());
                 }
-                Log.d("Mensaje","click en "+String.valueOf(position));
+                //Log.d("Mensaje","click en "+String.valueOf(position));
             }
 
             @Override
@@ -99,29 +96,23 @@ public class AnimalListFragment extends Fragment {
 
         if (modo.equals("cat")){
             viewModel.getListCat();
-            viewModel.getMutableCatListResponse().observe(getViewLifecycleOwner(), new Observer<List<CatListResponse>>() {
-                @Override
-                public void onChanged(List<CatListResponse> listCatResponse) {
-                    CatRecyclerViewAdapter catRecyclerViewAdapter=new CatRecyclerViewAdapter(listCatResponse);
-                    binding.recyclerView.setAdapter(catRecyclerViewAdapter);
-                    linearLayoutManager.scrollToPosition(viewModel.getPositinRecyclerView());
-                }
+            viewModel.getMutableCatListResponse().observe(getViewLifecycleOwner(), listCatResponse -> {
+                CatRecyclerViewAdapter catRecyclerViewAdapter=new CatRecyclerViewAdapter(listCatResponse);
+                binding.recyclerView.setAdapter(catRecyclerViewAdapter);
+                linearLayoutManager.scrollToPosition(viewModel.getPositinRecyclerView());
             });
             //Para mostrar u cultar el progressbar
-            viewModel.getMutableProgressBarVisible().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-                @Override
-                public void onChanged(Boolean aBoolean) {
-                    if (aBoolean)
-                        binding.progressBarList.setVisibility(View.VISIBLE);
-                    else
-                        binding.progressBarList.setVisibility(View.GONE);
-                }
+            viewModel.getMutableProgressBarVisible().observe(getViewLifecycleOwner(), aBoolean -> {
+                if (aBoolean)
+                    binding.progressBarList.setVisibility(View.VISIBLE);
+                else
+                    binding.progressBarList.setVisibility(View.GONE);
             });
         }else if (modo.equals("dog")){
             viewModel.getListDog();
-            viewModel.getMutableListDogResponse().observe(getViewLifecycleOwner(), new Observer<List<DogResponse>>() {
+            viewModel.getMutableListDogResponse().observe(getViewLifecycleOwner(), new Observer<List<Dog>>() {
                 @Override
-                public void onChanged(List<DogResponse> listDogResponses) {
+                public void onChanged(List<Dog> listDogResponses) {
                     DogRecyclerViewAdapter dogRecyclerViewAdapter=new DogRecyclerViewAdapter(listDogResponses);
                     binding.recyclerView.setAdapter(dogRecyclerViewAdapter);
                     linearLayoutManager.scrollToPosition(viewModel.getPositinRecyclerView());
@@ -130,6 +121,6 @@ public class AnimalListFragment extends Fragment {
         }
     }
     public interface OnClickItemRecycler{
-        public void onClickRecyclerAnimalList(String breed);
+        void onClickRecyclerAnimalList(String breed);
     }
 }

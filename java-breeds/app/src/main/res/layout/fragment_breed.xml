@@ -17,6 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:id="@+id/textViewBreedFragment"
             android:layout_marginHorizontal="20dp"
             />
@@ -25,10 +26,9 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:id="@+id/textViewWikipediaBreedFragment"
+            android:layout_marginBottom="20dp"
             android:layout_marginHorizontal="20dp"
             />
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

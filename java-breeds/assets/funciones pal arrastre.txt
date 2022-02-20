@@ -1,0 +1,101 @@
+gameFragmentViewModel:
+
+
+    /*public String[] dameUnIdYNombreRazaDe3Aleatorios(String mode){
+        String[] cat=new String[6];
+        HashMap<String, String> hashMap=new HashMap<>();
+        //Conseguimos 3 números aleatorios
+        if(mode.equals("cat"))
+            hashMap= ArrayDataSourceProvider.getMapCatIdNames();
+        else if(mode.equals("dog")){
+            hashMap= ArrayDataSourceProvider.getMapDogIdNames();
+        }
+        int numeroAleatorio1=(int) (Math.random() * hashMap.size()-1) + 1;
+        //Ibtenemos otro id y raza y comprobamos si está repe
+        int numeroAleatorio2=(int) (Math.random() * hashMap.size()-1) + 1;
+        //Mientras que el número aletario 2 sea igual que el 1 pediremos otro numero
+        while(numeroAleatorio1==numeroAleatorio2) {
+            numeroAleatorio2=(int) (Math.random() * hashMap.size()-1) + 1;
+        }
+        int numeroAleatorio3=(int) (Math.random() * hashMap.size()-1) + 1;
+        while(numeroAleatorio1==numeroAleatorio3 || numeroAleatorio2==numeroAleatorio3) {
+            numeroAleatorio3=(int) (Math.random() * hashMap.size()-1) + 1;
+        }
+        //Recorremos el hasmap y obtenemos el id y raza aletatoria
+        int contador=0;
+        Iterator<String> iterator=hashMap.keySet().iterator();
+        while(iterator.hasNext()) {
+            String key = iterator.next();
+            String value = hashMap.get(key);
+            if(contador==numeroAleatorio1){
+               cat[0]=key;
+               cat[1]=value;
+            }else if(contador==numeroAleatorio2){
+                cat[2]=key;
+                cat[3]=value;
+            }else if(contador==numeroAleatorio3){
+                cat[4]=key;
+                cat[5]=value;
+            }
+            contador++;
+        }
+        return cat;
+    }
+
+
+
+
+
+
+
+
+
+    gameFragment:
+
+        /*private void setDataCat(){
+        //Dame 3 razas aleatorias
+        String[] idAndBreed=viewModel.dameUnIdYNombreRazaDe3Aleatorios("cat");
+        asignarTextoRadioButtons(idAndBreed, true);
+        //Metemos en el voewModel el array por si queremo recuperarlo
+        viewModel.setTextRadioButtons(idAndBreed);
+        //Necesitamos guardar la foto y la raza (para ver si acierta en los radioButtons)
+        viewModel.setBreedNameCat(idAndBreed[1]);
+        //Le pedimos que nos devuelva una foto aletaoria del 1 gato
+        viewModel.updatePhotoCat(idAndBreed[0]);
+        Log.d("Mensaje", "id "+idAndBreed[0]+" name "+idAndBreed[1]);
+    }
+
+
+
+breedFragment:
+
+    public String generateIdCat(String nameBreedCat){
+        String idBreedCat="";
+        HashMap<String, String> hasmapIdNames= ArrayDataSourceProvider.getMapCatIdNames();
+        Iterator<String> iterator=hasmapIdNames.keySet().iterator();
+        while(iterator.hasNext()){
+            String llave=(String) iterator.next();
+            String valueHasmMap =hasmapIdNames.get(llave);
+            if (nameBreedCat.equalsIgnoreCase(valueHasmMap)){
+                idBreedCat=llave;
+            }
+        }
+        return idBreedCat;
+    }
+
+
+    public String generateIdDog(String breedName){
+        //Para generar el id echamos mano de un hasmap donde están relaccionados todos los nombres con sus ids
+        String breed_id="";
+        HashMap<String,String> hashMapDogIdNames= ArrayDataSourceProvider.getMapDogIdNames();
+        Iterator<String> iterator=hashMapDogIdNames.keySet().iterator();
+        while(iterator.hasNext()){
+            String llave=iterator.next();
+            String value =hashMapDogIdNames.get(llave);
+            //breed es la variable global obtenida desde el listfragment
+            if(breedName.equalsIgnoreCase(value)){
+                breed_id=llave;
+            }
+        }
+        return breed_id;
+    }

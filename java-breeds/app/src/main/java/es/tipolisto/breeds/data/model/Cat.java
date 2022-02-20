@@ -1,121 +1,262 @@
 package es.tipolisto.breeds.data.model;
 
 
-import java.util.List;
 
 public class Cat {
-    /*Cuando consultas una raza: //https://api.thecatapi.com/v1/images/search?breed_ids=dons
-     te devuelve una array que contiene un solo Cat:
-     [
-        {
-            breads [weighr, is, name, temperament,etc],
-            id,
-            url,
-            width,
-            height,
-        }
-     ]
-
-
-
-
-
-[
-    {
-       "breeds":
-       [
-            "weight": {
-                "imperial": "10 - 12",
-                "metric": "5 - 6"
-            },
-            "id": "dons",
-            "name": "Donskoy",
-            "temperament": "Playful, affectionate, loyal, social",
-            "origin": "Russia",
-            "country_codes": "RU",
-            "country_code": "RU",
-            "description": "Donskoy are affectionate, intelligent, and easy-going. They demand lots of attention and interaction. The Donskoy also gets along well with other pets. It is now thought the same gene that causes degrees of hairlessness in the Donskoy also causes alterations in cat personality, making them calmer the less hair they have.",
-            "life_span": "12 - 15",
-            "indoor": 0,
-            "adaptability": 4,
-            "affection_level": 4,
-            "child_friendly": 3,
-            "cat_friendly": 3,
-            "dog_friendly": 3,
-            "energy_level": 4,
-            "grooming": 2,
-            "health_issues": 3,
-            "intelligence": 3,
-            "shedding_level": 1,
-            "social_needs": 5,
-            "stranger_friendly": 5,
-            "vocalisation": 2,
-            "experimental": 0,
-            "hairless": 1,
-            "natural": 0,
-            "rare": 1,
-            "rex": 0,
-            "suppressed_tail": 0,
-            "short_legs": 0,
-            "wikipedia_url": "https://en.wikipedia.org/wiki/Donskoy_(cat)",
-            "hypoallergenic": 0,
-            "reference_image_id": "3KG57GfMW"
-        ],
-        "id": "3KG57GfMW",
-        "url": "https://cdn2.thecatapi.com/images/3KG57GfMW.jpg",
-        "width": 750,
-        "height": 750
-    }
-]
-     */
-
-    private List<Breeds> breeds;
+    private Weight weight;
     private String id;
-    private String url;
-    private String width;
-    private String height;
+    private String name;
+    private String cfa_url;
+    private String vetstreet_url;
+    private String vcahospitals_url;
+    private String temperament;
+    private String origin;
+    private String country_codes;
+    private String country_code;
+    private String description;
+    private String life_span;
+    private int indoor;
+    private int lap;
+    private String alt_names;
+    private int adaptability;
+    private int affection_level;
+    private int child_friendly;
+    private int cat_friendly;
+    private int dog_friendly;
+    private int energy_level;
+    private int grooming;
+    private int health_issues;
+    private int intelligence;
+    private int shedding_level;
+    private int social_needs;
+    private int stranger_friendly;
+    private int vocalisation;
+    private int experimental;
+    private int hairless;
+    private int natural;
+    private int rare;
+    private int rex;
+    private int suppressed_tail;
+    private int short_legs;
+    private String wikipedia_url;
+    private int hypoallergenic;
+    private String reference_image_id;
+    private Image image;
 
-    public Cat(List<Breeds> breeds, String id, String url, String width, String height) {
-        this.breeds = breeds;
-        this.id = id;
-        this.url = url;
-        this.width = width;
-        this.height = height;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public List<Breeds> getBreeds() {
-        return breeds;
+    public Weight getWeight() {
+        return weight;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getWidth() {
-        return width;
+    public String getName() {
+        return name;
     }
 
-    public String getHeight() {
-        return height;
+    public String getCfa_url() {
+        return cfa_url;
     }
 
-    @Override
-    public String toString() {
-        return "Cat{" +
-                "breeds=" + breeds +
-                ", id='" + id + '\'' +
-                ", url='" + url + '\'' +
-                ", width='" + width + '\'' +
-                ", height='" + height + '\'' +
-                '}';
+    public String getVetstreet_url() {
+        return vetstreet_url;
+    }
+
+    public String getVcahospitals_url() {
+        return vcahospitals_url;
+    }
+
+    public String getTemperament() {
+        return temperament;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public String getCountry_codes() {
+        return country_codes;
+    }
+
+    public String getCountry_code() {
+        return country_code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLife_span() {
+        return life_span;
+    }
+
+    public int getIndoor() {
+        return indoor;
+    }
+
+    public int getLap() {
+        return lap;
+    }
+
+    public String getAlt_names() {
+        return alt_names;
+    }
+
+    public int getAdaptability() {
+        return adaptability;
+    }
+
+    public int getAffection_level() {
+        return affection_level;
+    }
+
+    public int getChild_friendly() {
+        return child_friendly;
+    }
+
+    public int getCat_friendly() { return cat_friendly; }
+
+    public int getDog_friendly() {
+        return dog_friendly;
+    }
+
+    public int getEnergy_level() {
+        return energy_level;
+    }
+
+    public int getGrooming() {
+        return grooming;
+    }
+
+    public int getHealth_issues() {
+        return health_issues;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public int getShedding_level() {
+        return shedding_level;
+    }
+
+    public int getSocial_needs() {
+        return social_needs;
+    }
+
+    public int getStranger_friendly() {
+        return stranger_friendly;
+    }
+
+    public int getVocalisation() {
+        return vocalisation;
+    }
+
+    public int getExperimental() {
+        return experimental;
+    }
+
+    public int getHairless() {
+        return hairless;
+    }
+
+    public int getNatural() {
+        return natural;
+    }
+
+    public int getRare() {
+        return rare;
+    }
+
+    public int getRex() {
+        return rex;
+    }
+
+    public int getSuppressed_tail() {
+        return suppressed_tail;
+    }
+
+    public int getShort_legs() {
+        return short_legs;
+    }
+
+    public String getWikipedia_url() {
+        return wikipedia_url;
+    }
+
+    public void setWikipedia_url(String wikipedia_url) {
+        this.wikipedia_url = wikipedia_url;
+    }
+
+    public int getHypoallergenic() {
+        return hypoallergenic;
+    }
+
+    public String getReference_image_id() {
+        return reference_image_id;
+    }
+
+    public Image getImage() {
+        return image;
     }
 }
+/*
+[
+      {
+        "weight": {
+            "imperial": "7  -  10",
+            "metric": "3 - 5"
+         },
+        "id": "abys",
+        "name": "Abyssinian",
+        "cfa_url": "http://cfa.org/Breeds/BreedsAB/Abyssinian.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/cats/abyssinian",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/cat-breeds/abyssinian",
+        "temperament": "Active, Energetic, Independent, Intelligent, Gentle",
+        "origin": "Egypt",
+        "country_codes": "EG",
+        "country_code": "EG",
+        "description": "The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals.",
+        "life_span": "14 - 15",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 3,
+        "dog_friendly": 4,
+        "energy_level": 5,
+        "grooming": 1,
+        "health_issues": 2,
+        "intelligence": 5,
+        "shedding_level": 2,
+        "social_needs": 5,
+        "stranger_friendly": 5,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 1,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Abyssinian_(cat)",
+        "hypoallergenic": 0,
+        "reference_image_id": "0XYvRd7oD",
+        "image": {
+            "id": "0XYvRd7oD",
+            "width": 1204,
+            "height": 1445,
+            "url": "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg"
+        }
+     },
+     {},
+     {},
+     {},
+     {},
+     {},
+     {}
+]
 
+ */

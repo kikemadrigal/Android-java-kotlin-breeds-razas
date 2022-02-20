@@ -1,11 +1,9 @@
 package es.tipolisto.breeds.ui.dialogs;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -23,15 +21,13 @@ public class Dialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Breeds says");
         builder.setMessage(R.string.presentation);
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                //exitToMenu(activity);
-                Intent intent=new Intent(activity.getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                activity.startActivity(intent);
-                activity.finish();
-            }
+        builder.setPositiveButton("Ok", (dialog, id) -> {
+            dialog.cancel();
+            //exitToMenu(activity);
+            Intent intent=new Intent(activity.getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activity.startActivity(intent);
+            activity.finish();
         });
         builder.create().show();
     }
@@ -39,14 +35,13 @@ public class Dialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Breeds says");
         builder.setMessage(activity.getApplicationContext().getString(R.string.exit_lost_score));
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                exitToMenu(activity);
-            }
+        builder.setPositiveButton("Ok", (dialog, id) -> {
+            dialog.cancel();
+            exitToMenu(activity);
         });
         builder.create().show();
     }
+
 
     public static void showDialogNewRecord(Activity activity, int score){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -56,43 +51,34 @@ public class Dialog {
         editNameRecord.setHint(R.string.Introduce_your_name);
 
         builder.setView(editNameRecord);
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
+        builder.setOnDismissListener(dialogInterface -> showDialogNewRecord(activity,score));
+        builder.setPositiveButton("Ok", (dialog, id) -> {
+            //Comprobamos que el nombre existe
+            RecordEntity existName;
+            AppDatabase db = Room.databaseBuilder(activity.getApplicationContext(), AppDatabase.class, "database")
+                    .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
+                    .build();
+            RecordDao recordDao= db.recordDao();
+            String name=editNameRecord.getText().toString();
+            existName=recordDao.getNameRecord(editNameRecord.getText().toString());
+            if (name.equals("") || name.length()==0){
+                Toast.makeText(activity, R.string.write_a_name, Toast.LENGTH_SHORT).show();
                 showDialogNewRecord(activity,score);
-            }
-        });
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //Comprobamos que el nombre existe
-                AppDatabase db = Room.databaseBuilder(activity.getApplicationContext(), AppDatabase.class, "database")
-                        .allowMainThreadQueries()
-                        .fallbackToDestructiveMigration()
-                        .build();
-                RecordDao recordDao= db.recordDao();
-                String name="";
-                RecordEntity existName=null;
-
-                name=editNameRecord.getText().toString();
-                existName=recordDao.getNameRecord(editNameRecord.getText().toString());
-                if (name.equals("") || name.length()==0){
-                    Toast.makeText(activity, R.string.write_a_name, Toast.LENGTH_SHORT).show();
+            }else {
+                if (existName!=null){
+                    Toast.makeText(activity, R.string.write_another_name, Toast.LENGTH_SHORT).show();
+                    editNameRecord.setText(" ");
                     showDialogNewRecord(activity,score);
-                }else {
-                    if (existName!=null){
-                        Toast.makeText(activity, R.string.write_another_name, Toast.LENGTH_SHORT).show();
-                        editNameRecord.setText(" ");
-                        showDialogNewRecord(activity,score);
-                    }else{
-                        PreferencesManagaer preferencesManagaer=new PreferencesManagaer(activity.getApplicationContext());
-                        preferencesManagaer.saveNameNewRecord(name);
-                        preferencesManagaer.saveNewRecord(score);
-                        dialog.cancel();
-                        exitToMenu(activity);
-                    }
+                }else{
+                    PreferencesManagaer preferencesManagaer=new PreferencesManagaer(activity.getApplicationContext());
+                    preferencesManagaer.saveNameNewRecord(name);
+                    preferencesManagaer.saveNewRecord(score);
+                    dialog.cancel();
+                    exitToMenu(activity);
                 }
-
             }
+
         });
         builder.create().show();
     }
@@ -102,12 +88,9 @@ public class Dialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Breeds says");
         builder.setMessage("          Game over");
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                dialogInterface.cancel();
-                exitToMenu(activity);
-            }
+        builder.setOnDismissListener(dialogInterface -> {
+            dialogInterface.cancel();
+            exitToMenu(activity);
         });
         android.app.Dialog dialog=builder.create();
         dialog.show();
@@ -116,20 +99,21 @@ public class Dialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Breeds says");
         builder.setMessage(R.string.necessary_internet);
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                activity.finish();
-            }
+        builder.setPositiveButton("Ok", (dialog, id) -> {
+            dialog.cancel();
+            activity.finish();
         });
-        /*builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                dialogInterface.cancel();
-                //exitToMenu(activity);
-                activity.finish();
-            }
-        });*/
+        android.app.Dialog dialog=builder.create();
+        dialog.show();
+    }
+    public static void showDialogProblemGetDataInternet(Activity activity){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Breeds says");
+        builder.setMessage(R.string.problem_data_internet);
+        builder.setPositiveButton("Ok", (dialog, id) -> {
+            dialog.cancel();
+            activity.finish();
+        });
         android.app.Dialog dialog=builder.create();
         dialog.show();
     }
@@ -141,6 +125,10 @@ public class Dialog {
         Intent intent=new Intent(activity, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
+        /*Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(a);*/
         activity.finish();
     }
 

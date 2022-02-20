@@ -6,52 +6,54 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
-import es.tipolisto.breeds.data.buffer.ArrayDataSource;
+import es.tipolisto.breeds.data.buffer.ArrayDataSourceProvider;
 import es.tipolisto.breeds.data.model.BreedsDog;
-import es.tipolisto.breeds.data.network.ICatsApi;
-import es.tipolisto.breeds.data.network.IDogApi;
-import es.tipolisto.breeds.data.network.RetrofitClient;
 import es.tipolisto.breeds.data.model.Cat;
-import es.tipolisto.breeds.data.model.DogResponse;
-import es.tipolisto.breeds.domain.GetCatByBreedUsesCase;
-import es.tipolisto.breeds.domain.GetDogByBreedUsesCase;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import es.tipolisto.breeds.data.network.RetrofitClient;
+import es.tipolisto.breeds.data.model.CatSimple;
+import es.tipolisto.breeds.data.model.Dog;
+import es.tipolisto.breeds.domain.GetCatUsesCase;
+import es.tipolisto.breeds.domain.GetDogUsesCase;
 
 public class GameFragmentViewModel extends ViewModel {
 
+    private MutableLiveData<CatSimple> mutableSimpleCat;
     private MutableLiveData<Cat> mutableCat;
-    private MutableLiveData<DogResponse> mutableDog;
+    private MutableLiveData<Dog> mutableDog;
     private MutableLiveData<Boolean> mutableProgressBarVisible;
     private String breedNameCat,breednameDog;
     private String urlRestore;
+    private Dog dog;
     private String[] textRadioButtons;
 
-    private GetCatByBreedUsesCase getCatByBreedUsesCase;
+    private GetCatUsesCase getCatUsesCase;
+    private GetDogUsesCase getDogUsesCase;
 
     private RetrofitClient retrofitClient;
     public GameFragmentViewModel(){
         retrofitClient=new RetrofitClient();
+        mutableSimpleCat=new MutableLiveData<CatSimple>();
         mutableCat=new MutableLiveData<Cat>();
-        mutableDog=new MutableLiveData<DogResponse>();
+        mutableDog=new MutableLiveData<Dog>();
         mutableProgressBarVisible=new MutableLiveData<Boolean>();
-
-        getCatByBreedUsesCase=new GetCatByBreedUsesCase();
+        getCatUsesCase=new GetCatUsesCase();
+        getDogUsesCase=new GetDogUsesCase();
     }
 
-
+    /**************************************************
+    *********************Getters & Setters ************
+     **************************************************/
+    public MutableLiveData<CatSimple> getMutableSimpleCat() {
+        return mutableSimpleCat;
+    }
     public MutableLiveData<Cat> getMutableCat() {
         return mutableCat;
     }
-    public MutableLiveData<DogResponse> getMutableDog() {
+    public MutableLiveData<Dog> getMutableDog() {
         return mutableDog;
     }
-
     //BreednameCat nos permite comparalo con el que ha hecho click de los radio buttons
     public String getBreedNameCat() {
         return breedNameCat;
@@ -65,14 +67,10 @@ public class GameFragmentViewModel extends ViewModel {
     public void setBreednameDog(String breednameDog) {
         this.breednameDog = breednameDog;
     }
-
     public String[] getTextRadioButtons() {
         return textRadioButtons;
     }
-
-    public void setTextRadioButtons(String[] textRadioButtons) {
-        this.textRadioButtons = textRadioButtons;
-    }
+    public void setTextRadioButtons(String[] textRadioButtons) { this.textRadioButtons = textRadioButtons;}
     //Nos permite recuprar la foto almacenada cuando volvemos al fragment
     public String getUrlRestore() {
         return urlRestore;
@@ -80,145 +78,92 @@ public class GameFragmentViewModel extends ViewModel {
     public void setUrlRestore(String urlRestore) {
         this.urlRestore = urlRestore;
     }
-
     //Nos permite mostrar una barra de progreso en el fragment
-    public MutableLiveData<Boolean> getMutableProgressBarVisible() {
-        return mutableProgressBarVisible;
+    public MutableLiveData<Boolean> getMutableProgressBarVisible() { return mutableProgressBarVisible;}
+    /**************************************************
+     ******************End Getters & Setters **********
+     **************************************************/
+
+
+
+
+
+    public boolean checkCatsEquals(Cat[] cats){
+        boolean equals=false;
+        String idCat0= cats[0].getId();
+        String idCat1= cats[1].getId();
+        String idCat2= cats[2].getId();
+        //le hacemos repetir hasta que consigamos 2 diferentes
+        if(idCat0.equals(idCat1)) equals=true;
+        else if (idCat0.equals(idCat2)) equals=true;
+        else if (idCat1.equals(idCat2)) equals=true;
+        return equals;
+    }
+
+    public Cat[] get3RamdomCats(){
+        Cat[] cats=new Cat[3];
+        cats[0]=getCatUsesCase.getRandomCatFromBuffer();
+        cats[1]=getCatUsesCase.getRandomCatFromBuffer();
+        cats[2]=getCatUsesCase.getRandomCatFromBuffer();
+
+        return cats;
     }
 
 
-
-    public String[] dameUnIdYNombreRazaDe3Aleatorios(String mode){
-        String[] cat=new String[6];
-        HashMap<String, String> hashMap=new HashMap<>();
-        //Conseguimos 3 números aleatorios
-        if(mode.equals("cat"))
-            hashMap= ArrayDataSource.getMapCatIdNames();
-        else if(mode.equals("dog")){
-            hashMap= ArrayDataSource.getMapDogIdNames();
-        }
-        int numeroAleatorio1=(int) (Math.random() * hashMap.size()-1) + 1;
-        //Ibtenemos otro id y raza y comprobamos si está repe
-        int numeroAleatorio2=(int) (Math.random() * hashMap.size()-1) + 1;
-        //Mientras que el número aletario 2 sea igual que el 1 pediremos otro numero
-        while(numeroAleatorio1==numeroAleatorio2) {
-            numeroAleatorio2=(int) (Math.random() * hashMap.size()-1) + 1;
-        }
-        int numeroAleatorio3=(int) (Math.random() * hashMap.size()-1) + 1;
-        while(numeroAleatorio1==numeroAleatorio3 || numeroAleatorio2==numeroAleatorio3) {
-            numeroAleatorio3=(int) (Math.random() * hashMap.size()-1) + 1;
-        }
-        //Recorremos el hasmap y obtenemos el id y raza aletatoria
-        int contador=0;
-        Iterator<String> iterator=hashMap.keySet().iterator();
-        while(iterator.hasNext()) {
-            String key = iterator.next();
-            String value = hashMap.get(key);
-            if(contador==numeroAleatorio1){
-               cat[0]=key;
-               cat[1]=value;
-            }else if(contador==numeroAleatorio2){
-                cat[2]=key;
-                cat[3]=value;
-            }else if(contador==numeroAleatorio3){
-                cat[4]=key;
-                cat[5]=value;
-            }
-            contador++;
-        }
-        return cat;
+    public boolean checkDogsEquals(Dog[] dogs){
+        boolean equals=false;
+        //Comprobamos que son perros distintos
+        String name0= dogs[0].getBreeds().get(0).getName();
+        String name1= dogs[1].getBreeds().get(0).getName();
+        String name2= dogs[2].getBreeds().get(0).getName();
+        Log.d("Mensaje","0: "+name0+", 1: "+name1+", 2: "+name2);
+        //le hacemos repetir hasta que consigamos 2 diferentes
+        if(name0.equals(name1)) equals=true;
+        if (name0.equals(name2)) equals=true;
+        if (name1.equals(name2)) equals=true;
+        return equals;
     }
 
-
+    public Dog[] get3RamdomDogs(){
+        Dog[] dogs=new Dog[3];
+        dogs[0]=dog;
+        dogs[1]=getDogUsesCase.getRandomDogFromBuffer();
+        dogs[2]=getDogUsesCase.getRandomDogFromBuffer();
+        return dogs;
+    }
 
     public void updatePhotoCat(String breedId){
         mutableProgressBarVisible.postValue(true);
-        /*Cat cat =getCatByBreedUsesCase.getCatByBreed(breedId);
-        if(cat!=null){
-            mutableCat.postValue(cat);
+        Cat catFind=null;
+        //Obtenemos la lista de gatos ya precargada
+        List<Cat> listCats=ArrayDataSourceProvider.listAllcats;
+        //Dame el que tenga esta raza
+        for (Cat cat:listCats){
+            if(cat.getId().equals(breedId)){
+                catFind=cat;
+                break;
+            }
+        }
+        //Cat cat =getCatUsesCase.getCatFromBuffer(breedId);
+        if(catFind!=null){
+            mutableCat.postValue(catFind);
             mutableProgressBarVisible.postValue(false);
-        }*/
-
-
-        //-----------------------Esto es sin clean arquitecture---------------------------
-        //Obtenemos la imagen
-        ICatsApi iCatsApiService= retrofitClient.getCatApiService();
-        //Con el retorfit tan solo obtenemos el path de la imagen de internet y se la metemeos al imageView
-        Call<List<Cat>> callCat=iCatsApiService.getcatById(breedId);
-        callCat.enqueue(new Callback<List<Cat>>() {
-            @Override
-            public void onResponse(Call<List<Cat>> call, Response<List<Cat>> response) {
-                if(response.isSuccessful()){
-                   List<Cat>listCat=response.body();
-                   Cat cat=listCat.get(0);
-                   mutableCat.postValue(cat);
-                   mutableProgressBarVisible.postValue(false);
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Cat>> call, Throwable t) {
-                Log.d("Mensaje","Mal");
-                Cat cat=new Cat(null, "0","No se obtuvo","0","0");
-                mutableCat.postValue(cat);
-                mutableProgressBarVisible.postValue(false);
-            }
-        });
+        }
 
     }
 
-
-
     public void updatePhotoDog(){
         mutableProgressBarVisible.postValue(true);
-        /*GetDogByBreedUsesCase getDogByBreedUsesCase=new GetDogByBreedUsesCase();
-        DogResponse dogResponse=getDogByBreedUsesCase.getDogByBreed();
-        if (dogResponse!=null){
-            BreedsDog breedsDog=dogResponse.getBreeds().get(0);
-            if (breedsDog==null){
-                breednameDog="null";
-            }else{
-                breednameDog=breedsDog.getName();
-            }
-            urlRestore=dogResponse.getUrl();
-            Log.d("Mensaje", "Dog respones "+breednameDog);
-            mutableDog.postValue(dogResponse);
+        dog=getDogUsesCase.getRandomDogFromBuffer();
+        if (dog.getBreeds().size()>0) {
+            BreedsDog breedsDog = dog.getBreeds().get(0);
+            breednameDog = breedsDog.getName();
+            urlRestore = dog.getUrl();
+            mutableDog.postValue(dog);
             mutableProgressBarVisible.postValue(false);
-        }*/
+        }else{
+            updatePhotoDog();
+        }
 
-
-
-        //-----------------------Esto es sin clean arquitecture---------------------------
-        IDogApi iDogApiService=retrofitClient.getDogApiService();
-        Call<List<DogResponse>> callListDogResponse=iDogApiService.getDog();
-        callListDogResponse.enqueue(new Callback<List<DogResponse>>() {
-            @Override
-            public void onResponse(Call<List<DogResponse>> call, Response<List<DogResponse>> response) {
-                if(response.isSuccessful()){
-                    List<DogResponse> listDogResponse=response.body();
-                    Log.d("Mensaje", "Tamaño lista "+listDogResponse.size());
-                    if (listDogResponse.size()>0){
-                        DogResponse dogResponse=listDogResponse.get(0);
-                        if (dogResponse.getBreeds().size()>0){
-                            BreedsDog breedsDog=dogResponse.getBreeds().get(0);
-                            breednameDog=breedsDog.getName();
-
-                            urlRestore=dogResponse.getUrl();
-                            Log.d("Mensaje", "Dog respones "+breednameDog);
-                            mutableDog.postValue(dogResponse);
-                            mutableProgressBarVisible.postValue(false);
-                        }else{
-                            updatePhotoDog();
-                        }
-                    }else{
-                        updatePhotoDog();
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<List<DogResponse>> call, Throwable t) {
-                Log.d("Mensaje","Hubo un fallo");
-                mutableProgressBarVisible.postValue(false);
-            }
-        });
     }
 }

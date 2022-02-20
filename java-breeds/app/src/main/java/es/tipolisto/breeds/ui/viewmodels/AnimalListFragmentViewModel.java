@@ -1,59 +1,41 @@
 package es.tipolisto.breeds.ui.viewmodels;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import es.tipolisto.breeds.data.model.CatListResponse;
-import es.tipolisto.breeds.data.model.DogResponse;
-import es.tipolisto.breeds.data.network.ICatsApi;
-import es.tipolisto.breeds.data.network.IDogApi;
-import es.tipolisto.breeds.data.network.RetrofitClient;
-import es.tipolisto.breeds.domain.GetAllCatFromBufferUsesCase;
-import es.tipolisto.breeds.domain.GetAllDogsFromBufferUsesCase;
+import es.tipolisto.breeds.data.model.Cat;
+import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.domain.GetCatsUsesCase;
 import es.tipolisto.breeds.domain.GetDogsUsesCase;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class AnimalListFragmentViewModel extends ViewModel {
-    private MutableLiveData<List<CatListResponse>> mutableCatListResponse;
-    private MutableLiveData<List<DogResponse>> mutableListDogResponse;
+    private MutableLiveData<List<Cat>> mutableCatListResponse;
+    private MutableLiveData<List<Dog>> mutableListDogResponse;
     private MutableLiveData<Boolean> mutableProgressBarVisible;
     private int positinRecyclerView;
     //El repositorio llama al service, el service al api y almacena la respuesta del api en un list
-    //private GetCatsUsesCase getCatsUsesCase;
-    private GetAllCatFromBufferUsesCase getAllCatFromBufferUsesCase;
-    //private GetDogsUsesCase getDogsUsesCase;
-    GetAllDogsFromBufferUsesCase getAllDogsFromBuffer;
+    private GetCatsUsesCase getCatsUsesCase;
+    private GetDogsUsesCase getDogsUsesCase;
+
     public AnimalListFragmentViewModel(){
-        //retrofitClient=new RetrofitClient();
-        mutableCatListResponse=new MutableLiveData<List<CatListResponse>>();
-        mutableListDogResponse=new MutableLiveData<List<DogResponse>>();
+        mutableCatListResponse=new MutableLiveData<List<Cat>>();
+        mutableListDogResponse=new MutableLiveData<List<Dog>>();
         mutableProgressBarVisible=new MutableLiveData<Boolean>();
-        //getCatsUsesCase=new GetCatsUsesCase();
-        getAllCatFromBufferUsesCase=new GetAllCatFromBufferUsesCase();
-        //getDogsUsesCase=new GetDogsUsesCase();
-        getAllDogsFromBuffer=new GetAllDogsFromBufferUsesCase();
+        getCatsUsesCase=new GetCatsUsesCase();
+        getDogsUsesCase=new GetDogsUsesCase();
         positinRecyclerView=0;
     }
 
-    public MutableLiveData<List<CatListResponse>> getMutableCatListResponse() {
+    public MutableLiveData<List<Cat>> getMutableCatListResponse() {
         return mutableCatListResponse;
     }
-
-    public MutableLiveData<List<DogResponse>> getMutableListDogResponse() {
+    public MutableLiveData<List<Dog>> getMutableListDogResponse() {
         return mutableListDogResponse;
     }
-
-    public MutableLiveData<Boolean> getMutableProgressBarVisible() {
-        return mutableProgressBarVisible;
-    }
+    public MutableLiveData<Boolean> getMutableProgressBarVisible() { return mutableProgressBarVisible;}
 
 
     public int getPositinRecyclerView() {
@@ -66,9 +48,7 @@ public class AnimalListFragmentViewModel extends ViewModel {
 
     public void getListCat(){
         mutableProgressBarVisible.postValue(true);
-
-        //List<CatListResponse> listCatListResponse=getCatsUsesCase.getCatList();
-        List<CatListResponse> listCatListResponse=getAllCatFromBufferUsesCase.getAllCatsFromBuffer();
+        List<Cat> listCatListResponse=getCatsUsesCase.getAllCatsFromBuffer();
         if(listCatListResponse!=null){
             mutableCatListResponse.postValue(listCatListResponse);
             mutableProgressBarVisible.postValue(false);
@@ -99,7 +79,7 @@ public class AnimalListFragmentViewModel extends ViewModel {
 
     public void getListDog(){
         mutableProgressBarVisible.postValue(true);
-        List<DogResponse> listDogResponse=getAllDogsFromBuffer.getAllDogsFromBuffer();
+        List<Dog> listDogResponse=getDogsUsesCase.getAllDogsFromBuffer();
         if (listDogResponse!=null){
             mutableListDogResponse.postValue(listDogResponse);
             mutableProgressBarVisible.postValue(false);

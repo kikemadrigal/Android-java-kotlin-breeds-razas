@@ -2,8 +2,8 @@ package es.tipolisto.breeds.data.network;
 
 import java.util.List;
 
-import es.tipolisto.breeds.data.model.Cat;
-import es.tipolisto.breeds.data.model.DogResponse;
+import es.tipolisto.breeds.data.model.CatSimple;
+import es.tipolisto.breeds.data.model.Dog;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,23 +23,21 @@ public class RetrofitClient {
 
     public IDogApi getDogApiService(){
         retrofit = createRetrofit("https://api.thedogapi.com/v1/");
-        IDogApi iDogApiService=retrofit.create(IDogApi.class);
-        return iDogApiService;
+        return retrofit.create(IDogApi.class);
     }
 
     public ICatsApi getCatApiService(){
         retrofit=createRetrofit("https://api.thecatapi.com/v1/");
-        ICatsApi iCatsApiService=retrofit.create(ICatsApi.class);
-        return iCatsApiService;
+        return retrofit.create(ICatsApi.class);
     }
 
-    public Cat getCat(String breed_id){return null;}
+    public CatSimple getCat(String breed_id){return null;}
 
-    public List<Cat> getListCat(){return null;}
+    public List<CatSimple> getListCat(){return null;}
 
-    public DogResponse getDog(){return null;}
+    public Dog getDog(){return null;}
 
-    public List<DogResponse> getListDog(){return null;};
+    public List<Dog> getListDog(){return null;};
 
 
 

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import es.tipolisto.breeds.R;
 import es.tipolisto.breeds.data.preferences.PreferencesManagaer;
@@ -25,7 +24,7 @@ public class SettingsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         preferencesManagaer=new PreferencesManagaer(getContext());
@@ -56,17 +55,14 @@ public class SettingsFragment extends Fragment {
 
 
 
-        binding.switchSettingsMusicOnOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(preferencesManagaer.getMusicOnOff()){
-                    preferencesManagaer.saveMusicOnOff(false);
-                    binding.switchSettingsMusicOnOff.setChecked(false);
-                }
-                else{
-                    preferencesManagaer.saveMusicOnOff(true);
-                    binding.switchSettingsMusicOnOff.setChecked(true);
-                }
+        binding.switchSettingsMusicOnOff.setOnClickListener(view1 -> {
+            if(preferencesManagaer.getMusicOnOff()){
+                preferencesManagaer.saveMusicOnOff(false);
+                binding.switchSettingsMusicOnOff.setChecked(false);
+            }
+            else{
+                preferencesManagaer.saveMusicOnOff(true);
+                binding.switchSettingsMusicOnOff.setChecked(true);
             }
         });
 
@@ -84,23 +80,18 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });*/
-        binding.switchSettingsDarkTheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("Mensaje","El modo es "+String.valueOf(preferencesManagaer.getDarkOnOff()));
-
-                if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
-                    getActivity().setTheme(R.style.ThemeBreeds);
-                    binding.switchSettingsDarkTheme.setChecked(false);
-                    preferencesManagaer.saveDarkOnOff(false);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }else{
-                    getActivity().setTheme(R.style.ThemeDark);
-                    binding.switchSettingsDarkTheme.setChecked(true);
-                    preferencesManagaer.saveDarkOnOff(true);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                }
-
+        binding.switchSettingsDarkTheme.setOnClickListener(view12 -> {
+            //Log.d("Mensaje","El modo es "+String.valueOf(preferencesManagaer.getDarkOnOff()));
+            if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+                getActivity().setTheme(R.style.ThemeBreeds);
+                binding.switchSettingsDarkTheme.setChecked(false);
+                preferencesManagaer.saveDarkOnOff(false);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }else{
+                getActivity().setTheme(R.style.ThemeDark);
+                binding.switchSettingsDarkTheme.setChecked(true);
+                preferencesManagaer.saveDarkOnOff(true);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             }
         });
     }

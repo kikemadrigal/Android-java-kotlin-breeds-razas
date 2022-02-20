@@ -5,7 +5,6 @@ import static es.tipolisto.breeds.ui.dialogs.Dialog.showDialogNewRecord;
 import static es.tipolisto.breeds.ui.dialogs.Dialog.showSialogExit;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -14,13 +13,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,16 +40,14 @@ import es.tipolisto.breeds.utils.Util;
 public class ContentActivity extends AppCompatActivity implements GameFragment.OnActionGame , AnimalListFragment.OnClickItemRecycler{
     private ActivityContentBinding binding;
     private ContentActivityViewModel viewModel;
-    private int lives=7;
-    private int score=0;
+    private int lives;
+    private int score;
     private String modo;
     private String screen;
     private boolean returnMenu;
     private GameFragment gameFragment;
     private AnimalListFragment animalListFragment;
-    private BreedFragment breedFragment;
-    private SettingsFragment settingsFragment;
-    private RecordsFragment recordsFragment;
+
     //Para manejar la música:
     private MediaPlayerClient mediaPlayerClient;
     private MediaPlayerClient mediaPlayerClientEffects;
@@ -76,26 +71,51 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         Toolbar toolbar=toolbarBinding.getRoot();
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.flecha);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mediaPlayerClientEffects.playSound("button");
-                mostrarDialogoSalir();
-            }
+        toolbar.setNavigationOnClickListener(view -> {
+            mediaPlayerClientEffects.playSound("button");
+            mostrarDialogoSalir();
         });
+
+        BreedFragment breedFragment=new BreedFragment();
+        SettingsFragment settingsFragment=new SettingsFragment();
+        RecordsFragment recordsFragment=new RecordsFragment();
 
         gameFragment=new GameFragment();
         animalListFragment=new AnimalListFragment();
-        breedFragment=new BreedFragment();
-        settingsFragment=new SettingsFragment();
-        recordsFragment=new RecordsFragment();
+
+
 
         Bundle bundle=getIntent().getExtras();
         if (bundle != null) {
-            modo=bundle.getString("modo");
-            screen=bundle.getString("screen");
+            modo = bundle.getString("modo");
+            screen = bundle.getString("screen");
             //Log.d("Mensaje","Mensaje de contentactivity, obtenido el modo: "+modo);
-            if (screen.equals("game")) {
+            switch (screen) {
+                case "game":
+                    binding.linearLayout.setVisibility(View.VISIBLE);
+                    cambiarFragment(gameFragment);
+                    break;
+                case "settings":
+                    binding.linearLayout.setVisibility(View.GONE);
+                    cambiarFragment(settingsFragment);
+                    break;
+                case "records":
+                    binding.linearLayout.setVisibility(View.GONE);
+                    cambiarFragment(recordsFragment);
+                    break;
+                case "animalList":
+                    binding.linearLayout.setVisibility(View.VISIBLE);
+                    cambiarFragment(animalListFragment);
+                    break;
+                case "breed":
+                    binding.linearLayout.setVisibility(View.VISIBLE);
+                    cambiarFragment(breedFragment);
+                    break;
+                default:
+                    binding.linearLayout.setVisibility(View.VISIBLE);
+                    cambiarFragment(gameFragment);
+            }
+            /*if (screen.equals("game")) {
                 //screen="game";
                 binding.linearLayout.setVisibility(View.VISIBLE);
                 cambiarFragment(gameFragment);
@@ -122,8 +142,8 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         }else{
             binding.linearLayout.setVisibility(View.VISIBLE);
             cambiarFragment(gameFragment);
+        }*/
         }
-
         binding.textViewLives.setText(String.valueOf(lives));
         binding.textViewScore.setText(String.valueOf(score));
     }
@@ -156,6 +176,12 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
     }
 
     @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        mostrarDialogoSalir();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         mediaPlayerClient.releaseSound();
@@ -164,15 +190,6 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
 
 
 
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            mostrarDialogoSalir();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     //Mostramos o no los botones según nos convenga
     @Override
@@ -246,7 +263,6 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
                     showDialogGameOver(this);
                 }
             }else{
-                // exitTomenu();
                 cambiarFragment(gameFragment);
             }
         }
@@ -263,7 +279,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.contentFragments,fragment);
         //Con esto creamos un historial de fragments o pila de procesos con la información almacenada
-        fragmentTransaction.addToBackStack(null);
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
     public void mostrarDialogoSalir() {
@@ -271,16 +287,13 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
             showSialogExit(this);
             cambiarFragment(gameFragment);
         }else{
-            exitTomenu();
+            Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         }
-        super.onBackPressed();
     }
 
-    private void exitTomenu(){
-        Intent intent=new Intent(getApplicationContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
 
 
 
@@ -295,7 +308,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.contentFragments,breedFragment);
-        fragmentTransaction.addToBackStack(null);
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

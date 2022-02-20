@@ -15,11 +15,11 @@ import java.util.List;
 
 import es.tipolisto.breeds.R;
 import es.tipolisto.breeds.data.model.BreedsDog;
-import es.tipolisto.breeds.data.model.DogResponse;
+import es.tipolisto.breeds.data.model.Dog;
 
 public class DogRecyclerViewAdapter extends RecyclerView.Adapter<DogRecyclerViewAdapter.ViewHolder> {
-    private List<DogResponse> listDogResponse;
-    public DogRecyclerViewAdapter(List<DogResponse> listDogResponse){
+    private List<Dog> listDogResponse;
+    public DogRecyclerViewAdapter(List<Dog> listDogResponse){
         this.listDogResponse=listDogResponse;
     }
 
@@ -45,10 +45,10 @@ public class DogRecyclerViewAdapter extends RecyclerView.Adapter<DogRecyclerView
         TextView textView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView=(ImageView) itemView.findViewById(R.id.imageViewRecyclerView);
-            textView=(TextView) itemView.findViewById(R.id.textViewRecyclerView);
+            imageView=itemView.findViewById(R.id.imageViewRecyclerView);
+            textView=itemView.findViewById(R.id.textViewRecyclerView);
         }
-        public void render(DogResponse dogResponse){
+        public void render(Dog dogResponse){
             try{
                 Picasso.get().load(dogResponse.getUrl()).into(imageView);
             }catch (Exception ex){

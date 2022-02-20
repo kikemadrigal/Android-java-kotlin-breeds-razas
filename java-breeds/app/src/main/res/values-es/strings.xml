@@ -11,6 +11,7 @@
     <string name="Payment_method_only">Opción deshabilitada temporalmente</string>
     <string name="new_record_message">"Has hecho un nuevo record!!: </string>
     <string name="exit_lost_score">¿Estas seguro que deseas salir?, perderás la puntuación</string>
+    <string name="exit_app">Para poder salir pulsa 2 veces</string>
     <string name="message">message</string>
     <string name="Introduce_your_name">Introduce your name</string>
     <string name="failure">Fallo!!</string>
@@ -19,5 +20,6 @@
     <string name="presentation">Bienvenido al juego breeds, en la parte superior encontrarás unos botones que te ayudaradarán a encontrar la raza</string>
     <string name="write_a_name">Escriba un nombre</string>
     <string name="write_another_name">El nombre ya existe, escriba otro</string>
+    <string name="problem_data_internet">Hubo un problema en la obtención de los datos de internet, no es posible continuar</string>
 
 </resources>

@@ -18,13 +18,12 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import es.tipolisto.breeds.R;
+import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.databinding.FragmentBreedBinding;
 
-import es.tipolisto.breeds.data.model.Breeds;
+
 import es.tipolisto.breeds.data.model.BreedsDog;
-import es.tipolisto.breeds.data.model.Cat;
-import es.tipolisto.breeds.data.model.DogResponse;
-import es.tipolisto.breeds.data.network.RetrofitClient;
+import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.ui.viewmodels.BreedFragmentViewModel;
 
 
@@ -35,8 +34,7 @@ public class BreedFragment extends Fragment {
     private static final String ARG_PARAM2= "modo";
     private String breedName;
     private String mode;
-    private RetrofitClient retrofitClient;
-    private BreedFragmentViewModel viewModel;
+
 
     public BreedFragment() {}
 
@@ -47,11 +45,10 @@ public class BreedFragment extends Fragment {
         if (getArguments() != null) {
             breedName = getArguments().getString(ARG_PARAM1);
             mode = getArguments().getString(ARG_PARAM2);
-            retrofitClient=new RetrofitClient();
         }
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding=FragmentBreedBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -59,37 +56,24 @@ public class BreedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(BreedFragmentViewModel.class);
-        viewModel.getMutableLiveDataProgressBarVisible().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean)
-                    binding.progressBar.setVisibility(View.VISIBLE);
-                else
-                    binding.progressBar.setVisibility(View.GONE);
-            }
+        BreedFragmentViewModel viewModel = new ViewModelProvider(requireActivity()).get(BreedFragmentViewModel.class);
+        viewModel.getMutableLiveDataProgressBarVisible().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean)
+                binding.progressBar.setVisibility(View.VISIBLE);
+            else
+                binding.progressBar.setVisibility(View.GONE);
         });
         if (getArguments() != null) {
             if (mode.equals("cat")) {
-                String idBreedCat = viewModel.generateIdCat(breedName);
-                viewModel.getCat(idBreedCat);
-                viewModel.getMutableLiveDataCat().observe(getViewLifecycleOwner(), new Observer<Cat>() {
-                    @Override
-                    public void onChanged(Cat cat) {
-                        setValuesCatViews(cat);
-                    }
-                });
+                viewModel.getCatBynameFromBuffer(breedName);
+                //viewModel.getMutableLiveDataCat().observe(getViewLifecycleOwner(), cat -> setValuesCatViews(cat));
+                viewModel.getMutableLiveDataCat().observe(getViewLifecycleOwner(), this::setValuesCatViews);
             } else if (mode.equals("dog")) {
-                String breedId = viewModel.generateIdDog(breedName);
-                viewModel.getDog(breedId);
-                viewModel.getMutableLiveDataDogresponse().observe(getViewLifecycleOwner(), new Observer<DogResponse>() {
-                    @Override
-                    public void onChanged(DogResponse dogResponse) {
-                        setValuesDogViews(dogResponse);
-                    }
-                });
+                viewModel.getDogBynameFromBuffer(breedName);
+                //viewModel.getMutableLiveDataDog().observe(getViewLifecycleOwner(), dog -> setValuesDogViews(dog));
+                viewModel.getMutableLiveDataDog().observe(getViewLifecycleOwner(), this::setValuesDogViews);
             }
-            binding.textViewBreedFragment.setText("modo: " + mode + " raza " + breedName);
+            binding.textViewBreedFragment.setText(breedName);
         }
     }
 
@@ -97,43 +81,41 @@ public class BreedFragment extends Fragment {
 
     private void setValuesCatViews(Cat cat) {
         try {
-            Picasso.get().load(cat.getUrl()).into(binding.imageViewBreedFragment);
+            Picasso.get().load(cat.getImage().getUrl()).into(binding.imageViewBreedFragment);
         } catch (Exception e) {
             Picasso.get().load(R.drawable.goback).into(binding.imageViewBreedFragment);
             e.printStackTrace();
         }
-
-        Breeds breed = cat.getBreeds().get(0);
-        String content = breed.getName() + "\n";
-        content += breed.getTemperament() + "\n";
-        content += breed.getOrigin() + "\n";
-        content += breed.getCountry_code() + "\n";
-        content += breed.getDescription() + "\n";
+        String content = cat.getName() + "\n";
+        content += cat.getTemperament() + "\n";
+        content += cat.getOrigin() + "\n";
+        content += cat.getCountry_code() + "\n";
+        content += cat.getDescription() + "\n";
         binding.textViewBreedFragment.setText(content);
         binding.textViewWikipediaBreedFragment.setMovementMethod(LinkMovementMethod.getInstance());
-        String wikipedia_url = breed.getWikipedia_url();
+        String wikipedia_url = cat.getWikipedia_url();
         binding.textViewWikipediaBreedFragment.setText(wikipedia_url);
-        binding.ratingBarIndoor.setRating(breed.getIndoor());
-        binding.ratingBarAdaptability.setRating(breed.getAdaptability());
-        binding.ratingBaraAffectionLevel.setRating(breed.getAffection_level());
-        binding.ratingBarChildFriendly.setRating(breed.getChild_friendly());
-        binding.ratingBarCatFriendly.setRating(breed.getCat_friendly());
-        binding.ratingBarDogFriendly.setRating(breed.getDog_friendly());
-        binding.ratingBarEnergyLevel.setRating(breed.getEnergy_level());
-        binding.ratingBarGrooming.setRating(breed.getGrooming());
-        binding.ratingBarHealthIssues.setRating(breed.getHealth_issues());
-        binding.ratingBarIntelligence.setRating(breed.getIntelligence());
-        binding.ratingBarSheddingLevel.setRating(breed.getShedding_level());
-        binding.ratingBarSocialNeeds.setRating(breed.getSocial_needs());
-        binding.ratingBarStrangerFriendly.setRating(breed.getStranger_friendly());
-        binding.ratingBarVocalisation.setRating(breed.getVocalisation());
-        binding.ratingBarExperimental.setRating(breed.getExperimental());
-        binding.ratingBarHairless.setRating(breed.getHairless());
-        binding.ratingBarNatural.setRating(breed.getNatural());
-        binding.ratingBarRare.setRating(breed.getRare());
-        binding.ratingBarRex.setRating(breed.getRex());
-        binding.ratingBarSuppressedTail.setRating(breed.getSuppressed_tail());
-        binding.ratingBarShortLegs.setRating(breed.getShort_legs());
+        binding.ratingBarIndoor.setRating(cat.getIndoor());
+        binding.ratingBarAdaptability.setRating(cat.getAdaptability());
+        binding.ratingBaraAffectionLevel.setRating(cat.getAffection_level());
+        binding.ratingBarChildFriendly.setRating(cat.getChild_friendly());
+        binding.ratingBarChildFriendly.setRating(cat.getCat_friendly());
+        binding.ratingBarDogFriendly.setRating(cat.getDog_friendly());
+        binding.ratingBarEnergyLevel.setRating(cat.getEnergy_level());
+        binding.ratingBarGrooming.setRating(cat.getGrooming());
+        binding.ratingBarHealthIssues.setRating(cat.getHealth_issues());
+        binding.ratingBarIntelligence.setRating(cat.getIntelligence());
+        binding.ratingBarSheddingLevel.setRating(cat.getShedding_level());
+        binding.ratingBarSocialNeeds.setRating(cat.getSocial_needs());
+        binding.ratingBarStrangerFriendly.setRating(cat.getStranger_friendly());
+        binding.ratingBarVocalisation.setRating(cat.getVocalisation());
+        binding.ratingBarExperimental.setRating(cat.getExperimental());
+        binding.ratingBarHairless.setRating(cat.getHairless());
+        binding.ratingBarNatural.setRating(cat.getNatural());
+        binding.ratingBarRare.setRating(cat.getRare());
+        binding.ratingBarRex.setRating(cat.getRex());
+        binding.ratingBarSuppressedTail.setRating(cat.getSuppressed_tail());
+        binding.ratingBarShortLegs.setRating(cat.getShort_legs());
 
 
     }
@@ -142,14 +124,14 @@ public class BreedFragment extends Fragment {
 
 
 
-    private void setValuesDogViews(DogResponse dogResponse){
+    private void setValuesDogViews(Dog dog){
         try {
-            Picasso.get().load(dogResponse.getUrl()).into(binding.imageViewBreedFragment);
+            Picasso.get().load(dog.getUrl()).into(binding.imageViewBreedFragment);
         } catch (Exception e) {
             Picasso.get().load(R.drawable.goback).into(binding.imageViewBreedFragment);
             e.printStackTrace();
         }
-        List<BreedsDog> listBreedsDog = dogResponse.getBreeds();
+        List<BreedsDog> listBreedsDog = dog.getBreeds();
         BreedsDog breedsDog = listBreedsDog.get(0);
         String content = breedsDog.getName() + "\n";
         content += breedsDog.getBred_for() + "\n";

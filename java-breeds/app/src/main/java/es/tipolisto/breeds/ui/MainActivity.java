@@ -3,12 +3,10 @@ package es.tipolisto.breeds.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
 
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Application;
+
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -25,15 +23,16 @@ import es.tipolisto.breeds.utils.MediaPlayerClient;
 import es.tipolisto.breeds.utils.Util;
 
 public class MainActivity extends AppCompatActivity {
-    //1.Declaramos una variable con el mismo nombre que el layout pero terminada en binding
-    private ActivityMainBinding binding;
+
+
     private CatRecyclerViewAdapter catRecyclerViewAdapter;
-    //private MediaPlayer mediaPlayer;
-    MediaPlayerClient mediaPlayerClient;
+    private MediaPlayerClient mediaPlayerClient;
+    private static long back_pressed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        //1.Declaramos una variable con el mismo nombre que el layout pero terminada en binding
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         PreferencesManagaer preferencesManagaer=new PreferencesManagaer(this);
@@ -48,49 +47,37 @@ public class MainActivity extends AppCompatActivity {
         if (!Util.isNetworkConnected(getApplicationContext())) Dialog.showDialogNecessaryInternet(this);
 
 
-        binding.imageButtonCat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mediaPlayerClient.playSound("button");
-                Intent intent=new Intent(MainActivity.this, ContentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("modo", "cat");
-                intent.putExtra("screen", "game");
-                startActivity(intent);
-                finish();
-            }
+        binding.imageButtonCat.setOnClickListener(view -> {
+            mediaPlayerClient.playSound("button");
+            Intent intent=new Intent(MainActivity.this, ContentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("modo", "cat");
+            intent.putExtra("screen", "game");
+            startActivity(intent);
+            finish();
         });
-        binding.imageButtonDog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //MediaPlayerClient.playSound(getBaseContext(),mediaPlayer,"button");
-                mediaPlayerClient.playSound("button" );
-                Intent intent=new Intent(MainActivity.this, ContentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("modo", "dog");
-                intent.putExtra("screen", "game");
-                startActivity(intent);
-                finish();
-            }
+        binding.imageButtonDog.setOnClickListener(view -> {
+            mediaPlayerClient.playSound("button" );
+            Intent intent=new Intent(MainActivity.this, ContentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("modo", "dog");
+            intent.putExtra("screen", "game");
+            startActivity(intent);
+            finish();
         });
-        binding.imageButtonRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //MediaPlayerClient.playSound(getBaseContext(),mediaPlayer,"button");
-                mediaPlayerClient.playSound("button" );
-                mediaPlayerClient.stopSound();
-                Intent intent=new Intent(MainActivity.this, ContentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("modo", "nothing");
-                intent.putExtra("screen", "records");
-                startActivity(intent);
-                finish();
-            }
+        binding.imageButtonRecords.setOnClickListener(view -> {
+            mediaPlayerClient.playSound("button" );
+            mediaPlayerClient.stopSound();
+            Intent intent=new Intent(MainActivity.this, ContentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("modo", "nothing");
+            intent.putExtra("screen", "records");
+            startActivity(intent);
+            finish();
         });
         binding.imageButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //MediaPlayerClient.playSound(getBaseContext(),mediaPlayer,"button");
                 mediaPlayerClient.playSound("button" );
                 mediaPlayerClient.stopSound();
                 Intent intent=new Intent(MainActivity.this, ContentActivity.class);
@@ -101,9 +88,28 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
+
+    @Override
+    public void onBackPressed() {
+        long currentTime=System.currentTimeMillis();
+        if (back_pressed + 2000 < currentTime){
+            Toast.makeText(this, getApplicationContext().getString(R.string.exit_app), Toast.LENGTH_LONG).show();
+        }else {
+            super.onBackPressed();
+            finish();
+        }
+        back_pressed= System.currentTimeMillis();
+    }
+    /*
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            mostrarDialogoSalir();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }*/
 
     @Override
     protected void onResume() {

@@ -3,7 +3,7 @@ package es.tipolisto.breeds.data.network;
 import java.util.List;
 
 
-import es.tipolisto.breeds.data.model.DogResponse;
+import es.tipolisto.breeds.data.model.Dog;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -22,16 +22,16 @@ public interface IDogApi {
     //https://api.thedogapi.com/v1/images/search
     //Devuelve un objeto aleatorio de tipo list<DogResponse>
     @GET("images/search")
-    Call<List<DogResponse>> getDog();
+    Call<List<Dog>> getDog();
 
     //Devuelve la raza de perro que corresponde al id pasado en la Url
     @GET("images/search")
-    Call<List<DogResponse>> getDataDogBreed(@Query("breed_id") String breed_id);
+    Call<List<Dog>> getDataDogBreed(@Query("breed_id") String breed_id);
 
 
     //Devuelve un listado aleatorio de perros:https://api.thedogapi.com/v1/images/search?limit=100&order=Desc
     @GET("images/search?limit=100&order=Desc")
-    Call<List<DogResponse>> getListDog();
+    Call<List<Dog>> getListDog();
 
 
 

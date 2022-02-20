@@ -22,6 +22,7 @@
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/drawable/background_button.xml" value="0.26927083333333335" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/drawable/ic_launcher_background.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/drawable/ratingstars.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/drawable/splash_background.xml" value="0.205" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout-land/activity_content.xml" value="0.18959435626102292" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout-land/activity_main.xml" value="0.18959435626102292" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout-land/fragment_game.xml" value="0.18959435626102292" />
@@ -33,6 +34,7 @@
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout/fragment_blank.xml" value="0.178125" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout/fragment_breed.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout/fragment_breed_cat.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout/fragment_content.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout/fragment_game.xml" value="0.23616236162361623" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout/fragment_game_over.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/casa/Desktop/breeds/java-breeds/app/src/main/res/layout/fragment_records.xml" value="0.19947916666666668" />

@@ -51,4 +51,12 @@ public class BreedsDog {
     public String getReference_image_id() {
         return reference_image_id;
     }
+
+    @Override
+    public String toString() {
+        return "BreedsDog{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

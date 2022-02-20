@@ -12,6 +12,7 @@
     <string name="Payment_method_only">Option temporarily disabled</string>
     <string name="new_record_message">"has made a new record!!: </string>
     <string name="exit_lost_score">Are you sure you want to exit?, you will lose the score</string>
+    <string name="exit_app">To exit press 2 times</string>
     <string name="message">Breed say</string>
     <string name="Introduce_your_name">Introduce your name</string>
     <string name="failure">Failure!!</string>
@@ -20,6 +21,9 @@
     <string name="presentation">Welcome to the breeds game, at the top you will find some buttons that will help you find the breed</string>
     <string name="write_a_name">Write a name</string>
     <string name="write_another_name">Name already exists, type another</string>
+    <string name="problem_data_internet">There was a problem obtaining the internet data, it is not possible to continue</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

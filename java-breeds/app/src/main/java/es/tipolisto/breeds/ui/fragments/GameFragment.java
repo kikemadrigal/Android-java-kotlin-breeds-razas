@@ -1,5 +1,6 @@
 package es.tipolisto.breeds.ui.fragments;
 
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -14,21 +15,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import es.tipolisto.breeds.R;
-import es.tipolisto.breeds.databinding.FragmentGameBinding;
 import es.tipolisto.breeds.data.model.Cat;
-import es.tipolisto.breeds.data.network.RetrofitClient;
-import es.tipolisto.breeds.data.model.DogResponse;
+import es.tipolisto.breeds.databinding.FragmentGameBinding;
+import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.ui.viewmodels.GameFragmentViewModel;
+import es.tipolisto.breeds.utils.Constants;
 
 /**
- * Esta clase mostrará una foto de un gato o un perro
- * en la parte inferior aparecerán unos radioButtons con las razas
- * tendrás que seleccionar la correcta para conseguir el record de puntos
+ * Esta clase primero solicita 3 gatos (solo id y nombre) aletarias
+ * después asigna los 3 valores a los radio buttons de una forma aletaoria
+ * después con el primer gato (solo id) hace una petición rest
  */
 
 public class GameFragment extends Fragment {
@@ -37,16 +38,11 @@ public class GameFragment extends Fragment {
     private GameFragmentViewModel viewModel;
     private String modo;
     private Boolean returnMenu;
-    //private String breed_name;
-    private int lives=7;
-    private int score=0;
-
-
 
     //interface
     private OnActionGame onActionGame;
 
-
+    //Argumentos pasados en la llamada al fragment
     private static final String ARG_PARAM1 = "modo";
     private static final String ARG_PARAM2 = "returnMenu";
     public GameFragment() {
@@ -55,7 +51,7 @@ public class GameFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding=FragmentGameBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(GameFragmentViewModel.class);
@@ -67,155 +63,178 @@ public class GameFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("Mensaje","pasa por onViewCreated");
+        //Log.d("Mensaje","pasa por onViewCreated");
         onClickRadioButtons();
+
         if(getArguments()!=null){
             modo=getArguments().getString(ARG_PARAM1);
             returnMenu=getArguments().getBoolean(ARG_PARAM2);
         }
+
         //Controlamos el comportamiento del progressbar del viewModel
-        viewModel.getMutableProgressBarVisible().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean)
-                    binding.progressBar.setVisibility(View.VISIBLE);
-                else
-                    binding.progressBar.setVisibility(View.GONE);
-            }
+        viewModel.getMutableProgressBarVisible().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean)
+                binding.progressBar.setVisibility(View.VISIBLE);
+            else
+                binding.progressBar.setVisibility(View.GONE);
         });
         if (modo.equals("cat")){
             //Si hemos pinchado en el "mando" del toolbar es que hemos vuelto de ver la lista o de la descripción de raza
             //En ese caso retornamos la información almacenada en el viewModel
             if (returnMenu){
-                String[] idAndBreed=viewModel.getTextRadioButtons();
-                asignarTextoRadioButtons(idAndBreed, true);
-                Picasso.get().load(viewModel.getUrlRestore()).into(binding.imageView);
-                Log.d("Mensaje", "Recuperado!!! id "+idAndBreed[0]+" name "+idAndBreed[1]);
+                String[] text=viewModel.getTextRadioButtons();
+                binding.radioButton1.setText(text[0]);
+                binding.radioButton2.setText(text[1]);
+                binding.radioButton3.setText(text[2]);
             }else{
                 setDataCat();
             }
-            //Controlamos cuando la lista cambie
-            viewModel.getMutableCat().observe(getViewLifecycleOwner(), new Observer<Cat>() {
-                @Override
-                public void onChanged(Cat cat) {
-                    try {
-                        Picasso.get().load(cat.getUrl()).into(binding.imageView);
-                        //Esto es para si hay un cambio de rotación conservar la url
-                        viewModel.setUrlRestore(cat.getUrl());
-                    } catch (Exception e) {
+            viewModel.getMutableCat().observe(getViewLifecycleOwner(), cat -> {
+                //Cargamos la imagen en el imageView
+                try{
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    Picasso.get().load(cat.getImage().getUrl())
+                            .into(binding.imageView, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    binding.progressBar.setVisibility(View.GONE);
+                                }
 
-                    }
-                }
+                                @Override
+                                public void onError(Exception e) {
+                                    Picasso.get().load(R.drawable.goback).into(binding.imageCat);
+                                    binding.progressBar.setVisibility(View.GONE);
+                                }
+                            });
+                    //Esto es para si hay un cambio de rotación conservar la url
+                    viewModel.setUrlRestore(cat.getImage().getUrl());
+                }catch(Exception ex){Log.d(Constants.LOG, ex.toString());}
             });
-
-
         }else if (modo.equals("dog")){
             if (returnMenu){
-                String[] idAndBreed=viewModel.getTextRadioButtons();
-                asignarTextoRadioButtons(idAndBreed, true);
-                Picasso.get().load(viewModel.getUrlRestore()).into(binding.imageView);
-                Log.d("Mensaje", "Recuperado!!! id "+idAndBreed[0]+" name "+idAndBreed[1]);
+                String[] text=viewModel.getTextRadioButtons();
+                binding.radioButton1.setText(text[0]);
+                binding.radioButton2.setText(text[1]);
+                binding.radioButton3.setText(text[2]);
+                //Picasso.get().load(viewModel.getUrlRestore()).into(binding.imageView);
             }else {
                 viewModel.updatePhotoDog();
+                setDataDog();
             }
             //Este API tiene un fallo y a veces no te devuelve el objeto breeds, pruebalo:https://api.thedogapi.com/v1/images/search
-            viewModel.getMutableDog().observe(getViewLifecycleOwner(), new Observer<DogResponse>() {
+            viewModel.getMutableDog().observe(getViewLifecycleOwner(), new Observer<Dog>() {
                 @Override
-                public void onChanged(DogResponse dogResponse) {
-                    String[] dogs=viewModel.dameUnIdYNombreRazaDe3Aleatorios("dog");
-                    //Le ponemos en la primera posición del array el nombre de la eaza obtenida en el viewmodel
-                    dogs[1]=viewModel.getBreednameDog();
-                    if(dogs[1]==null) dogs[1]="null";
-                    viewModel.setTextRadioButtons(dogs);
-                    asignarTextoRadioButtons(dogs, true);
+                public void onChanged(Dog dogResponse) {
+                    //setDataDog();
                     try{
-                        Picasso.get().load(viewModel.getUrlRestore()).into(binding.imageView);
-                    }catch (Exception ex){
-                        Picasso.get().load(R.drawable.goback).into(binding.imageView);
-                    }
+                        Picasso.get().load(viewModel.getUrlRestore()).into(binding.imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.progressBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(R.drawable.goback).into(binding.imageCat);
+                                binding.progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                    }catch (Exception ex){Log.d(Constants.LOG, ex.toString());}
                 }
             });
-
-
         }
     }
-
+    /*
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         //Log.d("Mensaje","pasa por onSaveInstanceState");
         super.onSaveInstanceState(outState);
-        outState.putBoolean("returMenu", true);
-    }
+        outState.putBoolean("returnRotation", true);
+    }*/
 
-    @Override
+    /*@Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState!=null){
-            Log.d("Mensaje","pasa por onViewStateRestored");
+            //Log.d("Mensaje","pasa por onViewStateRestored");
             returnMenu=savedInstanceState.getBoolean("returnMenu",false);
         }
-    }
+    }*/
 
 
 
     private void onClickRadioButtons(){
-        binding.radioButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onRadioButtonClicked(view);
-            }
-        });
-        binding.radioButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onRadioButtonClicked(view);
-            }
-        });
-        binding.radioButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onRadioButtonClicked(view);
-            }
-        });
+        //binding.radioButton1.setOnClickListener(view -> onRadioButtonClicked(view));
+        binding.radioButton1.setOnClickListener(this::onRadioButtonClicked);
+        binding.radioButton2.setOnClickListener(this::onRadioButtonClicked);
+        binding.radioButton3.setOnClickListener(this::onRadioButtonClicked);
     }
+
     private void setDataCat(){
         //Dame 3 razas aleatorias
-        String[] idAndBreed=viewModel.dameUnIdYNombreRazaDe3Aleatorios("cat");
-        //viewModel.setBreedNameCat(idAndBreed[1]);
-        //Metemos en el voewModel el array por si queremo recuprarlo
-        viewModel.setTextRadioButtons(idAndBreed);
-        //Le pedimos que nos devuelva una foto aletaoria de la 1 raza
-        viewModel.updatePhotoCat(idAndBreed[0]);
-        asignarTextoRadioButtons(idAndBreed, true);
+        //Mientras sea verdad vuelve a pedir la lista de gatos
+        Cat[] cats;
+        do{
+            cats=viewModel.get3RamdomCats();
+        }while(viewModel.checkCatsEquals(cats));
+        String [] textRadioButtons={cats[0].getName(), cats[1].getName(), cats[2].getName()};
+        asignarTextoRadioButtons(textRadioButtons, true);
+        //Metemos en el voewModel el array por si queremo recuperarlo
+        viewModel.setTextRadioButtons(textRadioButtons);
         //Necesitamos guardar la foto y la raza (para ver si acierta en los radioButtons)
-        viewModel.setBreedNameCat(idAndBreed[1]);
-        viewModel.updatePhotoCat(idAndBreed[0]);
-        Log.d("Mensaje", "id "+idAndBreed[0]+" name "+idAndBreed[1]);
+        viewModel.setBreedNameCat(cats[0].getName());
+        //Le pedimos que nos devuelva una foto aletaoria del 1 gato
+        viewModel.updatePhotoCat(cats[0].getId());
+        Log.d("Mensaje", "Raza: "+cats[0].getName());
     }
-    private void asignarTextoRadioButtons(String[] idAndBreed, boolean mix) {
+    private void setDataDog(){
+        Dog[] dogs;
+        do{
+            dogs=viewModel.get3RamdomDogs();
+        }while(viewModel.checkDogsEquals(dogs));
+        //El Dogs[0] se lo asignamos en el viewModel
+        String breedDog1;
+        if (dogs[1].getBreeds().size()==0)breedDog1="null";
+        else breedDog1=dogs[1].getBreeds().get(0).getName();
+        String breedDog2;
+        if (dogs[2].getBreeds().size()==0)breedDog2="null2";
+        else breedDog2=dogs[2].getBreeds().get(0).getName();
+        //Le ponemos en la primera posición del array el nombre de la eaza obtenida en el viewmodel
+        String [] textRadioButtons={viewModel.getBreednameDog(), breedDog1, breedDog2};
+        breedDog1=viewModel.getBreednameDog();
+        viewModel.setTextRadioButtons(textRadioButtons);
+        asignarTextoRadioButtons(textRadioButtons, true);
+        Log.d("Mensaje", "Raza "+breedDog1);
+    }
+    private void asignarTextoRadioButtons(String[] text, boolean mix) {
         if (mix){
-            int numeroAleatorioDel1Al3=(int) (Math.random() * 3) + 1;
-            switch(numeroAleatorioDel1Al3) {
+            int numeroAleatorioDel1Al4=(int) (Math.random() * 4) + 1;
+            switch(numeroAleatorioDel1Al4) {
                 case 1:
-                    binding.radioButton1.setText(idAndBreed[1]);
-                    binding.radioButton2.setText(idAndBreed[3]);
-                    binding.radioButton3.setText(idAndBreed[5]);
+                    binding.radioButton1.setText(text[0]);
+                    binding.radioButton2.setText(text[1]);
+                    binding.radioButton3.setText(text[2]);
                     break;
                 case 2:
-                    binding.radioButton1.setText(idAndBreed[3]);
-                    binding.radioButton2.setText(idAndBreed[1]);
-                    binding.radioButton3.setText(idAndBreed[5]);
+                    binding.radioButton1.setText(text[1]);
+                    binding.radioButton2.setText(text[0]);
+                    binding.radioButton3.setText(text[2]);
                     break;
                 case 3:
-                    binding.radioButton1.setText(idAndBreed[5]);
-                    binding.radioButton2.setText(idAndBreed[3]);
-                    binding.radioButton3.setText(idAndBreed[1]);
+                    binding.radioButton1.setText(text[2]);
+                    binding.radioButton2.setText(text[1]);
+                    binding.radioButton3.setText(text[0]);
+                    break;
+                case 4:
+                    binding.radioButton1.setText(text[2]);
+                    binding.radioButton2.setText(text[0]);
+                    binding.radioButton3.setText(text[1]);
                     break;
             }
         }else{
-            binding.radioButton1.setText(idAndBreed[1]);
-            binding.radioButton2.setText(idAndBreed[3]);
-            binding.radioButton3.setText(idAndBreed[5]);
+            binding.radioButton1.setText(text[1]);
+            binding.radioButton2.setText(text[3]);
+            binding.radioButton3.setText(text[5]);
         }
 
     }
@@ -255,11 +274,7 @@ public class GameFragment extends Fragment {
         }else if(modo.equals("dog")){
             guardado=viewModel.getBreednameDog();
             viewModel.updatePhotoDog();
-            String[] dogs=viewModel.dameUnIdYNombreRazaDe3Aleatorios("dog");
-            //Le ponemos en la primera posición del array el nombre de la eaza obtenida en el viewmodel
-            dogs[1]=viewModel.getBreednameDog();
-            viewModel.setTextRadioButtons(dogs);
-            asignarTextoRadioButtons(dogs, true);
+            setDataDog();
         }
         if (textoSeleccionado.equals(guardado)){
             onActionGame.addScore();
@@ -290,7 +305,7 @@ public class GameFragment extends Fragment {
     }
 
     public interface OnActionGame{
-        public void addScore();
-        public void subtractLive();
+        void addScore();
+        void subtractLive();
     }
 }

@@ -40,13 +40,19 @@ public class RecordListViewAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view=LayoutInflater.from(context).inflate(R.layout.item_list_view_records, null);
         RecordEntity recordEntity=arrayListRecordEntity.get(i);
-        TextView textViewname=(TextView) view.findViewById(R.id.textViewNameItemListViewRecords);
-        TextView textViewRecordValue=(TextView) view.findViewById(R.id.textViewScoreListViewRecords);
+        TextView textViewname=view.findViewById(R.id.textViewNameItemListViewRecords);
+        TextView textViewRecordValue=view.findViewById(R.id.textViewScoreListViewRecords);
         textViewname.setText(recordEntity.getName());
         textViewRecordValue.setText(String.valueOf(recordEntity.getScore()));
         return view;
     }
     static class ViewHolder{
+        TextView textViewname;
+        TextView textViewRecordValue;
+        public ViewHolder(View view){
+            textViewname=view.findViewById(R.id.textViewNameItemListViewRecords);
+            textViewRecordValue=view.findViewById(R.id.textViewScoreListViewRecords);
+        }
 
     }
 
