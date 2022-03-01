@@ -1,10 +1,19 @@
 # Razas / Breeds
 
- Es un juego en el que tienes que adivinar la raza del perro o del gato.
+ Es un juego para android, disponible para su descarga en: 
+ 
+ It is an android game, available for download at:
 
- Cuantos más puntos consigas, más arriba estarás en la tabla de records.
+ https://play.google.com/store/apps/details?id=es.tipolisto.breeds
 
- Para ayudarte tienes en la barra de acción de la parte superior unos pequeños iconos que te permiten visualizar muchas razas y volver al juego, si pulsas la flecha volverás al menú principal.
+
+# Intrucciones / Instructions
+ 
+En el que tienes que adivinar la raza del perro o del gato.
+
+Cuantos más puntos consigas, más arriba estarás en la tabla de records.
+
+Para ayudarte tienes en la barra de acción de la parte superior unos pequeños iconos que te permiten visualizar muchas razas y volver al juego, si pulsas la flecha volverás al menú principal.
 
 -----------
 
