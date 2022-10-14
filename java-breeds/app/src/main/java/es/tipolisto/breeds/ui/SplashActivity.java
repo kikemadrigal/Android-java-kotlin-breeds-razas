@@ -5,6 +5,7 @@ import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,10 +14,12 @@ import java.util.List;
 import es.tipolisto.breeds.data.buffer.ArrayDataSourceProvider;
 import es.tipolisto.breeds.data.database.AppDatabase;
 import es.tipolisto.breeds.data.database.RecordDao;
+import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.data.model.RecordEntity;
 import es.tipolisto.breeds.domain.GetCatsUsesCase;
+import es.tipolisto.breeds.domain.GetDogUsesCase;
 import es.tipolisto.breeds.domain.GetDogsUsesCase;
 import es.tipolisto.breeds.domain.GetRecordsUsesCase;
 import es.tipolisto.breeds.ui.dialogs.Dialog;
@@ -38,12 +41,22 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void storeInMemoryTheListsOfDogsAndCats() {
+        //GetDogUsesCase getDogUsesCase=new GetDogUsesCase();
         GetCatsUsesCase getCatsUsesCase=new GetCatsUsesCase();
         List<Cat> listCatListResponse=getCatsUsesCase.getCatListFromInternet();
         if(listCatListResponse==null) Dialog.showDialogProblemGetDataInternet(this);
         GetDogsUsesCase getDogsUsesCase=new GetDogsUsesCase();
-        List<Dog> listDogResponse=getDogsUsesCase.getAllDogsFromInternet();
-        if (listDogResponse==null) Dialog.showDialogProblemGetDataInternet(this);
+        //Una ve obtenida la lista de razas de perros esta se almacena en un buffer
+        getDogsUsesCase.getAllBreedDogsFromInternet();
+        /*List<BreedsDog> listBreedsDogs=getDogsUsesCase.getAllBreedsDogsFromBuffer();
+        try{
+            Log.d("Mensaje", "Razas de Perros obtenidos: "+listBreedsDogs.size());
+        }catch(NullPointerException ex){
+            Log.d("Mensaje", "No se obtuvieron perros");
+            Dialog.showDialogProblemGetDataInternet(this);
+        }*/
+
+
     }
 
     private void checkRecordList(){

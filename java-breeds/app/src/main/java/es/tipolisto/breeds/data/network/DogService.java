@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.List;
 
 import es.tipolisto.breeds.data.buffer.ArrayDataSourceProvider;
+import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Dog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,11 +27,12 @@ public class DogService {
         callListDogResponse.enqueue(new Callback<List<Dog>>() {
             @Override
             public void onResponse(Call<List<Dog>> call, Response<List<Dog>> response) {
+                //List<Dog> listDogResponse=response.body();
                 if(response.isSuccessful()){
-                    //List<DogResponse> listDogResponse=response.body();
                     //Log.d("Mensaje", "recividos: "+listDogResponse.size());
                     ArrayDataSourceProvider.listAllDogs=response.body();
-                    //Log.d("Mensaje", "tamaño lista perros "+listDogResponse.size());
+                }else{
+                    Log.d("Mensaje", "No se recibió nada");
                 }
             }
 
@@ -41,6 +43,28 @@ public class DogService {
         });
         return ArrayDataSourceProvider.listAllDogs;
     }
+    public List<BreedsDog> getAllBreedDogs(){
+        IDogApi iDogApiService=retrofitClient.getDogApiService();
+        Call<List<BreedsDog>> callListDogResponse=iDogApiService.getListBreedDog();
+        callListDogResponse.enqueue(new Callback<List<BreedsDog>>() {
+            @Override
+            public void onResponse(Call<List<BreedsDog>> call, Response<List<BreedsDog>> response) {
+                if(response.isSuccessful()){
+                    //Log.d("Mensaje", "recividos: "+listDogResponse.size());
+                    ArrayDataSourceProvider.listAllBreedDogs=response.body();
+                }else{
+                    Log.d("Mensaje", "No se recibió nada");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BreedsDog>> call, Throwable t) {
+                ArrayDataSourceProvider.listAllBreedDogs=null;
+            }
+        });
+        return ArrayDataSourceProvider.listAllBreedDogs;
+    }
+
 
 
 
@@ -71,9 +95,9 @@ public class DogService {
 
 
 
-    public Dog getDataDog(String breedId){
+    public Dog getDataDog(String breedName){
         IDogApi iDogApiService=retrofitClient.getDogApiService();
-        Call<List<Dog>> callListDogResponse=iDogApiService.getDataDogBreed(breedId);
+        Call<List<Dog>> callListDogResponse=iDogApiService.getDataDogBreedByName(breedName);
         callListDogResponse.enqueue(new Callback<List<Dog>>() {
             @Override
             public void onResponse(Call<List<Dog>> call, Response<List<Dog>> response) {

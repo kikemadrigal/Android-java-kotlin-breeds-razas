@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.domain.GetCatsUsesCase;
@@ -13,7 +14,7 @@ import es.tipolisto.breeds.domain.GetDogsUsesCase;
 
 public class AnimalListFragmentViewModel extends ViewModel {
     private MutableLiveData<List<Cat>> mutableCatListResponse;
-    private MutableLiveData<List<Dog>> mutableListDogResponse;
+    private MutableLiveData<List<BreedsDog>> mutableListBreedsDogResponse;
     private MutableLiveData<Boolean> mutableProgressBarVisible;
     private int positinRecyclerView;
     //El repositorio llama al service, el service al api y almacena la respuesta del api en un list
@@ -22,7 +23,7 @@ public class AnimalListFragmentViewModel extends ViewModel {
 
     public AnimalListFragmentViewModel(){
         mutableCatListResponse=new MutableLiveData<List<Cat>>();
-        mutableListDogResponse=new MutableLiveData<List<Dog>>();
+        mutableListBreedsDogResponse=new MutableLiveData<List<BreedsDog>>();
         mutableProgressBarVisible=new MutableLiveData<Boolean>();
         getCatsUsesCase=new GetCatsUsesCase();
         getDogsUsesCase=new GetDogsUsesCase();
@@ -32,8 +33,8 @@ public class AnimalListFragmentViewModel extends ViewModel {
     public MutableLiveData<List<Cat>> getMutableCatListResponse() {
         return mutableCatListResponse;
     }
-    public MutableLiveData<List<Dog>> getMutableListDogResponse() {
-        return mutableListDogResponse;
+    public MutableLiveData<List<BreedsDog>> getMutableListBreedsDogResponse() {
+        return mutableListBreedsDogResponse;
     }
     public MutableLiveData<Boolean> getMutableProgressBarVisible() { return mutableProgressBarVisible;}
 
@@ -79,9 +80,9 @@ public class AnimalListFragmentViewModel extends ViewModel {
 
     public void getListDog(){
         mutableProgressBarVisible.postValue(true);
-        List<Dog> listDogResponse=getDogsUsesCase.getAllDogsFromBuffer();
-        if (listDogResponse!=null){
-            mutableListDogResponse.postValue(listDogResponse);
+        List<BreedsDog> listBreedsDogResponse=getDogsUsesCase.getAllBreedsDogsFromBuffer();
+        if (listBreedsDogResponse!=null){
+            mutableListBreedsDogResponse.postValue(listBreedsDogResponse);
             mutableProgressBarVisible.postValue(false);
         }
 

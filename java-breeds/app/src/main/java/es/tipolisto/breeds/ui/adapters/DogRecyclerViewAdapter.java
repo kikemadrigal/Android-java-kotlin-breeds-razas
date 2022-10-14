@@ -18,9 +18,9 @@ import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Dog;
 
 public class DogRecyclerViewAdapter extends RecyclerView.Adapter<DogRecyclerViewAdapter.ViewHolder> {
-    private List<Dog> listDogResponse;
-    public DogRecyclerViewAdapter(List<Dog> listDogResponse){
-        this.listDogResponse=listDogResponse;
+    private List<BreedsDog> listBreedDogResponse;
+    public DogRecyclerViewAdapter(List<BreedsDog> listDogResponse){
+        this.listBreedDogResponse=listDogResponse;
     }
 
     @NonNull
@@ -32,12 +32,12 @@ public class DogRecyclerViewAdapter extends RecyclerView.Adapter<DogRecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.render(listDogResponse.get(position));
+        holder.render(listBreedDogResponse.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return listDogResponse.size();
+        return listBreedDogResponse.size();
     }
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
@@ -48,16 +48,13 @@ public class DogRecyclerViewAdapter extends RecyclerView.Adapter<DogRecyclerView
             imageView=itemView.findViewById(R.id.imageViewRecyclerView);
             textView=itemView.findViewById(R.id.textViewRecyclerView);
         }
-        public void render(Dog dogResponse){
+        public void render(BreedsDog dogResponse){
             try{
-                Picasso.get().load(dogResponse.getUrl()).into(imageView);
+                Picasso.get().load(dogResponse.getImage().getUrl()).into(imageView);
             }catch (Exception ex){
                 Picasso.get().load(R.drawable.goback).into(imageView);
             }
-            if(dogResponse.getBreeds().size()>=1){
-                BreedsDog breedsDog= dogResponse.getBreeds().get(0);
-                textView.setText(breedsDog.getName());
-            }
+            textView.setText(dogResponse.getName());
 
         }
     }

@@ -22,6 +22,7 @@ import java.util.List;
 import es.tipolisto.breeds.R;
 
 
+import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.ui.adapters.CatRecyclerViewAdapter;
 import es.tipolisto.breeds.ui.adapters.DogRecyclerViewAdapter;
 import es.tipolisto.breeds.ui.adapters.RecyclerViewClickListener;
@@ -110,9 +111,9 @@ public class AnimalListFragment extends Fragment {
             });
         }else if (modo.equals("dog")){
             viewModel.getListDog();
-            viewModel.getMutableListDogResponse().observe(getViewLifecycleOwner(), new Observer<List<Dog>>() {
+            viewModel.getMutableListBreedsDogResponse().observe(getViewLifecycleOwner(), new Observer<List<BreedsDog>>() {
                 @Override
-                public void onChanged(List<Dog> listDogResponses) {
+                public void onChanged(List<BreedsDog> listDogResponses) {
                     DogRecyclerViewAdapter dogRecyclerViewAdapter=new DogRecyclerViewAdapter(listDogResponses);
                     binding.recyclerView.setAdapter(dogRecyclerViewAdapter);
                     linearLayoutManager.scrollToPosition(viewModel.getPositinRecyclerView());

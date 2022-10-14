@@ -5,12 +5,12 @@ public class BreedsDog {
     private Height height;
     private int id;
     private String name;
-    private String country_code;
     private String bred_for;
     private String breed_group;
     private String life_span;
     private String temperament;
     private String reference_image_id;
+    private Image image;
 
     public Weight getWeight() {
         return weight;
@@ -26,10 +26,6 @@ public class BreedsDog {
 
     public String getName() {
         return name;
-    }
-
-    public String getCountry_code() {
-        return country_code;
     }
 
     public String getBred_for() {
@@ -51,6 +47,11 @@ public class BreedsDog {
     public String getReference_image_id() {
         return reference_image_id;
     }
+
+    public Image getImage() {
+        return image;
+    }
+
 
     @Override
     public String toString() {

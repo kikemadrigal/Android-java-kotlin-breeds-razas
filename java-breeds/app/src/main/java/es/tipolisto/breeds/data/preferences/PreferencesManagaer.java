@@ -35,7 +35,7 @@ public class PreferencesManagaer {
         editor.commit();
     }
     public boolean getMusicOnOff(){
-        return sharedPref.getBoolean("musicOnOff",false);
+        return sharedPref.getBoolean("musicOnOff",true);
     }
 
     public void saveDarkOnOff(boolean darkOnOff){

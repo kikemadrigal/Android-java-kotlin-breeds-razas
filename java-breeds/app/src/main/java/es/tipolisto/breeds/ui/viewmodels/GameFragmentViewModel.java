@@ -21,11 +21,11 @@ public class GameFragmentViewModel extends ViewModel {
 
     private MutableLiveData<CatSimple> mutableSimpleCat;
     private MutableLiveData<Cat> mutableCat;
-    private MutableLiveData<Dog> mutableDog;
+    private MutableLiveData<BreedsDog> mutableBreedsDog;
     private MutableLiveData<Boolean> mutableProgressBarVisible;
     private String breedNameCat,breednameDog;
     private String urlRestore;
-    private Dog dog;
+    private BreedsDog breedsDog;
     private String[] textRadioButtons;
 
     private GetCatUsesCase getCatUsesCase;
@@ -36,7 +36,7 @@ public class GameFragmentViewModel extends ViewModel {
         retrofitClient=new RetrofitClient();
         mutableSimpleCat=new MutableLiveData<CatSimple>();
         mutableCat=new MutableLiveData<Cat>();
-        mutableDog=new MutableLiveData<Dog>();
+        mutableBreedsDog=new MutableLiveData<BreedsDog>();
         mutableProgressBarVisible=new MutableLiveData<Boolean>();
         getCatUsesCase=new GetCatUsesCase();
         getDogUsesCase=new GetDogUsesCase();
@@ -51,8 +51,8 @@ public class GameFragmentViewModel extends ViewModel {
     public MutableLiveData<Cat> getMutableCat() {
         return mutableCat;
     }
-    public MutableLiveData<Dog> getMutableDog() {
-        return mutableDog;
+    public MutableLiveData<BreedsDog> getMutableDog() {
+        return mutableBreedsDog;
     }
     //BreednameCat nos permite comparalo con el que ha hecho click de los radio buttons
     public String getBreedNameCat() {
@@ -110,12 +110,12 @@ public class GameFragmentViewModel extends ViewModel {
     }
 
 
-    public boolean checkDogsEquals(Dog[] dogs){
+    public boolean checkDogsEquals(BreedsDog[] breedsDogs){
         boolean equals=false;
         //Comprobamos que son perros distintos
-        String name0= dogs[0].getBreeds().get(0).getName();
-        String name1= dogs[1].getBreeds().get(0).getName();
-        String name2= dogs[2].getBreeds().get(0).getName();
+        String name0= breedsDogs[0].getName();
+        String name1= breedsDogs[1].getName();
+        String name2= breedsDogs[2].getName();
         Log.d("Mensaje","0: "+name0+", 1: "+name1+", 2: "+name2);
         //le hacemos repetir hasta que consigamos 2 diferentes
         if(name0.equals(name1)) equals=true;
@@ -124,11 +124,11 @@ public class GameFragmentViewModel extends ViewModel {
         return equals;
     }
 
-    public Dog[] get3RamdomDogs(){
-        Dog[] dogs=new Dog[3];
-        dogs[0]=dog;
-        dogs[1]=getDogUsesCase.getRandomDogFromBuffer();
-        dogs[2]=getDogUsesCase.getRandomDogFromBuffer();
+    public BreedsDog[] get3RamdomBreedsDogs(){
+        BreedsDog[] dogs=new BreedsDog[3];
+        dogs[0]=getDogUsesCase.getRandomBreedsDogFromBuffer();
+        dogs[1]=getDogUsesCase.getRandomBreedsDogFromBuffer();
+        dogs[2]=getDogUsesCase.getRandomBreedsDogFromBuffer();
         return dogs;
     }
 
@@ -154,12 +154,11 @@ public class GameFragmentViewModel extends ViewModel {
 
     public void updatePhotoDog(){
         mutableProgressBarVisible.postValue(true);
-        dog=getDogUsesCase.getRandomDogFromBuffer();
-        if (dog.getBreeds().size()>0) {
-            BreedsDog breedsDog = dog.getBreeds().get(0);
+        breedsDog=getDogUsesCase.getRandomBreedsDogFromBuffer();
+        if (!breedsDog.getName().isEmpty()) {
             breednameDog = breedsDog.getName();
-            urlRestore = dog.getUrl();
-            mutableDog.postValue(dog);
+            urlRestore = breedsDog.getImage().getUrl();
+            mutableBreedsDog.postValue(breedsDog);
             mutableProgressBarVisible.postValue(false);
         }else{
             updatePhotoDog();

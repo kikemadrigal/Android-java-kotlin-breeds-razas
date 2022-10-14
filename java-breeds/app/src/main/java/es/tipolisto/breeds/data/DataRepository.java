@@ -33,6 +33,9 @@ public class DataRepository {
         dogService=new DogService();
     }
 
+    /***
+     *      CATS
+     */
     //Pantalla de los radioButtons
     public CatSimple getCatByBreedInternet(String breedId){
         return catService.getCatByBreedInternet(breedId);
@@ -72,13 +75,50 @@ public class DataRepository {
         int ramdonNumber= (int) (Math.random() * listCats.size()-1);
         return listCats.get(ramdonNumber);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /***
+     *      DOGS
+     */
+
     public Dog getDogRandomFromBuffer(){
         //Obtenemos la lista de gatos ya precargada
         List<Dog> listDogs=getListDogsFromBuffer();
-        int ramdonNumber= (int) (Math.random() * listDogs.size()-1);
-        Dog dog=listDogs.get(ramdonNumber);
-        if (dog.getBreeds().size()==0) getDogRandomFromBuffer();
+        //Log.d("Mensaje","Hay en el buffer: "+listDogs.size());
+        Dog dog=null;
+        if(listDogs.size()!=0){
+            int ramdonNumber= (int) (Math.random() * listDogs.size()-1);
+            dog=listDogs.get(ramdonNumber);
+        }else{
+            Log.d("Mensaje","No hay perros en la lista");
+        }
         return dog;
+    }
+    public BreedsDog getBreedsDogRandomFromBuffer(){
+        //Obtenemos la lista de gatos ya precargada
+        List<BreedsDog> listDogs=getListBreedsDogsFromBuffer();
+        //Log.d("Mensaje","Hay en el buffer: "+listDogs.size());
+        BreedsDog breedsDog=null;
+        if(listDogs.size()!=0){
+            int ramdonNumber= (int) (Math.random() * listDogs.size()-1);
+            breedsDog=listDogs.get(ramdonNumber);
+        }else{
+            Log.d("Mensaje","No hay perros en la lista");
+        }
+        return breedsDog;
     }
 
     public Dog getDogByBreedFromInternet(){
@@ -96,6 +136,9 @@ public class DataRepository {
     public List<Dog> getListDogInternet(){
         return dogService.getAllDogs();
     }
+    public List<BreedsDog> getListBreedDogInternet(){
+        return dogService.getAllBreedDogs();
+    }
     public List<Dog> getListDogsFromBuffer(){
         //Quitamos todos los perros que no tienen raza
         deleteEmptyBreedDogFromBuffer();
@@ -103,7 +146,9 @@ public class DataRepository {
         deleteEmptyBreedDogFromBuffer();
         return ArrayDataSourceProvider.listAllDogs;
     }
-
+    public List<BreedsDog> getListBreedsDogsFromBuffer(){
+        return ArrayDataSourceProvider.listAllBreedDogs;
+    }
 
 
 
@@ -112,11 +157,11 @@ public class DataRepository {
         //Log.d("Mensaje", "Tamaño lista de peros "+String.valueOf(listDog.size()));
         for (int i=0;i<listDog.size();i++){
             Dog dog=listDog.get(i);
-            List<BreedsDog> listBreedsDog=dog.getBreeds();
+            /*List<BreedsDog> listBreedsDog=dog.getBreeds();
             if (listBreedsDog.size()==0){
                 //Log.d("Mensaje", "Encontrado vacío el "+String.valueOf(i));
                 listDog.remove(i);
-            }
+            }*/
         }
         //Log.d("Mensaje", "Tamaño lista de peros despues de borrar "+String.valueOf(listDog.size()));
         ArrayDataSourceProvider.listAllDogs=listDog;
@@ -159,13 +204,13 @@ public class DataRepository {
         return dogService.getDataDog(breedId);
     }
 
-    public Dog getDogByBreedNameFromBuffer(String name){
-        Dog dogFind=null;
+    public BreedsDog getDogByBreedNameFromBuffer(String name){
+        BreedsDog dogFind=null;
         //Obtenemos la lista de gatos ya precargada
-        List<Dog> listDogs=ArrayDataSourceProvider.listAllDogs;
+        List<BreedsDog> listDogs=ArrayDataSourceProvider.listAllBreedDogs;
         //Dame el que tenga esta raza
-        for (Dog dog:listDogs){
-            if(dog.getBreeds().get(0).getName().equals(name)){
+        for (BreedsDog dog:listDogs){
+            if(dog.getName().equals(name)){
                 dogFind=dog;
                 break;
             }

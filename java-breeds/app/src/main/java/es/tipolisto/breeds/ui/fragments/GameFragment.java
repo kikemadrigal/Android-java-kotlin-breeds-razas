@@ -20,6 +20,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import es.tipolisto.breeds.R;
+import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.databinding.FragmentGameBinding;
 import es.tipolisto.breeds.data.model.Dog;
@@ -122,7 +123,26 @@ public class GameFragment extends Fragment {
                 setDataDog();
             }
             //Este API tiene un fallo y a veces no te devuelve el objeto breeds, pruebalo:https://api.thedogapi.com/v1/images/search
-            viewModel.getMutableDog().observe(getViewLifecycleOwner(), new Observer<Dog>() {
+            viewModel.getMutableDog().observe(getViewLifecycleOwner(), new Observer<BreedsDog>() {
+                @Override
+                public void onChanged(BreedsDog breedsDog) {
+                    try{
+                        Picasso.get().load(viewModel.getUrlRestore()).into(binding.imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.progressBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(R.drawable.goback).into(binding.imageCat);
+                                binding.progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                    }catch (Exception ex){Log.d(Constants.LOG, ex.toString());}
+                }
+            });
+            /*viewModel.getMutableDog().observe(getViewLifecycleOwner(), new Observer<Dog>() {
                 @Override
                 public void onChanged(Dog dogResponse) {
                     //setDataDog();
@@ -141,7 +161,7 @@ public class GameFragment extends Fragment {
                         });
                     }catch (Exception ex){Log.d(Constants.LOG, ex.toString());}
                 }
-            });
+            });*/
         }
     }
     /*
@@ -188,17 +208,17 @@ public class GameFragment extends Fragment {
         Log.d("Mensaje", "Raza: "+cats[0].getName());
     }
     private void setDataDog(){
-        Dog[] dogs;
-        do{
-            dogs=viewModel.get3RamdomDogs();
-        }while(viewModel.checkDogsEquals(dogs));
+        BreedsDog[] dogs;
+        //do{
+            dogs=viewModel.get3RamdomBreedsDogs();
+        //}while(viewModel.checkDogsEquals(dogs));
         //El Dogs[0] se lo asignamos en el viewModel
         String breedDog1;
-        if (dogs[1].getBreeds().size()==0)breedDog1="null";
-        else breedDog1=dogs[1].getBreeds().get(0).getName();
+        if (dogs[1].getName().isEmpty())breedDog1="null";
+        else breedDog1=dogs[1].getName();
         String breedDog2;
-        if (dogs[2].getBreeds().size()==0)breedDog2="null2";
-        else breedDog2=dogs[2].getBreeds().get(0).getName();
+        if (dogs[2].getName().isEmpty())breedDog2="null2";
+        else breedDog2=dogs[2].getName();
         //Le ponemos en la primera posición del array el nombre de la eaza obtenida en el viewmodel
         String [] textRadioButtons={viewModel.getBreednameDog(), breedDog1, breedDog2};
         breedDog1=viewModel.getBreednameDog();

@@ -124,15 +124,14 @@ public class BreedFragment extends Fragment {
 
 
 
-    private void setValuesDogViews(Dog dog){
+    private void setValuesDogViews(BreedsDog breedsDog){
         try {
-            Picasso.get().load(dog.getUrl()).into(binding.imageViewBreedFragment);
+            Picasso.get().load(breedsDog.getImage().getUrl()).into(binding.imageViewBreedFragment);
         } catch (Exception e) {
             Picasso.get().load(R.drawable.goback).into(binding.imageViewBreedFragment);
             e.printStackTrace();
         }
-        List<BreedsDog> listBreedsDog = dog.getBreeds();
-        BreedsDog breedsDog = listBreedsDog.get(0);
+
         String content = breedsDog.getName() + "\n";
         content += breedsDog.getBred_for() + "\n";
         content += breedsDog.getBreed_group() + "\n";

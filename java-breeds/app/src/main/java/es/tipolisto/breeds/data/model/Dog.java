@@ -3,16 +3,16 @@ package es.tipolisto.breeds.data.model;
 import java.util.List;
 
 public class Dog {
-    private List<BreedsDog> breeds;
+    //private List<BreedsDog> breeds;
     private String id;
     private String url;
     private int width;
     private int height;
 
 
-    public List<BreedsDog> getBreeds() {
+    /*public List<BreedsDog> getBreeds() {
         return breeds;
-    }
+    }*/
 
     public String getId() {
         return id;

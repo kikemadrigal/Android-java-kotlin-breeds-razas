@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 
+import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.domain.GetCatUsesCase;
@@ -12,14 +13,14 @@ import es.tipolisto.breeds.domain.GetDogUsesCase;
 public class BreedFragmentViewModel extends ViewModel {
 
     private final MutableLiveData<Cat> mutableLiveDataCat;
-    private final MutableLiveData<Dog> mutableLiveDataDog;
+    private final MutableLiveData<BreedsDog> mutableLiveDataBreedDog;
     private final MutableLiveData<Boolean> mutableLiveDataProgressBarVisible;
     private final GetCatUsesCase getCatUsesCase;
     private final GetDogUsesCase getDogUsesCase;
     public  BreedFragmentViewModel() {
         mutableLiveDataCat=new MutableLiveData<>();
         mutableLiveDataProgressBarVisible=new MutableLiveData<>();
-        mutableLiveDataDog=new MutableLiveData<>();
+        mutableLiveDataBreedDog=new MutableLiveData<>();
         getCatUsesCase=new GetCatUsesCase();
         getDogUsesCase=new GetDogUsesCase();
     }
@@ -29,8 +30,8 @@ public class BreedFragmentViewModel extends ViewModel {
 
     }
 
-    public MutableLiveData<Dog> getMutableLiveDataDog() {
-        return mutableLiveDataDog;
+    public MutableLiveData<BreedsDog> getMutableLiveDataDog() {
+        return mutableLiveDataBreedDog;
     }
 
     public MutableLiveData<Boolean> getMutableLiveDataProgressBarVisible() {
@@ -63,9 +64,9 @@ public class BreedFragmentViewModel extends ViewModel {
 
     public void getDogBynameFromBuffer(String name){
         mutableLiveDataProgressBarVisible.postValue(true);
-        Dog dog =getDogUsesCase.getDogByNameFromBuffer(name);
+        BreedsDog dog =getDogUsesCase.getDogByNameFromBuffer(name);
         if(dog!=null){
-            mutableLiveDataDog.postValue(dog);
+            mutableLiveDataBreedDog.postValue(dog);
             mutableLiveDataProgressBarVisible.postValue(false);
         }
     }

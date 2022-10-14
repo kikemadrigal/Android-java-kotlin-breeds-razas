@@ -3,6 +3,7 @@ package es.tipolisto.breeds.data.buffer;
 import java.util.HashMap;
 import java.util.List;
 
+import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.CatSimple;
 import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.data.model.Dog;
@@ -282,5 +283,5 @@ public class ArrayDataSourceProvider {
     public static CatSimple cat;
     public static List<Cat> listAllcats;
     public static List<Dog> listAllDogs;
-
+    public static List<BreedsDog> listAllBreedDogs;
 }
