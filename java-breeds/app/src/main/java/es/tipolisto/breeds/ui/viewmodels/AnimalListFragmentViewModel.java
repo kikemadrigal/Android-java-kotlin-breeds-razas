@@ -1,5 +1,7 @@
 package es.tipolisto.breeds.ui.viewmodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -10,6 +12,7 @@ import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.domain.GetCatsUsesCase;
 import es.tipolisto.breeds.domain.GetDogsUsesCase;
+import es.tipolisto.breeds.utils.Constants;
 
 
 public class AnimalListFragmentViewModel extends ViewModel {
@@ -81,6 +84,7 @@ public class AnimalListFragmentViewModel extends ViewModel {
     public void getListDog(){
         mutableProgressBarVisible.postValue(true);
         List<BreedsDog> listBreedsDogResponse=getDogsUsesCase.getAllBreedsDogsFromBuffer();
+        Log.d(Constants.LOG,"tamaño lista de perros: "+listBreedsDogResponse.size());
         if (listBreedsDogResponse!=null){
             mutableListBreedsDogResponse.postValue(listBreedsDogResponse);
             mutableProgressBarVisible.postValue(false);

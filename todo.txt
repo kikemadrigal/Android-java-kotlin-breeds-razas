@@ -1,0 +1,13 @@
+
+settings
+room para records
+music and effects
+
+
+
+1 Modifica el titulo y ponle breeds and species y el titulo tambien en español
+2 pon un pez en la imagen del splash
+3 Mejora la presentacion en general
+4 ponle un alert dialog quelal pulsar back 2 veces se saldrá
+5. Aumenta el tamaño de letra de los texts en los games
+

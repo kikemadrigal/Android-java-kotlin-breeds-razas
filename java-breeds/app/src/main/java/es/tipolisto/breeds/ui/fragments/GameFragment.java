@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,8 +21,10 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import es.tipolisto.breeds.R;
+import es.tipolisto.breeds.data.buffer.ArrayDataSourceProvider;
 import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Cat;
+import es.tipolisto.breeds.data.model.ImageCat;
 import es.tipolisto.breeds.databinding.FragmentGameBinding;
 import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.ui.viewmodels.GameFragmentViewModel;
@@ -90,11 +93,12 @@ public class GameFragment extends Fragment {
             }else{
                 setDataCat();
             }
-            viewModel.getMutableCat().observe(getViewLifecycleOwner(), cat -> {
+            /*viewModel.getMutableCat().observe(getViewLifecycleOwner(), cat -> {
                 //Cargamos la imagen en el imageView
                 try{
                     binding.progressBar.setVisibility(View.VISIBLE);
-                    Picasso.get().load(cat.getImage().getUrl())
+                    //Picasso.get().load(cat.getImage().getUrl())
+                    Picasso.get().load(ArrayDataSourceProvider.imageCat.getUrl())
                             .into(binding.imageView, new Callback() {
                                 @Override
                                 public void onSuccess() {
@@ -110,6 +114,29 @@ public class GameFragment extends Fragment {
                     //Esto es para si hay un cambio de rotación conservar la url
                     viewModel.setUrlRestore(cat.getImage().getUrl());
                 }catch(Exception ex){Log.d(Constants.LOG, ex.toString());}
+            });*/
+
+            viewModel.getMutableImageCat().observe(getViewLifecycleOwner(), new Observer<ImageCat>() {
+                @Override
+                public void onChanged(ImageCat imageCat) {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    try{
+                        Picasso.get().load(imageCat.getUrl())
+                                .into(binding.imageView, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        binding.progressBar.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Picasso.get().load(R.drawable.goback).into(binding.imageCat);
+                                        binding.progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+                    }catch(Exception ex){Log.d(Constants.LOG, ex.toString());}
+
+                }
             });
         }else if (modo.equals("dog")){
             if (returnMenu){
@@ -199,13 +226,33 @@ public class GameFragment extends Fragment {
         }while(viewModel.checkCatsEquals(cats));
         String [] textRadioButtons={cats[0].getName(), cats[1].getName(), cats[2].getName()};
         asignarTextoRadioButtons(textRadioButtons, true);
+        try{
+            binding.progressBar.setVisibility(View.VISIBLE);
+            //Picasso.get().load(cat.getImage().getUrl())
+            Picasso.get().load(cats[0].getImage().getUrl())
+                        .into(binding.imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                binding.progressBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(R.drawable.goback).into(binding.imageCat);
+                                binding.progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                //Esto es para si hay un cambio de rotación conservar la url
+                viewModel.setUrlRestore(cats[0].getImage().getUrl());
+        }catch(Exception ex){Log.d(Constants.LOG, ex.toString());}
+
         //Metemos en el voewModel el array por si queremo recuperarlo
         viewModel.setTextRadioButtons(textRadioButtons);
         //Necesitamos guardar la foto y la raza (para ver si acierta en los radioButtons)
         viewModel.setBreedNameCat(cats[0].getName());
         //Le pedimos que nos devuelva una foto aletaoria del 1 gato
-        viewModel.updatePhotoCat(cats[0].getId());
-        Log.d("Mensaje", "Raza: "+cats[0].getName());
+        //viewModel.updatePhotoCat(cats[0].getId());
+        Log.d(Constants.LOG, "En gamefragmentviewmodel: Gato: "+cats[0].toString());
     }
     private void setDataDog(){
         BreedsDog[] dogs;

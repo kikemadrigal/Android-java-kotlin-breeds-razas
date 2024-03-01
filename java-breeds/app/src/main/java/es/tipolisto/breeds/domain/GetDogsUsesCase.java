@@ -14,8 +14,8 @@ public class GetDogsUsesCase {
     public List<Dog> getAllDogsFromInternet(){
         return dataRepository.getListDogInternet();
     }
-    public List<BreedsDog> getAllBreedDogsFromInternet(){
-        return dataRepository.getListBreedDogInternet();
+    public void getAllBreedDogsFromInternetAndIsertOnBuffer(){
+        dataRepository.getListBreedDogInternet();
     }
     public List<Dog> getAllDogsFromBuffer(){
         return dataRepository.getListDogsFromBuffer();

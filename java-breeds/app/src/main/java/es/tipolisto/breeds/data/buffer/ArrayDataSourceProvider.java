@@ -7,6 +7,7 @@ import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.CatSimple;
 import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.data.model.Dog;
+import es.tipolisto.breeds.data.model.ImageCat;
 
 public class ArrayDataSourceProvider {
     /*private static HashMap<String,String> mapCatIdNames=new HashMap<String,String>();
@@ -282,6 +283,7 @@ public class ArrayDataSourceProvider {
     public static Dog dog;
     public static CatSimple cat;
     public static List<Cat> listAllcats;
+    public static ImageCat imageCat;
     public static List<Dog> listAllDogs;
     public static List<BreedsDog> listAllBreedDogs;
 }

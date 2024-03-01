@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">breeds</string>
+    <string name="app_name">Breeds</string>
+    <string name="next">Continue</string>
+    <string name="cat_indoor">indoor</string>
+    <string name="cat_adaptability">adaptability</string>
+    <string name="cat_affection_level">affection level</string>
+    <string name="cat_child_friendly">child friendly</string>
+    <string name="cat_cat_friendly">cat friendly</string>
+    <string name="cat_dog_friendly">dog friendly</string>
+    <string name="cat_energy_level">energy level</string>
+    <string name="cat_grooming">grooming</string>
+    <string name="cat_health_issues">health issues</string>
+    <string name="cat_intelligence">intelligence</string>
+    <string name="cat_shedding_level">shedding level</string>
+    <string name="cat_social_needs">social needs</string>
+    <string name="cat_stranger_friendly">stranger friendly</string>
+    <string name="cat_vocalisation">vocalisation</string>
+    <string name="cat_experimental">experimental</string>
+    <string name="cat_suppressed_tail">suppressed tail</string>
+    <string name="cat_short_legs">short_legs</string>
+    <string name="dog_bred_for">bred_for</string>
+    <string name="dog_breed_group">breed_group</string>
+    <string name="dog_life_span">life_span</string>
+    <string name="dog_temperament">temperament</string>
+    <string name="dog_weight">weight</string>
+    <string name="dog_height">height</string>
+    <string name="dog_origin">origin</string>
 </resources>

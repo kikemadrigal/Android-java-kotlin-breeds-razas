@@ -11,16 +11,19 @@ import java.util.List;
 import es.tipolisto.breeds.data.buffer.ArrayDataSourceProvider;
 import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Cat;
+import es.tipolisto.breeds.data.model.ImageCat;
 import es.tipolisto.breeds.data.network.RetrofitClient;
 import es.tipolisto.breeds.data.model.CatSimple;
-import es.tipolisto.breeds.data.model.Dog;
 import es.tipolisto.breeds.domain.GetCatUsesCase;
 import es.tipolisto.breeds.domain.GetDogUsesCase;
+import es.tipolisto.breeds.domain.SetImageCatUsesCase;
+import es.tipolisto.breeds.utils.Constants;
 
 public class GameFragmentViewModel extends ViewModel {
 
-    private MutableLiveData<CatSimple> mutableSimpleCat;
-    private MutableLiveData<Cat> mutableCat;
+    //private MutableLiveData<CatSimple> mutableSimpleCat;
+    private MutableLiveData<ImageCat> mutableImageCat;
+    //private MutableLiveData<Cat> mutableCat;
     private MutableLiveData<BreedsDog> mutableBreedsDog;
     private MutableLiveData<Boolean> mutableProgressBarVisible;
     private String breedNameCat,breednameDog;
@@ -30,26 +33,32 @@ public class GameFragmentViewModel extends ViewModel {
 
     private GetCatUsesCase getCatUsesCase;
     private GetDogUsesCase getDogUsesCase;
+    private SetImageCatUsesCase setImageCatUsesCase;
 
     private RetrofitClient retrofitClient;
     public GameFragmentViewModel(){
         retrofitClient=new RetrofitClient();
-        mutableSimpleCat=new MutableLiveData<CatSimple>();
-        mutableCat=new MutableLiveData<Cat>();
+        //mutableSimpleCat=new MutableLiveData<CatSimple>();
+        mutableImageCat=new MutableLiveData<ImageCat>();
+        //mutableCat=new MutableLiveData<Cat>();
         mutableBreedsDog=new MutableLiveData<BreedsDog>();
         mutableProgressBarVisible=new MutableLiveData<Boolean>();
         getCatUsesCase=new GetCatUsesCase();
         getDogUsesCase=new GetDogUsesCase();
+        setImageCatUsesCase=new SetImageCatUsesCase();
     }
 
     /**************************************************
     *********************Getters & Setters ************
      **************************************************/
-    public MutableLiveData<CatSimple> getMutableSimpleCat() {
+    /*public MutableLiveData<CatSimple> getMutableSimpleCat() {
         return mutableSimpleCat;
-    }
-    public MutableLiveData<Cat> getMutableCat() {
+    }*/
+    /*public MutableLiveData<Cat> getMutableCat() {
         return mutableCat;
+    }*/
+    public MutableLiveData<ImageCat> getMutableImageCat() {
+        return mutableImageCat;
     }
     public MutableLiveData<BreedsDog> getMutableDog() {
         return mutableBreedsDog;
@@ -132,8 +141,8 @@ public class GameFragmentViewModel extends ViewModel {
         return dogs;
     }
 
-    public void updatePhotoCat(String breedId){
-        mutableProgressBarVisible.postValue(true);
+    /*public void updatePhotoCat(String breedId){
+
         Cat catFind=null;
         //Obtenemos la lista de gatos ya precargada
         List<Cat> listCats=ArrayDataSourceProvider.listAllcats;
@@ -144,12 +153,26 @@ public class GameFragmentViewModel extends ViewModel {
                 break;
             }
         }
+        Log.d(Constants.LOG, "En gamefragmentviewmodel: vamos a ver la imagen del gato "+ catFind.toString());
         //Cat cat =getCatUsesCase.getCatFromBuffer(breedId);
         if(catFind!=null){
-            mutableCat.postValue(catFind);
+            Log.d(Constants.LOG, "En gamefragmentviewmodel: Gato encontrado");
+            //Para la imagen hay un rollo un poco raro, ya que para obtener la url de la imagen hay que hacer otro petición
+            setImageCatUsesCase.setImageCatFromInternetByreferenceImageId(catFind);
+
+            //Log.d(Constants.LOG, "En gamefragmentviewmodel: "+catFind.getImage().getUrl());
+            mutableImageCat.postValue(ArrayDataSourceProvider.imageCat);
             mutableProgressBarVisible.postValue(false);
+        }else{
+            catFind.setImage(null);
+            Log.d(Constants.LOG, "En gamefragmentviewmodel: Gato no encontrado: "+catFind.getName()+" no encontrada");
         }
 
+    }*/
+
+    public void updatePhotoCat2(){
+        mutableImageCat.postValue(ArrayDataSourceProvider.imageCat);
+        mutableProgressBarVisible.postValue(false);
     }
 
     public void updatePhotoDog(){
@@ -157,6 +180,7 @@ public class GameFragmentViewModel extends ViewModel {
         breedsDog=getDogUsesCase.getRandomBreedsDogFromBuffer();
         if (!breedsDog.getName().isEmpty()) {
             breednameDog = breedsDog.getName();
+
             urlRestore = breedsDog.getImage().getUrl();
             mutableBreedsDog.postValue(breedsDog);
             mutableProgressBarVisible.postValue(false);

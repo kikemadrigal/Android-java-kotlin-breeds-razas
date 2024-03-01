@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Razas y especies</string>
+    <string name="next">Continuar</string>
+    <string name="cat_indoor">interior</string>
+    <string name="cat_adaptability">adaptabilidad</string>
+    <string name="cat_affection_level">nivel de afecto</string>
+    <string name="cat_child_friendly">amigable con los niños</string>
+    <string name="cat_cat_friendly">amigable con los gatos</string>
+    <string name="cat_dog_friendly">amigable con los perros</string>
+    <string name="cat_energy_level">nivel de energía</string>
+    <string name="cat_grooming">aseo</string>
+    <string name="cat_health_issues">problemas de salud</string>
+    <string name="cat_intelligence">inteligencia</string>
+    <string name="cat_shedding_level">nivel de muda</string>
+    <string name="cat_social_needs">necesidades sociales</string>
+    <string name="cat_stranger_friendly">Amigable con los extraños</string>
+    <string name="cat_vocalisation">vocalización</string>
+    <string name="cat_experimental">experimental</string>
+    <string name="cat_suppressed_tail">cola suprimida</string>
+    <string name="cat_short_legs">patas cortas</string>
+    <string name="dog_bred_for">criado para</string>
+    <string name="dog_breed_group">grupo de raza</string>
+    <string name="dog_life_span">esperanza de vida</string>
+    <string name="dog_temperament">temperamento</string>
+    <string name="dog_weight">peso</string>
+    <string name="dog_height">altura</string>
+    <string name="dog_origin">origen</string>
+</resources>

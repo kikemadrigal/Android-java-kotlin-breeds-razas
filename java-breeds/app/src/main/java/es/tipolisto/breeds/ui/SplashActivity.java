@@ -22,6 +22,7 @@ import es.tipolisto.breeds.domain.GetCatsUsesCase;
 import es.tipolisto.breeds.domain.GetDogUsesCase;
 import es.tipolisto.breeds.domain.GetDogsUsesCase;
 import es.tipolisto.breeds.domain.GetRecordsUsesCase;
+import es.tipolisto.breeds.domain.SetImageCatUsesCase;
 import es.tipolisto.breeds.ui.dialogs.Dialog;
 import es.tipolisto.breeds.utils.Util;
 
@@ -31,33 +32,30 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!Util.isNetworkConnected(getApplicationContext())) Dialog.showDialogNecessaryInternet(this);
-        storeInMemoryTheListsOfDogsAndCats();
-        checkRecordList();
-        Intent intent=new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        else {
+            GetCatsUsesCase getCatsUsesCase = new GetCatsUsesCase();
+            getCatsUsesCase.getCatListFromInternetAndInsertOnBuffer();
+            GetDogsUsesCase getDogsUsesCase = new GetDogsUsesCase();
+            SetImageCatUsesCase setImageCatUsesCase=new SetImageCatUsesCase();
+            setImageCatUsesCase.setImageCatFromInternetByreferenceImageId();
+            getDogsUsesCase.getAllBreedDogsFromInternetAndIsertOnBuffer();
+            checkRecordList();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            /*List<BreedsDog> listBreedsDogs=getDogsUsesCase.getAllBreedsDogsFromBuffer();
+            try{
+                Log.d("Mensaje", "Razas de Perros obtenidos: "+listBreedsDogs.size());
+            }catch(NullPointerException ex){
+                Log.d("Mensaje", "No se obtuvieron perros");
+                Dialog.showDialogProblemGetDataInternet(this);
+            }*/
+            //}
+        }
         finish();
 
     }
 
-    private void storeInMemoryTheListsOfDogsAndCats() {
-        //GetDogUsesCase getDogUsesCase=new GetDogUsesCase();
-        GetCatsUsesCase getCatsUsesCase=new GetCatsUsesCase();
-        List<Cat> listCatListResponse=getCatsUsesCase.getCatListFromInternet();
-        if(listCatListResponse==null) Dialog.showDialogProblemGetDataInternet(this);
-        GetDogsUsesCase getDogsUsesCase=new GetDogsUsesCase();
-        //Una ve obtenida la lista de razas de perros esta se almacena en un buffer
-        getDogsUsesCase.getAllBreedDogsFromInternet();
-        /*List<BreedsDog> listBreedsDogs=getDogsUsesCase.getAllBreedsDogsFromBuffer();
-        try{
-            Log.d("Mensaje", "Razas de Perros obtenidos: "+listBreedsDogs.size());
-        }catch(NullPointerException ex){
-            Log.d("Mensaje", "No se obtuvieron perros");
-            Dialog.showDialogProblemGetDataInternet(this);
-        }*/
-
-
-    }
 
     private void checkRecordList(){
         /*

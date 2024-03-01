@@ -1,17 +1,10 @@
 package es.tipolisto.breeds.data;
 
-import android.content.Context;
 import android.util.Log;
 
-import androidx.room.Room;
-
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import es.tipolisto.breeds.data.buffer.ArrayDataSourceProvider;
-import es.tipolisto.breeds.data.database.AppDatabase;
-import es.tipolisto.breeds.data.database.RecordDao;
 import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.CatSimple;
 import es.tipolisto.breeds.data.model.RecordEntity;
@@ -19,10 +12,6 @@ import es.tipolisto.breeds.data.network.CatService;
 import es.tipolisto.breeds.data.network.DogService;
 import es.tipolisto.breeds.data.model.Cat;
 import es.tipolisto.breeds.data.model.Dog;
-import es.tipolisto.breeds.data.network.IDogApi;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DataRepository {
    private CatService catService;
@@ -75,7 +64,9 @@ public class DataRepository {
         int ramdonNumber= (int) (Math.random() * listCats.size()-1);
         return listCats.get(ramdonNumber);
     }
-
+    public void setImageCatFromInternetByreferenceImageId(){
+        catService.setImageCatFromInternetByreferenceImageId();
+    }
 
 
 
@@ -125,9 +116,10 @@ public class DataRepository {
         return dogService.getDogByBreed();
     }
 
-    //Pantalla de los recyclerviews
-    public List<Cat> getListCatInternet(){
-        return catService.getAllCats();
+    //Obtenemos todos los gatos que nos devuelve:https://api.thecatapi.com/v1/breeds
+    //Fijate que tiene un string llamado reference_image_id que lo utilizamos para obtener la imagen
+    public void getListCatInternetAndInsertOnBuffer(){
+        catService.getAllCatsAndInsertOnBuffer();
     }
 
     public List<Cat> getListCatFromBuffer(){

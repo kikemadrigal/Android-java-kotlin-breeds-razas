@@ -36,7 +36,7 @@ public interface RecordDao {
 
 
     @Insert
-    void insertAll(RecordEntity... users);
+    void insertAll(√... users);
 
     @Update
     void update(RecordEntity user);

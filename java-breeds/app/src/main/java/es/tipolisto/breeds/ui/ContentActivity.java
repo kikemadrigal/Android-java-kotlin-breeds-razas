@@ -29,7 +29,7 @@ import es.tipolisto.breeds.databinding.ActivityContentBinding;
 import es.tipolisto.breeds.databinding.ToolbarBinding;
 import es.tipolisto.breeds.ui.dialogs.Dialog;
 import es.tipolisto.breeds.ui.fragments.AnimalListFragment;
-import es.tipolisto.breeds.ui.fragments.BreedFragment;
+import es.tipolisto.breeds.ui.fragments.BreedDetailFragment;
 import es.tipolisto.breeds.ui.fragments.GameFragment;
 import es.tipolisto.breeds.ui.fragments.RecordsFragment;
 import es.tipolisto.breeds.ui.fragments.SettingsFragment;
@@ -76,7 +76,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
             mostrarDialogoSalir();
         });
 
-        BreedFragment breedFragment=new BreedFragment();
+        BreedDetailFragment breedFragment=new BreedDetailFragment();
         SettingsFragment settingsFragment=new SettingsFragment();
         RecordsFragment recordsFragment=new RecordsFragment();
 
@@ -91,10 +91,6 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
             screen = bundle.getString("screen");
             //Log.d("Mensaje","Mensaje de contentactivity, obtenido el modo: "+modo);
             switch (screen) {
-                case "game":
-                    binding.linearLayout.setVisibility(View.VISIBLE);
-                    cambiarFragment(gameFragment);
-                    break;
                 case "settings":
                     binding.linearLayout.setVisibility(View.GONE);
                     cambiarFragment(settingsFragment);
@@ -177,8 +173,8 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         mostrarDialogoSalir();
+        super.onBackPressed();
     }
 
     @Override
@@ -303,7 +299,7 @@ public class ContentActivity extends AppCompatActivity implements GameFragment.O
         Bundle bundle=new Bundle();
         bundle.putString("modo",modo);
         bundle.putString("breed",breed);
-        BreedFragment breedFragment=new BreedFragment();
+        BreedDetailFragment breedFragment=new BreedDetailFragment();
         breedFragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

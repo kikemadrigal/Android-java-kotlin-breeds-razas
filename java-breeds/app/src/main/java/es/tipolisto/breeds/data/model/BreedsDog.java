@@ -10,7 +10,7 @@ public class BreedsDog {
     private String life_span;
     private String temperament;
     private String reference_image_id;
-    private Image image;
+    private ImageCat image;
 
     public Weight getWeight() {
         return weight;
@@ -48,7 +48,7 @@ public class BreedsDog {
         return reference_image_id;
     }
 
-    public Image getImage() {
+    public ImageCat getImage() {
         return image;
     }
 

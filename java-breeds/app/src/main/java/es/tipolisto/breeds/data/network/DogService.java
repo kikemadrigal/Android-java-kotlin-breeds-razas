@@ -7,6 +7,7 @@ import java.util.List;
 import es.tipolisto.breeds.data.buffer.ArrayDataSourceProvider;
 import es.tipolisto.breeds.data.model.BreedsDog;
 import es.tipolisto.breeds.data.model.Dog;
+import es.tipolisto.breeds.utils.Constants;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +54,7 @@ public class DogService {
                     //Log.d("Mensaje", "recividos: "+listDogResponse.size());
                     ArrayDataSourceProvider.listAllBreedDogs=response.body();
                 }else{
-                    Log.d("Mensaje", "No se recibió nada");
+                    Log.d(Constants.LOG, "No se recibió nada");
                 }
             }
 

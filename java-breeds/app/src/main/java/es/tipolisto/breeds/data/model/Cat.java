@@ -41,10 +41,14 @@ public class Cat {
     private String wikipedia_url;
     private int hypoallergenic;
     private String reference_image_id;
-    private Image image;
+    private ImageCat image;
 
     public Weight getWeight() {
         return weight;
+    }
+
+    public void setImage(ImageCat image) {
+        this.image = image;
     }
 
     public String getId() {
@@ -197,8 +201,53 @@ public class Cat {
         return reference_image_id;
     }
 
-    public Image getImage() {
+    public ImageCat getImage() {
         return image;
+    }
+
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "weight=" + weight +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", cfa_url='" + cfa_url + '\'' +
+                ", vetstreet_url='" + vetstreet_url + '\'' +
+                ", vcahospitals_url='" + vcahospitals_url + '\'' +
+                ", temperament='" + temperament + '\'' +
+                ", origin='" + origin + '\'' +
+                ", country_codes='" + country_codes + '\'' +
+                ", country_code='" + country_code + '\'' +
+                ", description='" + description + '\'' +
+                ", life_span='" + life_span + '\'' +
+                ", indoor=" + indoor +
+                ", lap=" + lap +
+                ", alt_names='" + alt_names + '\'' +
+                ", adaptability=" + adaptability +
+                ", affection_level=" + affection_level +
+                ", child_friendly=" + child_friendly +
+                ", cat_friendly=" + cat_friendly +
+                ", dog_friendly=" + dog_friendly +
+                ", energy_level=" + energy_level +
+                ", grooming=" + grooming +
+                ", health_issues=" + health_issues +
+                ", intelligence=" + intelligence +
+                ", shedding_level=" + shedding_level +
+                ", social_needs=" + social_needs +
+                ", stranger_friendly=" + stranger_friendly +
+                ", vocalisation=" + vocalisation +
+                ", experimental=" + experimental +
+                ", hairless=" + hairless +
+                ", natural=" + natural +
+                ", rare=" + rare +
+                ", rex=" + rex +
+                ", suppressed_tail=" + suppressed_tail +
+                ", short_legs=" + short_legs +
+                ", wikipedia_url='" + wikipedia_url + '\'' +
+                ", hypoallergenic=" + hypoallergenic +
+                ", reference_image_id='" + reference_image_id + '\'' +
+                ", image=" + image +
+                '}';
     }
 }
 /*

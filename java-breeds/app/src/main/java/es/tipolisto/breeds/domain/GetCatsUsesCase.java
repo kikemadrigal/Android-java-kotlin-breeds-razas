@@ -11,8 +11,8 @@ public class GetCatsUsesCase {
         dataRepository=new DataRepository();
     }
 
-    public List<Cat> getCatListFromInternet(){
-        return dataRepository.getListCatInternet();
+    public void getCatListFromInternetAndInsertOnBuffer(){
+        dataRepository.getListCatInternetAndInsertOnBuffer();
     }
     public List<Cat> getAllCatsFromBuffer(){
         return dataRepository.getListCatFromBuffer();
