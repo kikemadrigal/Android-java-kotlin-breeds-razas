@@ -72,12 +72,12 @@ fun DetailDogScreen(navController: NavController, dogsViewModel: DogsViewModel, 
                             Toast.makeText(context, "Added dog to favorites", Toast.LENGTH_LONG).show()
                         }
                     }){
-                        Image(painter = painterResource(id = R.drawable.favorites_disabled), contentDescription = "Cat list")
+                        Image(painter = painterResource(id = R.drawable.favorites_disabled), contentDescription = "Dog favorites")
                     }
                     IconButton(onClick = {
                         navController.navigate(AppScreens.FavoritesScreen.route)
                     }){
-                        Image(painter = painterResource(id = R.drawable.favorite_list), contentDescription = "Cat list")
+                        Image(painter = painterResource(id = R.drawable.favorite_list), contentDescription = "Dog list")
                     }
                 }
             )

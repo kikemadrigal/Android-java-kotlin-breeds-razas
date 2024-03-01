@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MyCircularProgressIndicator(isDisplayed:Boolean) {
+fun MyCircularProgressIndicator(isDisplayed:Boolean,animal:String) {
     if (isDisplayed) {
         Column (
             modifier = Modifier.fillMaxSize(),
@@ -28,10 +28,9 @@ fun MyCircularProgressIndicator(isDisplayed:Boolean) {
             horizontalAlignment = Alignment.CenterHorizontally
 
         ){
-            CircularProgressIndicator(modifier = Modifier.size(100.dp),color=MaterialTheme.colorScheme.primary)
             Text(
-                text = "Wait, loading animal list...",
-                fontSize = 32.sp,
+                text = "Wait, loading $animal list...",
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 300.dp)
             )
@@ -42,5 +41,5 @@ fun MyCircularProgressIndicator(isDisplayed:Boolean) {
 @Preview(showSystemUi = true)
 @Composable
 fun MyCircularProgressIndicatorPreview(){
-    MyCircularProgressIndicator(true)
+    MyCircularProgressIndicator(true, "cats")
 }

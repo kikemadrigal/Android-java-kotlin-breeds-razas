@@ -1,5 +1,6 @@
 package es.tipolisto.breeds.ui.views.screens.cats
 
+import android.media.MediaPlayer
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +42,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import es.tipolisto.breeds.R
+import es.tipolisto.breeds.data.providers.CatProvider
+import es.tipolisto.breeds.ui.components.MyCircularProgressIndicator
 import es.tipolisto.breeds.ui.navigation.AppScreens
 import es.tipolisto.breeds.ui.theme.BreedsTheme
 import es.tipolisto.breeds.ui.viewModels.CatsViewModel
@@ -48,6 +52,14 @@ import es.tipolisto.breeds.ui.viewModels.CatsViewModel
 @Composable
 fun GameCatScreen(navController: NavController, catsViewModel:CatsViewModel) {
     val context= LocalContext.current
+    LaunchedEffect(key1 = true){
+        if (!catsViewModel.justOnce){
+            catsViewModel.loadAndInsertBuffer()
+            catsViewModel.justOnce=true
+            var mediaPlayer=MediaPlayer.create(context,R.raw.ingame)
+            if(!mediaPlayer.isPlaying)mediaPlayer.start()
+        }
+    }
     catsViewModel.get3RamdomCats()
     Scaffold (
         topBar = {
@@ -60,6 +72,7 @@ fun GameCatScreen(navController: NavController, catsViewModel:CatsViewModel) {
                 ),
                 navigationIcon={
                     IconButton(onClick = { navController.popBackStack()}) {
+                        //if(mediaPlayer.isPlaying)mediaPlayer.stop()
                         Icon(imageVector = Icons.Default.ArrowBack,contentDescription = "Back", tint = Color.White)
                     }
 
@@ -94,12 +107,17 @@ fun GameCatScreenContent(paddingsValues:PaddingValues, catsViewModel:CatsViewMod
     var isSelectedRadionButton0 = false
     var isSelectedRadionButton1 = false
     var isSelectedRadionButton2 = false
+
     Column (
         modifier = Modifier
             .fillMaxHeight()
             .padding(paddingsValues),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        if(catsViewModel.isLoading){
+            MyCircularProgressIndicator(isDisplayed = true, animal="cats")
+        }else
+            MyCircularProgressIndicator(isDisplayed = false,animal="cats")
         if(cat==null || cat.image==null || cat.image.url==null){
             Image(
                 painter = painterResource(id = R.drawable.without_image),

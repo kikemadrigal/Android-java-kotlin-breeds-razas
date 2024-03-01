@@ -2,6 +2,7 @@ package es.tipolisto.breeds.ui.viewModels
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import es.tipolisto.breeds.data.database.favorites.FavoritesEntity
 import es.tipolisto.breeds.data.models.fish.Fish
 import es.tipolisto.breeds.data.providers.FishProvider
+import es.tipolisto.breeds.data.repositories.CatRepository
 import es.tipolisto.breeds.data.repositories.FavoritesRepository
 import es.tipolisto.breeds.data.repositories.FishRepository
 import es.tipolisto.breeds.ui.states.FishScreenState
@@ -26,14 +28,23 @@ class FishViewModel: ViewModel() {
     var state by mutableStateOf(FishScreenState())
         private set
     var stateListRandomFish by mutableStateOf(FishScreenState().stateListRandomFish)
-
-    var isFavorite by mutableStateOf(false)
-        private set
+    //var stateIsLoading by mutableStateOf(FishScreenState().isLoading)
+    var isLoading by mutableStateOf(false)
+    var justOnce by mutableStateOf(false)
+    //var isFavorite by mutableStateOf(false)
+        //private set
+    suspend fun loadAndInsertBuffer(){
+        isLoading=true
+        FishRepository.loadFishAndInsertBuffer()
+        isLoading=false
+    }
     fun get3RamdomFish(){
         viewModelScope.launch {
+            isLoading=true
             stateListRandomFish.set(0, FishRepository.getRandomFishFromBuffer(stateListRandomFish))
             stateListRandomFish.set(1, FishRepository.getRandomFishFromBuffer(stateListRandomFish))
             stateListRandomFish.set(2, FishRepository.getRandomFishFromBuffer(stateListRandomFish))
+            isLoading=false
             Log.d("TAG", "FishViewModel: fish 1->${stateListRandomFish[0]?.name}, ${stateListRandomFish[0]?.id}")
             Log.d("TAG", "FishViewModel: fish 2->${stateListRandomFish[1]?.name}, ${stateListRandomFish[1]?.id}")
             Log.d("TAG", "FishViewModel: fish 3->${stateListRandomFish[2]?.name}, ${stateListRandomFish[2]?.id}")
@@ -79,6 +90,6 @@ class FishViewModel: ViewModel() {
         FavoritesRepository.insert(context,favorite)
         //FavoritesRepository.insert(context,favorite)
         Log.d("TAG","FisViewModel die: preparada el id: "+idBreed+"para añadir a favoritos a "+favorite.toString())
-        isFavorite=true
+        //isFavorite=true
     }
 }

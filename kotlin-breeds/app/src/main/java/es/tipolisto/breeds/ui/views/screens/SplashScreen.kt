@@ -18,15 +18,19 @@ import es.tipolisto.breeds.data.repositories.DogRepository
 import es.tipolisto.breeds.data.repositories.FishRepository
 import es.tipolisto.breeds.ui.components.MyCircularProgressIndicator
 import es.tipolisto.breeds.ui.navigation.AppScreens
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController:NavController){
     Splash()
-    MyCircularProgressIndicator(isDisplayed = true)
+    //MyCircularProgressIndicator(isDisplayed = true)
     LaunchedEffect(key1 = true ){
+        delay(3000)
+        /*
         CatRepository.loadCatsAndInsertBuffer()
         DogRepository.loadDogAndInsertBuffer()
         FishRepository.loadFishAndInsertBuffer()
+        */
         //Antes de navegar limpiamos la pila de ventanas para que no vuelva a salir el splash
         navController.popBackStack()
         navController.navigate(AppScreens.MenuScreen.route)

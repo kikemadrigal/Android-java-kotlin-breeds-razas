@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +38,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import es.tipolisto.breeds.R
+import es.tipolisto.breeds.data.repositories.CatRepository
+import es.tipolisto.breeds.ui.components.MyCircularProgressIndicator
 import es.tipolisto.breeds.ui.navigation.AppScreens
 import es.tipolisto.breeds.ui.theme.BreedsTheme
 import es.tipolisto.breeds.ui.viewModels.FishViewModel
@@ -44,7 +48,13 @@ import es.tipolisto.breeds.ui.viewModels.FishViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameFishScreen(navController: NavController, fishViewModel: FishViewModel){
-    val context= LocalContext.current
+    LaunchedEffect(key1 = true){
+        if(!fishViewModel.justOnce){
+            fishViewModel.loadAndInsertBuffer()
+            fishViewModel.justOnce=true
+        }
+    }
+
     fishViewModel.get3RamdomFish()
     Scaffold (
         topBar = {
@@ -98,6 +108,10 @@ fun GameFishScreenContent(paddingsValues:PaddingValues, fishViewModel: FishViewM
             .padding(paddingsValues),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        if(fishViewModel.isLoading){
+            MyCircularProgressIndicator(isDisplayed = true, "fish")
+        }else
+            MyCircularProgressIndicator(isDisplayed = false, "fish")
         if(fish==null || fish.id==null || fish.img_src_set=="Not image"){
             Image(
                 painter = painterResource(id = R.drawable.without_image),
@@ -124,6 +138,7 @@ fun GameFishScreenContent(paddingsValues:PaddingValues, fishViewModel: FishViewM
             .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
+
             RadioButton(
                 selected = isSelectedRadionButton0,
                 onClick = {

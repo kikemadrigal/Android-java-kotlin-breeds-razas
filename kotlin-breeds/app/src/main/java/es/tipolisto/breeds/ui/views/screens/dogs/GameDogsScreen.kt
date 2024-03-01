@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import es.tipolisto.breeds.R
+import es.tipolisto.breeds.ui.components.MyCircularProgressIndicator
 import es.tipolisto.breeds.ui.navigation.AppScreens
 import es.tipolisto.breeds.ui.theme.BreedsTheme
 import es.tipolisto.breeds.ui.viewModels.CatsViewModel
@@ -48,7 +50,12 @@ import es.tipolisto.breeds.ui.viewModels.DogsViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameDogScreen(navController: NavController, dogsViewModel: DogsViewModel) {
-    //dogsViewModel.get3RamdomDogs()
+    LaunchedEffect(key1 = true){
+        if (!dogsViewModel.justOnce){
+            dogsViewModel.loadAndInsertBuffer()
+            dogsViewModel.justOnce=true
+        }
+    }
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
@@ -98,6 +105,10 @@ fun GameDogScreenContent(paddingsValues:PaddingValues, dogsViewModel:DogsViewMod
             .padding(paddingsValues),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        if(dogsViewModel.isLoading){
+            MyCircularProgressIndicator(isDisplayed = true, animal="dogs")
+        }else
+            MyCircularProgressIndicator(isDisplayed = false,animal="dogs")
         if(dog==null || dog.imageDog?.url==null ){
             Image(
                 painter = painterResource(id = R.drawable.without_image),

@@ -35,6 +35,10 @@ class FavoritesRepository() {
             AppDataBaseClient.getFavoritesDao(context = context).insert(favoritesEntity)
         }
 
+        fun delete(context :Context,favoritesEntity: FavoritesEntity){
+            AppDataBaseClient.getFavoritesDao(context = context).delete(favoritesEntity)
+        }
+
     }
 
 

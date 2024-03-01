@@ -11,7 +11,9 @@ import es.tipolisto.breeds.data.database.favorites.FavoritesEntity
 import es.tipolisto.breeds.data.models.cat.Cat
 import es.tipolisto.breeds.data.repositories.CatRepository
 import es.tipolisto.breeds.data.repositories.FavoritesRepository
+import es.tipolisto.breeds.data.repositories.FishRepository
 import es.tipolisto.breeds.ui.states.CatsScreenState
+import es.tipolisto.breeds.ui.states.FishScreenState
 import kotlinx.coroutines.launch
 import java.util.Date
 import kotlin.random.Random
@@ -25,8 +27,16 @@ class CatsViewModel: ViewModel() {
     var state by mutableStateOf(CatsScreenState())
         private set
     var stateListRandomCats by mutableStateOf(CatsScreenState().stateListRandomCats)
-    var isFavorite by mutableStateOf(false)
-        private set
+    //var stateIsloading by mutableStateOf(CatsScreenState().isLoading)
+    //Para que solo se carga una vez la lista de internet
+    var justOnce by mutableStateOf(false)
+
+    var isLoading by mutableStateOf(false)
+    suspend fun loadAndInsertBuffer(){
+        isLoading=true
+        CatRepository.loadCatsAndInsertBuffer()
+        isLoading=false
+    }
     fun get3RamdomCats(){
         viewModelScope.launch {
             //var stateListRandomCats= state.stateListRandomCats
@@ -82,12 +92,12 @@ class CatsViewModel: ViewModel() {
 
     fun createFavorite(context: Context, idBreed: String){
         //Creamos el favorito a partir del idBreed
-        val favorite= FavoritesEntity(null, idBreed, "Fish", Date().toString())
+        val favorite= FavoritesEntity(null, idBreed, "Cat", Date().toString())
         //val favorite= FavoritesRepository.getById(context,id)
         FavoritesRepository.insert(context,favorite)
         //FavoritesRepository.insert(context,favorite)
-        Log.d("TAG","FisViewModel die: preparada el id: "+idBreed+"para añadir a favoritos a "+favorite.toString())
-        isFavorite=true
+        Log.d("TAG","CatViewModel die: el id: "+idBreed+" añadido a favoritos, tostring: "+favorite.toString())
+        //isFavorite=true
     }
 }
 

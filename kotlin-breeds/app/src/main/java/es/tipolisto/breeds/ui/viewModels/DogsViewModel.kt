@@ -12,6 +12,7 @@ import es.tipolisto.breeds.data.models.dog.Dog
 import es.tipolisto.breeds.data.providers.DogProvider
 import es.tipolisto.breeds.data.repositories.DogRepository
 import es.tipolisto.breeds.data.repositories.FavoritesRepository
+import es.tipolisto.breeds.data.repositories.FishRepository
 import es.tipolisto.breeds.ui.states.DogScreenState
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -26,9 +27,16 @@ class DogsViewModel: ViewModel() {
     var state by mutableStateOf(DogScreenState())
         private set
     var stateListRandomDogs by mutableStateOf(DogScreenState().stateListRandomDogs)
+    var isLoading by mutableStateOf(false)
+    var justOnce by mutableStateOf(false)
     var isFavorite by mutableStateOf(false)
         private set
 
+    suspend fun loadAndInsertBuffer(){
+        isLoading=true
+        DogRepository.loadDogAndInsertBuffer()
+        isLoading=false
+    }
     fun get3RamdomDogs(){
         viewModelScope.launch {
             stateListRandomDogs.set(0, DogRepository.getRandomDogFromBuffer(stateListRandomDogs))
@@ -87,11 +95,11 @@ class DogsViewModel: ViewModel() {
 
     fun createFavorite(context: Context, idBreed: Int){
         //Creamos el favorito a partir del idBreed
-        val favorite= FavoritesEntity(null, idBreed.toString(), "Fish", Date().toString())
+        val favorite= FavoritesEntity(null, idBreed.toString(), "Dog", Date().toString())
         //val favorite= FavoritesRepository.getById(context,id)
         FavoritesRepository.insert(context,favorite)
         //FavoritesRepository.insert(context,favorite)
-        Log.d("TAG","FisViewModel die: preparada el id: "+idBreed+"para añadir a favoritos a "+favorite.toString())
+        Log.d("TAG","DogViewModel dice: añadido el id: "+idBreed+" a favoritos, tostring: "+favorite.toString())
         isFavorite=true
     }
 }

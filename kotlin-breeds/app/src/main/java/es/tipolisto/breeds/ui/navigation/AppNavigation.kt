@@ -1,5 +1,6 @@
 package es.tipolisto.breeds.ui.navigation
 
+import android.media.MediaPlayer
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,12 +10,14 @@ import androidx.navigation.navArgument
 import es.tipolisto.breeds.data.database.AppDataBase
 import es.tipolisto.breeds.ui.viewModels.CatsViewModel
 import es.tipolisto.breeds.ui.viewModels.DogsViewModel
+import es.tipolisto.breeds.ui.viewModels.FavoritesViewModel
 import es.tipolisto.breeds.ui.viewModels.FishViewModel
 import es.tipolisto.breeds.ui.views.screens.cats.DetailCatScreen
 import es.tipolisto.breeds.ui.views.screens.cats.GameCatScreen
 import es.tipolisto.breeds.ui.views.screens.cats.ListCatsScreen
 import es.tipolisto.breeds.ui.views.screens.MenuScreen
 import es.tipolisto.breeds.ui.views.screens.RecordsScreen
+import es.tipolisto.breeds.ui.views.screens.SettingsScreen
 import es.tipolisto.breeds.ui.views.screens.SplashScreen
 import es.tipolisto.breeds.ui.views.screens.dogs.DetailDogScreen
 import es.tipolisto.breeds.ui.views.screens.dogs.GameDogScreen
@@ -25,7 +28,12 @@ import es.tipolisto.breeds.ui.views.screens.fish.GameFishScreen
 import es.tipolisto.breeds.ui.views.screens.fish.ListFishScreen
 
 @Composable
-fun AppNavigation(catsViewModel:CatsViewModel, dogsViewModel: DogsViewModel, fishViewModel: FishViewModel){
+fun AppNavigation(
+    catsViewModel:CatsViewModel,
+    dogsViewModel: DogsViewModel,
+    fishViewModel: FishViewModel,
+    favoritesViewModel: FavoritesViewModel
+){
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -41,12 +49,15 @@ fun AppNavigation(catsViewModel:CatsViewModel, dogsViewModel: DogsViewModel, fis
         composable(AppScreens.RecordsScreen.route){
             RecordsScreen(navController)
         }
+        composable(AppScreens.SettingsScreen.route){
+            SettingsScreen(navController)
+        }
 
         /*
          * Favorites
          */
         composable(AppScreens.FavoritesScreen.route){
-            FavoritesScreen(navController)
+            FavoritesScreen(navController, favoritesViewModel)
         }
 
 

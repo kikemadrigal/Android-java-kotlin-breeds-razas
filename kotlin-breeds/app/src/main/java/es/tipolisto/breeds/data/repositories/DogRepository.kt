@@ -101,13 +101,15 @@ class DogRepository {
         }
 
         fun getDogFromIdInBuffer(id: String):Dog?{
+            //Log.d("TAG", "Dogrepository dice: getDogFromIdInBuffer vamos a buscar el dog con el id: "+id)
             var dog: Dog?=null
             DogProvider.listDogs.forEach{
                 val reference=it.id;
-                if(reference!=null ){
-                    if(reference.equals(id)) dog=it
+                //Log.d("TAG", "Dogrepository dice: "+reference.toString())
+                if(reference.toString().equals(id)){
+                    Log.d("TAG", "Dogrepository dice: getDogFromIdInBuffer, encontrado el dog: "+id)
+                    dog=it
                 }
-
             }
             return dog
         }

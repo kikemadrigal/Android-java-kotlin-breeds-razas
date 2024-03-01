@@ -1,6 +1,7 @@
 
 package es.tipolisto.breeds.ui.views
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -22,6 +23,7 @@ import es.tipolisto.breeds.ui.navigation.AppNavigation
 import es.tipolisto.breeds.ui.theme.BreedsTheme
 import es.tipolisto.breeds.ui.viewModels.CatsViewModel
 import es.tipolisto.breeds.ui.viewModels.DogsViewModel
+import es.tipolisto.breeds.ui.viewModels.FavoritesViewModel
 import es.tipolisto.breeds.ui.viewModels.FishViewModel
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -31,6 +33,8 @@ class MainActivity : ComponentActivity() {
     val catsViewModel: CatsViewModel by viewModels()
     val fishViewModel: FishViewModel by viewModels()
     val dogsViewModel: DogsViewModel by viewModels()
+    val favoritesViewModel:FavoritesViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -43,7 +47,12 @@ class MainActivity : ComponentActivity() {
                     getRecords()
                     //2.Inicializamos la navegación
                     //val catsViewModel= CatsViewModel()
-                    AppNavigation(catsViewModel,dogsViewModel,fishViewModel)
+                    AppNavigation(
+                        catsViewModel,
+                        dogsViewModel,
+                        fishViewModel,
+                        favoritesViewModel
+                    )
                }
             }
         }

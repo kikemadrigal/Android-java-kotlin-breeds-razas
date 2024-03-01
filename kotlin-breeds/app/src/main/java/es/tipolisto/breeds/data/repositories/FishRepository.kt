@@ -42,10 +42,14 @@ class FishRepository {
         }
 
         fun getFishFromSpecieIdInBuffer(id: Int): Fish?{
+            //Log.d("TAG", "FishRepository dice: pasa por getFishFromSpecieIdInBuffer con id: "+id)
             var fish: Fish?=null
             FishProvider.listFish.forEach{
                 if(it.id!=null){
-                    if(it.id==id) fish=it
+                    if(it.id==id) {
+                        //Log.d("TAG", "FishRepository dice: encontrado el pez: "+id)
+                        fish=it
+                    }
                     //Log.d("TAG","FishRepository dice: Obtemido el pez: "+it.name)
                 }
             }

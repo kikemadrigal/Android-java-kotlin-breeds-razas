@@ -1,6 +1,8 @@
 package es.tipolisto.breeds.ui.views.screens
 
 
+import android.content.Context
+import android.media.MediaPlayer
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,38 +28,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import es.tipolisto.breeds.R
+import es.tipolisto.breeds.data.repositories.CatRepository
 import es.tipolisto.breeds.ui.navigation.AppScreens
 import es.tipolisto.breeds.ui.theme.BreedsTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun MenuScreen(navController:NavController){
+
     Menu(navController)
 }
 @Composable
 fun Menu(navController:NavController) {
     val context=LocalContext.current
 
+    //val mediaPlayer= MediaPlayer.create(context,R.raw.intro)
+    //if(!mediaPlayer.isPlaying)mediaPlayer.start()
     Column (
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(
             text = "Menu",
-            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
         Text(
             text = "Breeds developments TL",
-            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
         Button(
-            modifier = Modifier.padding(10.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
             onClick = {
                 navController.navigate(AppScreens.GameCatScreen.route)
+                //if(mediaPlayer.isLooping)mediaPlayer.stop()
                 //Log.d("TAG", "CatsViewModel dice en init: obtenida lista de gatos con tamaño "+ CatProvider.listCats.size)
             }
         ) {
@@ -72,6 +91,7 @@ fun Menu(navController:NavController) {
             onClick = {
                 //Toast.makeText(context, "Vamos al juego de perros",Toast.LENGTH_LONG).show()
                 navController.navigate(AppScreens.GameDogScreen.route)
+                //if(mediaPlayer.isLooping)mediaPlayer.stop()
             }
         ) {
             Image(
@@ -89,6 +109,7 @@ fun Menu(navController:NavController) {
             onClick = {
                 //Toast.makeText(context, "Vamos al juego de perros",Toast.LENGTH_LONG).show()
                 navController.navigate(AppScreens.GameFishScreen.route)
+                //if(mediaPlayer.isLooping)mediaPlayer.stop()
             }
         ) {
             Image(
@@ -106,6 +127,7 @@ fun Menu(navController:NavController) {
             onClick = {
                 //Toast.makeText(context, "Vamos a ver las puntuaciones",Toast.LENGTH_LONG).show()
                 navController.navigate(AppScreens.RecordsScreen.route)
+                //if(mediaPlayer.isLooping)mediaPlayer.stop()
             }
 
         ) {
@@ -123,6 +145,8 @@ fun Menu(navController:NavController) {
                 .fillMaxWidth(),
             onClick = {
                 //Toast.makeText(context, "Vamos a los settings",Toast.LENGTH_LONG).show()
+                navController.navigate(AppScreens.SettingsScreen.route)
+                //if(mediaPlayer.isLooping)mediaPlayer.stop()
             }
         ) {
             Image(
@@ -138,7 +162,6 @@ fun Menu(navController:NavController) {
 
 
 
-
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun MenuScreenPreview(){
@@ -146,3 +169,4 @@ fun MenuScreenPreview(){
         //Menu()
     }
 }
+

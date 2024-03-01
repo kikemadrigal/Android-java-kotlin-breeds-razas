@@ -1,6 +1,8 @@
 package es.tipolisto.breeds.ui.views.screens.favorites
 
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -33,11 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import es.tipolisto.breeds.R
 import es.tipolisto.breeds.data.database.AppDataBase
 import es.tipolisto.breeds.data.database.favorites.FavoritesEntity
 import es.tipolisto.breeds.data.models.cat.Cat
@@ -46,11 +50,13 @@ import es.tipolisto.breeds.data.models.fish.Fish
 import es.tipolisto.breeds.data.repositories.CatRepository
 import es.tipolisto.breeds.data.repositories.DogRepository
 import es.tipolisto.breeds.data.repositories.FavoritesRepository
+import es.tipolisto.breeds.data.repositories.FishRepository
 import es.tipolisto.breeds.ui.navigation.AppScreens
+import es.tipolisto.breeds.ui.viewModels.FavoritesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoritesScreen(navController: NavController){
+fun FavoritesScreen(navController: NavController, favoritesViewModel: FavoritesViewModel){
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -69,20 +75,17 @@ fun FavoritesScreen(navController: NavController){
         }
     ) {
         val context= LocalContext.current
+        val listFavorites=FavoritesRepository.getAll(context)
         LazyColumn(modifier= Modifier.padding(it)){
             Log.d("TAG","FavoritesScreen dice: mostrando favoritos")
-            val listFavorites=FavoritesRepository.getAll(context)
+
             Log.d("TAG","FavoritesScreen dice: enoontrados: "+listFavorites.size+" favorites")
             if(listFavorites.isEmpty())
                 Log.d("TAG","FavoritesScreen dice: No hay records")
             else{
                 items(listFavorites){
                         item->
-                    listIntemRow(item, navController)
-                    /*Column() {
-                        Text(text = item.toString())
-                        Spacer(modifier = Modifier.size(5.dp))
-                    }*/
+                    listIntemRow(item, favoritesViewModel,navController)
                 }
             }
 
@@ -92,7 +95,11 @@ fun FavoritesScreen(navController: NavController){
 
 
 @Composable
-fun listIntemRow(favoritesEntity: FavoritesEntity, navController: NavController){
+fun listIntemRow(
+    favoritesEntity: FavoritesEntity,
+    favoritesViewModel: FavoritesViewModel,
+    navController: NavController
+){
     val favorites=
     Row(modifier= Modifier
         .padding(10.dp, 5.dp, 10.dp, 5.dp)
@@ -101,26 +108,31 @@ fun listIntemRow(favoritesEntity: FavoritesEntity, navController: NavController)
             "Cat" -> {
                 val cat:Cat?=CatRepository.getCatFromIdFromBuffer(favoritesEntity.idBreed)
                 if(cat!=null)
-                    getFavoriteCat(cat,navController)
+                    getFavoriteCat(cat,favoritesEntity,favoritesViewModel,navController)
             }
             "Dog" -> {
+                Log.d("TAG", "FavoritesScreen dice: dog pasa por el when")
                 val dog: Dog?= DogRepository.getDogFromIdInBuffer(favoritesEntity.idBreed)
                 if(dog!=null)
-                    getFavoriteDog(dog,navController)
+                    getFavoriteDog(dog,favoritesEntity,navController)
             }
             "Fish" -> {
-                val cat:Cat?=CatRepository.getCatFromIdFromBuffer(favoritesEntity.idBreed)
-                if(cat!=null)
-                    getFavoriteCat(cat,navController)
+                //Log.d("TAG", "FavoritesScreen dice: fish pasa por el when")
+                val fish:Fish?= FishRepository.getFishFromSpecieIdInBuffer(favoritesEntity.id!!)
+                if(fish!=null)
+                    getFavoriteFish(fish,favoritesEntity,navController)
             }
         }
-
     }
 }
 
 
 @Composable
-fun getFavoriteCat(cat:Cat, navController: NavController){
+fun getFavoriteCat(
+    cat:Cat,
+    favoritesEntity: FavoritesEntity,
+    favoritesViewModel:FavoritesViewModel,
+    navController: NavController){
     Column {
         var url=cat.image?.url
         var model by remember { mutableStateOf(url) }
@@ -131,16 +143,24 @@ fun getFavoriteCat(cat:Cat, navController: NavController){
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.background)
         )
+        IconButton(onClick = {
+                FavoritesRepository.delete(context,favoritesEntity)
+                favoritesViewModel.updateFavoritesList(context)
+                Toast.makeText(context, "Deleting cat from favorites", Toast.LENGTH_LONG).show()
+            }
+        ){
+            Image(painter = painterResource(id = R.drawable.favorites_enabled), contentDescription = "Cat list")
+        }
         AsyncImage(
             model = model,
             contentDescription = "Select a breed",
             modifier = Modifier
                 .size(400.dp, 300.dp)
-                .padding(top = 10.dp)
-                .clickable {
+                .padding(top = 10.dp),
+                /*.clickable {
                     navController.navigate(AppScreens.DetailCatScreen.route + "/${cat.reference_image_id}")
-                },
-            contentScale = ContentScale.Crop
+                },*/
+            contentScale = ContentScale.Fit
         )
         Text(text = cat.name, color= Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp )
         Text(text = cat.description, color= Color.White, fontSize = 20.sp )
@@ -148,7 +168,7 @@ fun getFavoriteCat(cat:Cat, navController: NavController){
 }
 
 @Composable
-fun getFavoriteDog(dog:Dog, navController: NavController){
+fun getFavoriteDog(dog:Dog,favoritesEntity: FavoritesEntity, navController: NavController){
     Column {
         var url=dog.imageDog?.url
         var model by remember { mutableStateOf(url) }
@@ -159,25 +179,34 @@ fun getFavoriteDog(dog:Dog, navController: NavController){
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.background)
         )
+        IconButton(onClick = {
+            FavoritesRepository.delete(context,favoritesEntity)
+            Toast.makeText(context, "Deleting dog from favorites", Toast.LENGTH_LONG).show()
+        }
+        ){
+            Image(painter = painterResource(id = R.drawable.favorites_enabled), contentDescription = "Cat list")
+        }
         AsyncImage(
             model = model,
             contentDescription = "Select a breed",
             modifier = Modifier
                 .size(400.dp, 300.dp)
-                .padding(top = 10.dp)
-                .clickable {
+                .padding(top = 10.dp),
+                /*.clickable {
                     navController.navigate(AppScreens.DetailDogScreen.route + "/${dog.reference_image_id}")
-                },
-            contentScale = ContentScale.Crop
+                },*/
+            contentScale = ContentScale.Fit
         )
         Text(text = dog.name, color= Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp )
         Text(text = dog.bred_for, color= Color.White, fontSize = 20.sp )
+        Text(text = dog.toString())
     }
 }
 
 
 @Composable
-fun getFavoriteFish(fish: Fish, navController: NavController){
+fun getFavoriteFish(fish: Fish,favoritesEntity: FavoritesEntity, navController: NavController){
+    Log.d("TAG", "FavoritesScreen dice: pasa por getFavoriteFish")
     Column {
         var url=fish.img_src_set
         var model by remember { mutableStateOf(url) }
@@ -188,16 +217,23 @@ fun getFavoriteFish(fish: Fish, navController: NavController){
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.background)
         )
+        IconButton(onClick = {
+            FavoritesRepository.delete(context,favoritesEntity)
+            Toast.makeText(context, "Deleting fish from favorites", Toast.LENGTH_LONG).show()
+        }
+        ){
+            Image(painter = painterResource(id = R.drawable.favorites_enabled), contentDescription = "Cat list")
+        }
         AsyncImage(
             model = model,
             contentDescription = "Select a breed",
             modifier = Modifier
                 .size(400.dp, 300.dp)
-                .padding(top = 10.dp)
-                .clickable {
+                .padding(top = 10.dp),
+                /*.clickable {
                     navController.navigate(AppScreens.DetailFishScreen.route + "/${fish.id}")
-                },
-            contentScale = ContentScale.Crop
+                },*/
+            contentScale = ContentScale.Fit
         )
         Text(text = fish.name, color= Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp )
         Text(text = fish.urlWiki, color= Color.White, fontSize = 20.sp )
