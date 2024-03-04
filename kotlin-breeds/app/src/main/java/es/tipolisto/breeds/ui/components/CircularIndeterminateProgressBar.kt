@@ -26,13 +26,13 @@ fun MyCircularProgressIndicator(isDisplayed:Boolean,animal:String) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(10.dp,Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
-
         ){
+            CircularProgressIndicator(modifier = Modifier.size(100.dp))
             Text(
                 text = "Wait, loading $animal list...",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 300.dp)
+                modifier = Modifier.padding(top = 20.dp)
             )
         }
     }

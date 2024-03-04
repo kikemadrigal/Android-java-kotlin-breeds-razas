@@ -26,4 +26,7 @@
     <string name="dog_weight">peso</string>
     <string name="dog_height">altura</string>
     <string name="dog_origin">origen</string>
+
+
+    <string name="settings_description">Elige si quieres adivinar la raza del gato o del perro.\nTienes 7 vidas.\nElige configuración para cambiar las carácteristicas del juego.</string>
 </resources>

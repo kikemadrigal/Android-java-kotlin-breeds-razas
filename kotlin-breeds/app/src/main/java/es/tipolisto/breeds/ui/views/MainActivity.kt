@@ -17,6 +17,7 @@ import es.tipolisto.breeds.data.database.AppDataBase
 import es.tipolisto.breeds.data.database.AppDataBaseClient
 import es.tipolisto.breeds.data.database.records.RecordDao
 import es.tipolisto.breeds.data.database.records.RecordEntity
+import es.tipolisto.breeds.data.preferences.PreferenceManager
 import es.tipolisto.breeds.data.providers.ArrayDataSourceProvider
 import es.tipolisto.breeds.data.repositories.RecordsRepository
 import es.tipolisto.breeds.ui.navigation.AppNavigation

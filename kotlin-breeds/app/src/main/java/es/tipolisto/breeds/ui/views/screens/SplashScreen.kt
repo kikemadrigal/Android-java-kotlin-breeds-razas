@@ -43,7 +43,7 @@ fun Splash(){
             painter = painterResource(id = R.drawable.splash_screen),
             contentDescription = "Splash breeds",
             Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit
+            contentScale = ContentScale.FillWidth
         )
     }
 }

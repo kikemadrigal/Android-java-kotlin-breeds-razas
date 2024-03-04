@@ -3,20 +3,26 @@ package es.tipolisto.breeds.ui.views.screens
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,9 +34,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import es.tipolisto.breeds.R
+import es.tipolisto.breeds.data.preferences.PreferenceManager
 import es.tipolisto.breeds.data.repositories.CatRepository
 import es.tipolisto.breeds.ui.navigation.AppScreens
 import es.tipolisto.breeds.ui.theme.BreedsTheme
+import es.tipolisto.breeds.utils.MediaPlayerClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 
@@ -42,11 +50,22 @@ fun MenuScreen(navController:NavController){
 @Composable
 fun Menu(navController:NavController) {
     val context=LocalContext.current
+    val scrollState= rememberScrollState()
 
-    //val mediaPlayer= MediaPlayer.create(context,R.raw.intro)
-    //if(!mediaPlayer.isPlaying)mediaPlayer.start()
+    val menuMusic: MediaPlayer = remember {MediaPlayer.create(context, R.raw.intro)}
+    DisposableEffect(Unit) {
+        menuMusic.isLooping = true
+        if(PreferenceManager.readPreferenceMusicOnOff(context))
+            menuMusic.start()
+        onDispose {
+            if(menuMusic.isPlaying)
+                menuMusic.stop()
+        }
+    }
+
+
     Column (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(

@@ -69,15 +69,19 @@ class CatsViewModel: ViewModel() {
     return dogs
     }
      */
-    fun checkCorrectAnswer(answer:Int){
+    fun checkCorrectAnswer(answer:Int):Boolean{
+        var result:Boolean=false
         Log.d("TAG", "CatViewModel: Has pinchado en el radiobutton "+answer)
         if(answer==state.correctAnswer){
+            result=true
             stateScore+=10
         }
         else {
+            result=false
             stateLives--
         }
         get3RamdomCats()
+        return result
     }
 
     fun checkGameOver():Boolean{

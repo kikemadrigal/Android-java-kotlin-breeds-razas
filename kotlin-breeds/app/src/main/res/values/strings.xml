@@ -18,6 +18,8 @@
     <string name="cat_experimental">experimental</string>
     <string name="cat_suppressed_tail">suppressed tail</string>
     <string name="cat_short_legs">short_legs</string>
+
+
     <string name="dog_bred_for">bred_for</string>
     <string name="dog_breed_group">breed_group</string>
     <string name="dog_life_span">life_span</string>
@@ -25,4 +27,7 @@
     <string name="dog_weight">weight</string>
     <string name="dog_height">height</string>
     <string name="dog_origin">origin</string>
+
+
+    <string name="settings_description">Choose whether you want to guess the breed of the cat or the dog. You have 7 lives. Choose settings to change the game characteristics.</string>
 </resources>
