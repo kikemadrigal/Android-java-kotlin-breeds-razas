@@ -10,6 +10,8 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
@@ -39,7 +41,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BreedsTheme {
+            var darkMode =remember{ mutableStateOf(false) }
+            if(PreferenceManager.readPreferenceThemeDarkOnOff(context = applicationContext)){
+                darkMode.value=true
+            }
+            BreedsTheme(darkTheme = darkMode.value) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

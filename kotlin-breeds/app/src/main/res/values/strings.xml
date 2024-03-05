@@ -30,4 +30,5 @@
 
 
     <string name="settings_description">Choose whether you want to guess the breed of the cat or the dog. You have 7 lives. Choose settings to change the game characteristics.</string>
+    <string name="cat_game_playing_cat_breeds">Playing cat breeds</string>
 </resources>

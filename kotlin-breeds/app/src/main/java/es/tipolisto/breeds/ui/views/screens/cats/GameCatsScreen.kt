@@ -2,7 +2,6 @@ package es.tipolisto.breeds.ui.views.screens.cats
 
 import android.content.Context
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -49,21 +48,21 @@ import es.tipolisto.breeds.ui.components.MyCircularProgressIndicator
 import es.tipolisto.breeds.ui.navigation.AppScreens
 import es.tipolisto.breeds.ui.theme.BreedsTheme
 import es.tipolisto.breeds.ui.viewModels.CatsViewModel
+import es.tipolisto.breeds.utils.AudioEffectsType
+import es.tipolisto.breeds.utils.MediaPlayerClient
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameCatScreen(navController: NavController, catsViewModel:CatsViewModel) {
     val context= LocalContext.current
-    val inGameMusic: MediaPlayer = remember {MediaPlayer.create(context, R.raw.ingame)}
-    //var effects:MediaPlayer = remember {MediaPlayer.create(context,R.raw.clickbutton)}
+    val mediaPLayerClient:MediaPlayerClient= remember{MediaPlayerClient(context).getInstance()}
     DisposableEffect(Unit) {
-        inGameMusic.isLooping = true
-        if(PreferenceManager.readPreferenceMusicOnOff(context))
-            inGameMusic.start()
+        if(PreferenceManager.readPreferenceMusicOnOff(context)){
+            mediaPLayerClient.playInGameMusic()
+        }
         onDispose {
-            if(inGameMusic.isPlaying)
-                inGameMusic.stop()
+            mediaPLayerClient.stopInGameMusic()
         }
     }
     //val catsViewModelState= remember {catsViewModel}
@@ -78,14 +77,13 @@ fun GameCatScreen(navController: NavController, catsViewModel:CatsViewModel) {
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = "Playing cat breeds", color= Color.White, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(id = R.string.cat_game_playing_cat_breeds), color= Color.White, fontWeight = FontWeight.Bold)
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon={
                     IconButton(onClick = { navController.popBackStack()}) {
-                        //if(mediaPlayer.isPlaying)mediaPlayer.stop()
                         Icon(imageVector = Icons.Default.ArrowBack,contentDescription = "Back", tint = Color.White)
                     }
 
@@ -116,7 +114,7 @@ fun GameCatScreen() {
 @Composable
 fun GameCatScreenContent(paddingsValues:PaddingValues, catsViewModel:CatsViewModel,navController: NavController){
     val context=LocalContext.current
-    //Log.d("TAG2", "pasa por game cat!")
+    val mediaPLayerClient:MediaPlayerClient= remember{MediaPlayerClient(context).getInstance()}
     val cat=catsViewModel.getCatCorrectAnswer()
     /*var isSelectedRadionButton0 = false
     var isSelectedRadionButton1 = false
@@ -155,7 +153,7 @@ fun GameCatScreenContent(paddingsValues:PaddingValues, catsViewModel:CatsViewMod
                     .height(300.dp)
             )
             catsViewModel.get3RamdomCats()
-            playSound(EffectsType.typeClick, context)
+            mediaPLayerClient.playSound(AudioEffectsType.typeClick, context)
         }else{
             AsyncImage(
                 model = cat.image.url,
@@ -181,8 +179,9 @@ fun GameCatScreenContent(paddingsValues:PaddingValues, catsViewModel:CatsViewMod
             .padding(20.dp)
             .clickable {
                 //isSelectedRadionButton0=true
-                val result=catsViewModel.checkCorrectAnswer(0)
-                if (result)playSound(EffectsType.typeSuccess,context ) else playSound(EffectsType.typeFail, context)
+                val result = catsViewModel.checkCorrectAnswer(0)
+                if (result) mediaPLayerClient.playSound(AudioEffectsType.typeSuccess,context
+                ) else mediaPLayerClient.playSound(AudioEffectsType.typeFail, context)
             },
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -195,41 +194,33 @@ fun GameCatScreenContent(paddingsValues:PaddingValues, catsViewModel:CatsViewMod
                 .fillMaxWidth()
                 .padding(20.dp)
                 .clickable { //isSelectedRadionButton1=true
-                    val result=catsViewModel.checkCorrectAnswer(1)
-                    if (result)playSound(EffectsType.typeSuccess, context) else playSound(EffectsType.typeFail, context)
+                    val result = catsViewModel.checkCorrectAnswer(1)
+                    if (result) mediaPLayerClient.playSound(AudioEffectsType.typeSuccess,context
+                    ) else mediaPLayerClient.playSound( AudioEffectsType.typeFail,context)
                 },
             verticalAlignment = Alignment.CenterVertically,
         ){
-           /*RadioButton(
-               selected = isSelectedRadionButton1,
-               onClick = {
-                   isSelectedRadionButton1=true
-                   catsViewModel.checkCorrectAnswer(1)
-               }
-           )*/
             Text(text = "B) ", fontSize = 24.sp)
-           val text=catsViewModel.state.stateListRandomCats.get(1)?.name
-           Text(text = text+".", fontSize = 24.sp)
+            val text=catsViewModel.state.stateListRandomCats.get(1)?.name
+            Text(text = text+".", fontSize = 24.sp)
         }
         Row (modifier= Modifier
             .fillMaxWidth()
             .padding(20.dp)
             .clickable { //isSelectedRadionButton2=true
-                val result=catsViewModel.checkCorrectAnswer(2)
-                if (result)playSound(EffectsType.typeSuccess, context) else playSound(EffectsType.typeFail, context)
+                val result = catsViewModel.checkCorrectAnswer(2)
+                if (result) mediaPLayerClient.playSound(
+                    AudioEffectsType.typeSuccess,
+                    context
+                ) else mediaPLayerClient.playSound(AudioEffectsType.typeFail, context)
             },
            verticalAlignment = Alignment.CenterVertically
         ){
-           /*RadioButton(
-               selected = isSelectedRadionButton2,
-               onClick = {
-                   isSelectedRadionButton2=true
-                   catsViewModel.checkCorrectAnswer(2)
-               }
-           )*/
             Text(text = "C) ", fontSize = 24.sp)
-           val text=catsViewModel.state.stateListRandomCats.get(2)?.name
-           Text(text = text+".", fontSize = 24.sp)
+            Text(
+                text = catsViewModel.state.stateListRandomCats.get(2)?.name + ".",
+                fontSize = 24.sp
+            )
         }
 
 
@@ -253,24 +244,9 @@ private fun MyAlertDialog(navController: NavController){
 }
 
 
-private fun playSound(effectsType: EffectsType,context: Context?){
-    var effects:MediaPlayer
-    when(effectsType.name){
-        "click"-> effects=MediaPlayer.create(context, R.raw.clickbutton)
-        "success"-> effects = MediaPlayer.create(context, R.raw.success)
-        "failure"-> effects = MediaPlayer.create(context, R.raw.failure)
-        else->{
-            effects = MediaPlayer.create(context, R.raw.failure)
-        }
-    }
-    effects.start()
-}
 
-sealed class EffectsType(val name:String){
-    object typeClick:EffectsType("click")
-    object typeSuccess:EffectsType("success")
-    object typeFail:EffectsType("failure")
-}
+
+
 
 
 

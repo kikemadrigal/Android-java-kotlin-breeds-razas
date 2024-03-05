@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -87,17 +88,19 @@ fun SettingsScreen(navController:NavController) {
                 modifier = Modifier
                     .padding(it)
                     .fillMaxSize()
-                    .background(Color.Red)
                     .verticalScroll(scrollState)
                 ){
             Row(
                 modifier = Modifier
-                    .background(Color.Yellow)
                     .padding(10.dp, 10.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ){
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null
+                )
                 Text(text = "Music on / off")
                 Switch(
                     checked = musicIsChecked,
@@ -117,13 +120,16 @@ fun SettingsScreen(navController:NavController) {
             }
             Row (
                 modifier = Modifier
-                    .background(Color.Yellow)
                     .padding(10.dp, 10.dp)
                     .fillMaxWidth(),
                 //Arrangement.SpaceEvenly reparte los elementos dejando espacios en los lados
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ){
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null
+                )
                 Text(text = "Theme dark On / Off")
                 Switch(
                     checked = themeDarkIsChecked,
@@ -141,7 +147,7 @@ fun SettingsScreen(navController:NavController) {
                     }*/
                 )
             }
-
+            Spacer(modifier = Modifier.background(Color.Magenta))
             val webAnnotatedString = buildAnnotatedString {
                 append("Web: ")
                 pushStringAnnotation(tag = "web", annotation = "https://breeds.tipolisto.es")

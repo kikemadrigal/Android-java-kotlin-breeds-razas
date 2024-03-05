@@ -11,4 +11,5 @@ music and effects
 4 ponle un alert dialog quelal pulsar back 2 veces se saldrá
 5. Aumenta el tamaño de letra de los texts en los games
 6. POnle un search al detail
+7.implementa el bosxwithcontraints para distinguir entre landscape y portrait
 
