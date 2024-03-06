@@ -1,6 +1,8 @@
 
 package es.tipolisto.breeds.ui.views
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +12,12 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import es.tipolisto.breeds.data.database.AppDataBase
@@ -28,6 +33,7 @@ import es.tipolisto.breeds.ui.viewModels.CatsViewModel
 import es.tipolisto.breeds.ui.viewModels.DogsViewModel
 import es.tipolisto.breeds.ui.viewModels.FavoritesViewModel
 import es.tipolisto.breeds.ui.viewModels.FishViewModel
+import es.tipolisto.breeds.utils.MediaPlayerClient
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -38,14 +44,15 @@ class MainActivity : ComponentActivity() {
     val dogsViewModel: DogsViewModel by viewModels()
     val favoritesViewModel:FavoritesViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
-            var darkMode =remember{ mutableStateOf(false) }
-            if(PreferenceManager.readPreferenceThemeDarkOnOff(context = applicationContext)){
-                darkMode.value=true
-            }
-            BreedsTheme(darkTheme = darkMode.value) {
+            val context=LocalContext.current
+            var isDarkMode by remember {mutableStateOf(PreferenceManager.readPreferenceThemeDarkOnOff(context))}
+            val mediaPlayerClient by remember{mutableStateOf(MediaPlayerClient(context))}
+            BreedsTheme(darkTheme = isDarkMode) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -58,7 +65,8 @@ class MainActivity : ComponentActivity() {
                         catsViewModel,
                         dogsViewModel,
                         fishViewModel,
-                        favoritesViewModel
+                        favoritesViewModel,
+                        mediaPlayerClient
                     )
                }
             }
@@ -89,6 +97,10 @@ class MainActivity : ComponentActivity() {
     }
 
 
-
+    /*fun Context.getActivity(): ComponentActivity? = when (this) {
+        is ComponentActivity -> this
+        is ContextWrapper -> baseContext.getActivity()
+        else -> null
+    }*/
 
 }

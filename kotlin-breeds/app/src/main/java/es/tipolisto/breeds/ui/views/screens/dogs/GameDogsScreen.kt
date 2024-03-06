@@ -88,7 +88,7 @@ fun GameDogScreen(navController: NavController, dogsViewModel: DogsViewModel) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GameCatScreen() {
-    BreedsTheme {
+    BreedsTheme (darkTheme = false) {
         //GameDogScreen()
     }
 }

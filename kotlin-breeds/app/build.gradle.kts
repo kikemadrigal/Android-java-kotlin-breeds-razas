@@ -69,6 +69,9 @@ dependencies {
     //implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     //implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
 
+    //Iconos a tope
+    implementation ("androidx.compose.material:material-icons-extended:1.6.2")
+
     //Para ver las afotos
     //implementation ("com.squareup.picasso:picasso:2.71828")
     //Imágenes: https://developer.android.com/jetpack/compose/graphics/images?hl=es-419

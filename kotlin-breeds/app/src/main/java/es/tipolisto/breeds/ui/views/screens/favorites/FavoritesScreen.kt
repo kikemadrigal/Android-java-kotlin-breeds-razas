@@ -47,50 +47,64 @@ import es.tipolisto.breeds.data.database.favorites.FavoritesEntity
 import es.tipolisto.breeds.data.models.cat.Cat
 import es.tipolisto.breeds.data.models.dog.Dog
 import es.tipolisto.breeds.data.models.fish.Fish
+import es.tipolisto.breeds.data.preferences.PreferenceManager
 import es.tipolisto.breeds.data.repositories.CatRepository
 import es.tipolisto.breeds.data.repositories.DogRepository
 import es.tipolisto.breeds.data.repositories.FavoritesRepository
 import es.tipolisto.breeds.data.repositories.FishRepository
 import es.tipolisto.breeds.ui.navigation.AppScreens
+import es.tipolisto.breeds.ui.theme.BreedsTheme
 import es.tipolisto.breeds.ui.viewModels.FavoritesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesScreen(navController: NavController, favoritesViewModel: FavoritesViewModel){
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = "Favorites", color= Color.White, fontWeight = FontWeight.Bold)
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                navigationIcon={
-                    IconButton(onClick = { navController.popBackStack()}) {
-                        Icon(imageVector = Icons.Default.ArrowBack,contentDescription = "Back", tint = Color.White)
+    val context= LocalContext.current
+    var isDarkMode by remember {mutableStateOf(PreferenceManager.readPreferenceThemeDarkOnOff(context))}
+    //var checked by remember {mutableStateOf(false)}
+    BreedsTheme(darkTheme = isDarkMode) {
+
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(text = "Favorites", color = Color.White, fontWeight = FontWeight.Bold)
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Back",
+                                tint = Color.White
+                            )
+                        }
+                    }
+                )
+            }
+        ) {
+            val context = LocalContext.current
+            val listFavorites = FavoritesRepository.getAll(context)
+            LazyColumn(modifier = Modifier.padding(it)) {
+                Log.d("TAG", "FavoritesScreen dice: mostrando favoritos")
+
+                Log.d(
+                    "TAG",
+                    "FavoritesScreen dice: enoontrados: " + listFavorites.size + " favorites"
+                )
+                if (listFavorites.isEmpty())
+                    Log.d("TAG", "FavoritesScreen dice: No hay records")
+                else {
+                    items(listFavorites) { item ->
+                        listIntemRow(item, favoritesViewModel, navController)
                     }
                 }
-            )
-        }
-    ) {
-        val context= LocalContext.current
-        val listFavorites=FavoritesRepository.getAll(context)
-        LazyColumn(modifier= Modifier.padding(it)){
-            Log.d("TAG","FavoritesScreen dice: mostrando favoritos")
 
-            Log.d("TAG","FavoritesScreen dice: enoontrados: "+listFavorites.size+" favorites")
-            if(listFavorites.isEmpty())
-                Log.d("TAG","FavoritesScreen dice: No hay records")
-            else{
-                items(listFavorites){
-                        item->
-                    listIntemRow(item, favoritesViewModel,navController)
-                }
             }
-
-        }
-    }
+        }//Final de scafold
+    }//Final de BreedsTheme
 }
 
 

@@ -25,6 +25,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import es.tipolisto.breeds.R
+import es.tipolisto.breeds.data.preferences.PreferenceManager
 import es.tipolisto.breeds.data.repositories.CatRepository
 import es.tipolisto.breeds.ui.components.MyCircularProgressIndicator
 import es.tipolisto.breeds.ui.navigation.AppScreens
@@ -48,6 +53,9 @@ import es.tipolisto.breeds.ui.viewModels.FishViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameFishScreen(navController: NavController, fishViewModel: FishViewModel){
+    val context= LocalContext.current
+    var isDarkMode by remember { mutableStateOf(PreferenceManager.readPreferenceThemeDarkOnOff(context)) }
+
     LaunchedEffect(key1 = true){
         if(!fishViewModel.justOnce){
             fishViewModel.loadAndInsertBuffer()
@@ -56,31 +64,40 @@ fun GameFishScreen(navController: NavController, fishViewModel: FishViewModel){
     }
 
     fishViewModel.get3RamdomFish()
-    Scaffold (
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = "Fish game", color= Color.White, fontWeight = FontWeight.Bold)
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                navigationIcon={
-                    IconButton(onClick = { navController.popBackStack()}) {
-                        Icon(imageVector = Icons.Default.ArrowBack,contentDescription = "Back", tint = Color.White)
+    BreedsTheme(darkTheme = isDarkMode) {
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(text = "Fish game", color = Color.White, fontWeight = FontWeight.Bold)
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Back",
+                                tint = Color.White
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {
+                            navController.navigate(AppScreens.ListFishScreen.route)
+                        }) {
+                            Image(
+                                painter = painterResource(id = R.drawable.fish),
+                                contentDescription = "Fish list"
+                            )
+                        }
                     }
-                },
-                actions = {
-                    IconButton(onClick = {
-                        navController.navigate(AppScreens.ListFishScreen.route)
-                    }){
-                        Image(painter = painterResource(id = R.drawable.fish), contentDescription = "Fish list")
-                    }
-                }
-            )
+                )
+            }
+        ) {
+            GameFishScreenContent(it, fishViewModel, navController)
         }
-    ) {
-        GameFishScreenContent(it,fishViewModel, navController)
     }
 }
 
@@ -88,7 +105,7 @@ fun GameFishScreen(navController: NavController, fishViewModel: FishViewModel){
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GameFishScreenPreview() {
-    BreedsTheme {
+    BreedsTheme (darkTheme = false){
         //GameFishScreen()
     }
 }

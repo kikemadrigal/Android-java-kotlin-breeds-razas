@@ -2,16 +2,23 @@ package es.tipolisto.breeds.ui.navigation
 
 import android.media.MediaPlayer
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import es.tipolisto.breeds.data.database.AppDataBase
+import es.tipolisto.breeds.data.preferences.PreferenceManager
 import es.tipolisto.breeds.ui.viewModels.CatsViewModel
 import es.tipolisto.breeds.ui.viewModels.DogsViewModel
 import es.tipolisto.breeds.ui.viewModels.FavoritesViewModel
 import es.tipolisto.breeds.ui.viewModels.FishViewModel
+import es.tipolisto.breeds.ui.views.screens.BeautiesScreen
 import es.tipolisto.breeds.ui.views.screens.cats.DetailCatScreen
 import es.tipolisto.breeds.ui.views.screens.cats.GameCatScreen
 import es.tipolisto.breeds.ui.views.screens.cats.ListCatsScreen
@@ -26,31 +33,38 @@ import es.tipolisto.breeds.ui.views.screens.favorites.FavoritesScreen
 import es.tipolisto.breeds.ui.views.screens.fish.DetailFishScreen
 import es.tipolisto.breeds.ui.views.screens.fish.GameFishScreen
 import es.tipolisto.breeds.ui.views.screens.fish.ListFishScreen
+import es.tipolisto.breeds.utils.MediaPlayerClient
 
 @Composable
 fun AppNavigation(
     catsViewModel:CatsViewModel,
     dogsViewModel: DogsViewModel,
     fishViewModel: FishViewModel,
-    favoritesViewModel: FavoritesViewModel
+    favoritesViewModel: FavoritesViewModel,
+    mediaPlayerClient:MediaPlayerClient
 ){
     val navController = rememberNavController()
+
     NavHost(
         navController = navController,
         startDestination = AppScreens.SplashScreen.route
     ) {
+
         //Aquí definimos las navegaciones
         composable(AppScreens.SplashScreen.route){
             SplashScreen(navController)
         }
         composable(AppScreens.MenuScreen.route){
-            MenuScreen(navController)
+            MenuScreen(navController,mediaPlayerClient)
         }
         composable(AppScreens.RecordsScreen.route){
             RecordsScreen(navController)
         }
         composable(AppScreens.SettingsScreen.route){
-            SettingsScreen(navController)
+            SettingsScreen(navController,mediaPlayerClient)
+        }
+        composable(AppScreens.BeautiesScreen.route){
+            BeautiesScreen(navController)
         }
 
         /*
@@ -110,7 +124,7 @@ fun AppNavigation(
          * Fish
          */
         composable(AppScreens.GameFishScreen.route){
-            GameFishScreen(navController,fishViewModel)
+           GameFishScreen(navController,fishViewModel)
         }
         composable(AppScreens.ListFishScreen.route){
             ListFishScreen(navController, fishViewModel)

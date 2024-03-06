@@ -2,6 +2,7 @@ package es.tipolisto.breeds.utils
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.util.Log
 import es.tipolisto.breeds.R
 
 
@@ -10,15 +11,16 @@ class MediaPlayerClient(val context: Context) {
     private var menuMusic:MediaPlayer
     private var endMusic:MediaPlayer
     private var effects:MediaPlayer
-    private var instance: MediaPlayerClient? = null
+    //private var instance: MediaPlayerClient? = null
     init {
         inGameMusic = MediaPlayer.create(context, R.raw.ingame)
         menuMusic= MediaPlayer.create(context, R.raw.intro)
         endMusic= MediaPlayer.create(context, R.raw.gameover)
         effects= MediaPlayer.create(context, R.raw.clickbutton)
         inGameMusic.isLooping=true
+        menuMusic.isLooping=true
     }
-    fun getInstance(): MediaPlayerClient {
+    /*fun getInstance(): MediaPlayerClient {
         if (instance == null) {
             synchronized(this) {
                 if (instance == null) {
@@ -27,23 +29,31 @@ class MediaPlayerClient(val context: Context) {
             }
         }
         return instance!!
-    }
+    }*/
     fun playInGameMusic(){
         if(!inGameMusic.isPlaying)inGameMusic.start()
     }
 
     fun stopInGameMusic(){
-        if(inGameMusic.isPlaying)
-            inGameMusic.stop()
+        if(inGameMusic.isPlaying)inGameMusic.stop()
     }
 
     fun playMenuMusic(){
-        if(!inGameMusic.isPlaying)menuMusic.start()
+        Log.d("TAG","MediaPlayerClient dice: Hemos entrado en reproducir musica del menu")
+        menuMusic= MediaPlayer.create(context, R.raw.intro)
+        if(!menuMusic.isPlaying){
+            //menuMusic.reset()
+            menuMusic.start()
+            Log.d("TAG","MediaPlayerClient dice: reproduciendo musica menu")
+        }
     }
 
     fun stopMenuMusic(){
-        if(inGameMusic.isPlaying)
+        Log.d("TAG","MediaPlayerClient dice: Hemos entrado en parar musica menu")
+        if(menuMusic.isPlaying){
             menuMusic.stop()
+            Log.d("TAG","MediaPlayerClient dice: musica menu parada")
+        }
     }
     fun clickAudio(){
         effects.start()

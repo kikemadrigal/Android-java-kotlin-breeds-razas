@@ -5,11 +5,8 @@ sealed class AppScreens(val route:String){
     object MenuScreen:AppScreens("menuScreen")
     object RecordsScreen:AppScreens("recordsScreen")
     object SettingsScreen:AppScreens("settingsScreen")
-
-    /*
-     * Favorites
-     */
     object FavoritesScreen:AppScreens("favoritesScreen")
+    object BeautiesScreen:AppScreens("beautiesScreen")
 
 
     /*

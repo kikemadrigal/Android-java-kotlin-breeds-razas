@@ -89,7 +89,7 @@ fun ListFishScreen(navController:NavController,fishViewModel: FishViewModel) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ListFishScreenPreview() {
-    BreedsTheme {
+    BreedsTheme (darkTheme = false){
         //ListFishScreen()
     }
 }

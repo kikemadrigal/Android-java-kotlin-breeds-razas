@@ -94,7 +94,7 @@ fun ListDogScreen(navController:NavController, dogsViewModel: DogsViewModel) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ListFishScreenPreview() {
-    BreedsTheme {
+    BreedsTheme (darkTheme = false){
         //ListFishScreen()
     }
 }

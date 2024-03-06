@@ -24,13 +24,14 @@ class CatsViewModel: ViewModel() {
         private set
     var stateScore by mutableStateOf(0)
         private set
+    var result=false
+        private set
     var state by mutableStateOf(CatsScreenState())
         private set
     var stateListRandomCats by mutableStateOf(CatsScreenState().stateListRandomCats)
     //var stateIsloading by mutableStateOf(CatsScreenState().isLoading)
     //Para que solo se carga una vez la lista de internet
     var justOnce by mutableStateOf(false)
-
     var isLoading by mutableStateOf(false)
     suspend fun loadAndInsertBuffer(){
         isLoading=true

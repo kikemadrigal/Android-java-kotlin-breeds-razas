@@ -82,8 +82,8 @@ fun DetailCatScreen(navController: NavController, catsViewModel: CatsViewModel, 
             )
         }
     ) {
-        if(referenceImageId==null) Log.d("TAG", "DetailCatScreen dice:  el referenceImageId es nulo")
-        else Log.d("TAG", "DetailCatScreen dice: recibido el breed_cat_id: "+referenceImageId)
+        //if(referenceImageId==null) Log.d("TAG", "DetailCatScreen dice:  el referenceImageId es nulo")
+        //else Log.d("TAG", "DetailCatScreen dice: recibido el breed_cat_id: "+referenceImageId)
         val cat = catsViewModel.getCatByImageCat(referenceImageId)
         if(cat==null) navController.navigate(AppScreens.ListCatsScreen.route)
         var url = cat?.image?.url

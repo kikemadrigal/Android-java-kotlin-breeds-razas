@@ -80,7 +80,7 @@ fun ListCatsScreen(navController:NavController,catsViewModel:CatsViewModel) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ListCatsScreenPreview() {
-    BreedsTheme {
+    BreedsTheme (darkTheme = false){
         //ListCatsScreen()
     }
 }
