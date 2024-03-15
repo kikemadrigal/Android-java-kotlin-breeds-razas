@@ -23,7 +23,7 @@ import kotlin.math.sin
 @Composable
 fun RatingBar(
     rating: Float,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     color: Color = Color.Yellow
 ) {
     Row(modifier = modifier.wrapContentSize()) {

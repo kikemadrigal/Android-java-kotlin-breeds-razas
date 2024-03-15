@@ -13,14 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import es.tipolisto.breeds.R
 
 @Composable
-fun MyCircularProgressIndicator(isDisplayed:Boolean,animal:String) {
+fun MyCircularProgressIndicator(isDisplayed:Boolean) {
     if (isDisplayed) {
         Column (
             modifier = Modifier.fillMaxSize(),
@@ -29,7 +31,7 @@ fun MyCircularProgressIndicator(isDisplayed:Boolean,animal:String) {
         ){
             CircularProgressIndicator(modifier = Modifier.size(100.dp))
             Text(
-                text = "Wait, loading $animal list...",
+                text = stringResource(R.string.wait_loading_list),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 20.dp)
@@ -41,5 +43,5 @@ fun MyCircularProgressIndicator(isDisplayed:Boolean,animal:String) {
 @Preview(showSystemUi = true)
 @Composable
 fun MyCircularProgressIndicatorPreview(){
-    MyCircularProgressIndicator(true, "cats")
+    MyCircularProgressIndicator(true)
 }

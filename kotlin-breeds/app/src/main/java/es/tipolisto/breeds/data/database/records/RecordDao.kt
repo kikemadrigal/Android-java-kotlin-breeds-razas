@@ -28,6 +28,13 @@ interface RecordDao {
     @Query("SELECT * FROM RecordEntity WHERE name IN (:name)")
     fun loadAllByIds(name:Array<Int>): List<RecordEntity>
 
+    //Obtener la maxima puntación
+    @Query("SELECT max(score) FROM RecordEntity")
+    fun getMaxRecordEntities(): Int
+
+
+
+
 
     @Insert
     fun insertAll(vararg recordEntities: RecordEntity)

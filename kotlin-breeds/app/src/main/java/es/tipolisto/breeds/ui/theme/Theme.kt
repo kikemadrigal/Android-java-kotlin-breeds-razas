@@ -15,16 +15,39 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+/*https://m3.material.io/styles/color/roles
+    Primary,secundary i tertiary: Roles de color de acento utilizados
+    para enfatizar o dar énfasis a los elementos del primer plano
+    Para seleccionar paletas tenemos: https://color.adobe.com/es/explore
+*/
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    //El primary es para: Rellenos, textos e íconos de alto énfasis contra la superficie
+    //El primary lo utilizo para el toolbar y el navigationbar
+    primary = Purple40,
+    //OnPrimary:Texto e íconos contra primario
+    onPrimary = White100,
+    secondary = PurpleGrey40,
+    tertiary = Pink40,
+    //El color de fondo en el tema oscuro será negro
+    background = Black100,
+    //El texto que haya sobre el fondo oscuro será blanco
+    onBackground = White100
+    //tertiary = Pink40
+
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    //Primary:Rellenos, textos e íconos de alto énfasis contra la superficie
+    primary = Purple80,
+    //OnPrimary:Texto e íconos contra primario
+    onPrimary = Black100,
+    secondary = PurpleGrey80,
+    tertiary = Pink80,
+    //El color de fondo en el tema claro será blanco
+    background = White100,
+    onBackground = Black100
+
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

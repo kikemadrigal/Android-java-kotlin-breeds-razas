@@ -25,7 +25,7 @@ fun SplashScreen(navController:NavController){
     Splash()
     //MyCircularProgressIndicator(isDisplayed = true)
     LaunchedEffect(key1 = true ){
-        delay(3000)
+        delay(1000)
         /*
         CatRepository.loadCatsAndInsertBuffer()
         DogRepository.loadDogAndInsertBuffer()
@@ -43,7 +43,7 @@ fun Splash(){
             painter = painterResource(id = R.drawable.splash_screen),
             contentDescription = "Splash breeds",
             Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillWidth
+            contentScale = ContentScale.FillBounds
         )
     }
 }

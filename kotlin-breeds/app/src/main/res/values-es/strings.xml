@@ -2,23 +2,27 @@
 <resources>
     <string name="app_name">Razas y especies</string>
     <string name="next">Continuar</string>
+
+    <string name="cat_game_playing_cat_breeds">Razas de gatos</string>
     <string name="cat_indoor">interior</string>
     <string name="cat_adaptability">adaptabilidad</string>
     <string name="cat_affection_level">nivel de afecto</string>
-    <string name="cat_child_friendly">amigable con los niños</string>
-    <string name="cat_cat_friendly">amigable con los gatos</string>
-    <string name="cat_dog_friendly">amigable con los perros</string>
+    <string name="cat_child_friendly">amigable con niños</string>
+    <string name="cat_cat_friendly">amigable con gatos</string>
+    <string name="cat_dog_friendly">amigable con perros</string>
     <string name="cat_energy_level">nivel de energía</string>
     <string name="cat_grooming">aseo</string>
     <string name="cat_health_issues">problemas de salud</string>
     <string name="cat_intelligence">inteligencia</string>
     <string name="cat_shedding_level">nivel de muda</string>
     <string name="cat_social_needs">necesidades sociales</string>
-    <string name="cat_stranger_friendly">Amigable con los extraños</string>
+    <string name="cat_stranger_friendly">Amigable con extraños</string>
     <string name="cat_vocalisation">vocalización</string>
     <string name="cat_experimental">experimental</string>
     <string name="cat_suppressed_tail">cola suprimida</string>
     <string name="cat_short_legs">patas cortas</string>
+
+
     <string name="dog_bred_for">criado para</string>
     <string name="dog_breed_group">grupo de raza</string>
     <string name="dog_life_span">esperanza de vida</string>
@@ -29,5 +33,28 @@
 
 
     <string name="settings_description">Elige si quieres adivinar la raza del gato o del perro.\nTienes 7 vidas.\nElige configuración para cambiar las carácteristicas del juego.</string>
-    <string name="cat_game_playing_cat_breeds">Jugando a razas de gatos</string>
+    <string name="dog_game_playing_dog_breeds">Razas de perros</string>
+    <string name="fish_game_Playing_fish_species">Especies de pez</string>
+    <string name="cat_list">Lista de gatos</string>
+    <string name="cat_detail">Detalle de gato</string>
+    <string name="wait_loading_list">Espera, leyendo lista</string>
+    <string name="lives">"Vidas: "</string>
+    <string name="score">"  Puntos: "</string>
+    <string name="empty_list">Lista vacía</string>
+    <string name="are_you_sure_you_want_to_go_out">¿Esta seguro que desea salir?</string>
+    <string name="breeds_says">Breeds dice</string>
+    <string name="playing_dog_breeds">Razas de perros</string>
+    <string name="fish_species">Especies de pez</string>
+    <string name="dog_list">Lista de perros</string>
+    <string name="fish_list">Lista de peces</string>
+    <string name="dog_detail">Detalle del perro</string>
+    <string name="added_to_favorites">Añadido a favoritos</string>
+    <string name="fish_detail">Detalle de pez</string>
+    <string name="favorites">Favoritos</string>
+    <string name="all">Todos</string>
+    <string name="cats">Gatos</string>
+    <string name="dogs">Perros</string>
+    <string name="fish">Peces</string>
+    <string name="upload_to_internet">Subir puntos a internet</string>
+
 </resources>

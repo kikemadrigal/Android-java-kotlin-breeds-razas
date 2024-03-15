@@ -8,7 +8,7 @@ sealed class AppScreens(val route:String){
     object FavoritesScreen:AppScreens("favoritesScreen")
     object BeautiesScreen:AppScreens("beautiesScreen")
 
-
+    object LoginScreen:AppScreens("loginScreen")
     /*
      * Cats
      */

@@ -1,6 +1,8 @@
 package es.tipolisto.breeds.data.network
 
 import es.tipolisto.breeds.data.models.fish.Fish
+import es.tipolisto.breeds.utils.Constants
+
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -40,7 +42,7 @@ interface IFishApiService {
      */
     @GET("fishes")
     //@GET("fish/Tarpon")
-    @Headers("X-RapidAPI-Key: 3a4e508e58mshc8f669e5eae0e18p1b6153jsn2bf8cb0f5d54", "X-RapidAPI-Host: fish-species.p.rapidapi.com")
+    @Headers("X-RapidAPI-Key: ${Constants.KEY_API_FISH}" ,"X-RapidAPI-Host: fish-species.p.rapidapi.com")
     suspend fun getAllFish(): Response<List<Fish>>
 
     @GET("fish/{name}")

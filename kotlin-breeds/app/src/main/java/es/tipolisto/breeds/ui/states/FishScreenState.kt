@@ -1,9 +1,11 @@
 package es.tipolisto.breeds.ui.states
 
+import es.tipolisto.breeds.data.models.cat.Cat
 import es.tipolisto.breeds.data.models.fish.Fish
 
 data class FishScreenState(
-    val stateListRandomFish: MutableList<Fish?> = mutableListOf(null, null, null),
-    var correctAnswer:Int=0,
-    var isLoading:Boolean=false
+    val listRandomFish: MutableList<Fish?> = mutableListOf(null, null, null),
+    var lives:Int=5,
+    var score:Int=0,
+    var correctAnswer:Int=0
 )

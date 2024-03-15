@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -47,9 +48,6 @@ fun BeautiesScreen(navController:NavController){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Beauty(navController:NavController) {
-
-    val scrollState = rememberScrollState()
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -68,7 +66,9 @@ fun Beauty(navController:NavController) {
         }
     ){
            Column (
-               modifier=Modifier.padding(it),
+               modifier=Modifier
+                   .padding(it)
+                   .verticalScroll(rememberScrollState()),
                verticalArrangement = Arrangement.spacedBy(20.dp)
            ){
                Text(text = "Sube la imagen de tu animal")

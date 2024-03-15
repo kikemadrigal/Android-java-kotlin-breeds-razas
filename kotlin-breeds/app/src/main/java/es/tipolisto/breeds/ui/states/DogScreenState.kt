@@ -4,7 +4,8 @@ import es.tipolisto.breeds.data.models.cat.Cat
 import es.tipolisto.breeds.data.models.dog.Dog
 
 data class DogScreenState(
-    val stateListRandomDogs: MutableList<Dog?> = mutableListOf(null, null, null),
-    var correctAnswer:Int=0,
-    var isLoading:Boolean=false
+    val listRandomDogs: MutableList<Dog?> = mutableListOf(null, null, null),
+    var lives:Int=5,
+    var score:Int=0,
+    var correctAnswer:Int=0
 )

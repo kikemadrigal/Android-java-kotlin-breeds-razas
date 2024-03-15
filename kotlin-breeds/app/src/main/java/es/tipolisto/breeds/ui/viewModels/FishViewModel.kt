@@ -2,6 +2,7 @@ package es.tipolisto.breeds.ui.viewModels
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,73 +10,87 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import es.tipolisto.breeds.data.database.favorites.FavoritesEntity
+import es.tipolisto.breeds.data.models.cat.Cat
 import es.tipolisto.breeds.data.models.fish.Fish
+import es.tipolisto.breeds.data.providers.CatProvider
 import es.tipolisto.breeds.data.providers.FishProvider
 import es.tipolisto.breeds.data.repositories.CatRepository
 import es.tipolisto.breeds.data.repositories.FavoritesRepository
 import es.tipolisto.breeds.data.repositories.FishRepository
 import es.tipolisto.breeds.ui.states.FishScreenState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Date
 import kotlin.random.Random
 import kotlin.random.nextInt
 
 class FishViewModel: ViewModel() {
-    var stateLives by mutableStateOf(5)
-        private set
-    var stateScore by mutableStateOf(0)
-        private set
     var state by mutableStateOf(FishScreenState())
         private set
-    var stateListRandomFish by mutableStateOf(FishScreenState().stateListRandomFish)
-    //var stateIsLoading by mutableStateOf(FishScreenState().isLoading)
-    var isLoading by mutableStateOf(false)
     var justOnce by mutableStateOf(false)
-    //var isFavorite by mutableStateOf(false)
-        //private set
+    //var stateIsLoading by mutableStateOf(FishScreenState().isLoading)
+    var stateIsLoading by mutableStateOf(false)
+    var gameOver by mutableStateOf(false)
+        private set
+    var clickPressed by mutableStateOf(false)
+    var clicksToExit=0
+
     suspend fun loadAndInsertBuffer(){
-        isLoading=true
+        stateIsLoading=true
         FishRepository.loadFishAndInsertBuffer()
-        isLoading=false
+        gameOver=false
+        stateIsLoading=false
+    }
+    fun initGame() {
+        gameOver=false
+        state.lives=5
+        state.score=0
+    }
+    fun getAll():List<Fish>{
+        return FishProvider.listFish
     }
     fun get3RamdomFish(){
         viewModelScope.launch {
-            isLoading=true
-            stateListRandomFish.set(0, FishRepository.getRandomFishFromBuffer(stateListRandomFish))
-            stateListRandomFish.set(1, FishRepository.getRandomFishFromBuffer(stateListRandomFish))
-            stateListRandomFish.set(2, FishRepository.getRandomFishFromBuffer(stateListRandomFish))
-            isLoading=false
-            Log.d("TAG", "FishViewModel: fish 1->${stateListRandomFish[0]?.name}, ${stateListRandomFish[0]?.id}")
-            Log.d("TAG", "FishViewModel: fish 2->${stateListRandomFish[1]?.name}, ${stateListRandomFish[1]?.id}")
-            Log.d("TAG", "FishViewModel: fish 3->${stateListRandomFish[2]?.name}, ${stateListRandomFish[2]?.id}")
-
-            state.correctAnswer= Random.nextInt(0..2)
-            Log.d("TAG", "FishViewModel: El elegido es el ${state.correctAnswer}->${stateListRandomFish[state.correctAnswer]?.name}, ${stateListRandomFish[state.correctAnswer]?.id}")
-
+            if (clickPressed) delay(2000)
+            val listRandomFish= mutableListOf<Fish?>(null, null, null)
+            listRandomFish[0] = FishRepository.getRandomFishFromBuffer(listRandomFish)
+            listRandomFish[1] = FishRepository.getRandomFishFromBuffer(listRandomFish)
+            listRandomFish[2] = FishRepository.getRandomFishFromBuffer(listRandomFish)
             state=state.copy(
-                stateListRandomFish=stateListRandomFish
+                listRandomFish=listRandomFish
             )
+            state.correctAnswer= Random.nextInt(0..2)
+            clickPressed=false
+            //Log.d("TAG", "FishViewModel: fish 1->${stateListRandomFish[0]?.name}, ${stateListRandomFish[0]?.id}")
+            //Log.d("TAG", "FishViewModel: fish 2->${stateListRandomFish[1]?.name}, ${stateListRandomFish[1]?.id}")
+            //Log.d("TAG", "FishViewModel: fish 3->${stateListRandomFish[2]?.name}, ${stateListRandomFish[2]?.id}")
+            Log.d("TAG", "FishViewModel: El elegido es el ${state.correctAnswer}->${state.listRandomFish[state.correctAnswer]?.name}, ${state.listRandomFish[state.correctAnswer]?.id}")
         }
     }
 
-    fun getFishCorrectAnswer(): Fish?{
-        return state.stateListRandomFish[state.correctAnswer]
+    fun getActiveFish(): Fish?{
+        return state.listRandomFish[state.correctAnswer]
     }
 
 
     fun checkCorrectAnswer(answer:Int){
         Log.d("TAG", "GogViewModel: Has pinchado en el radiobutton "+answer)
         if(answer==state.correctAnswer){
-            stateScore+=10
+            state.score+=10
         }
         else {
-            stateLives--
+            state.lives--
+            if(state.lives<=0){
+
+                gameOver=true
+            }
         }
-        get3RamdomFish()
     }
 
-    fun checkGameOver():Boolean{
-        return stateLives==0
+    @Composable
+    private fun checkRecord() {
+
+
     }
 
     fun getFishByIdFish(id:Int): Fish?{
@@ -83,13 +98,5 @@ class FishViewModel: ViewModel() {
         return FishRepository.getFishFromSpecieIdInBuffer(id)
     }
 
-    fun createFavorite(context: Context, idBreed: Int){
-        //Creamos el favorito a partir del idBreed
-        val favorite=FavoritesEntity(null, idBreed.toString(), "Fish", Date().toString())
-        //val favorite= FavoritesRepository.getById(context,id)
-        FavoritesRepository.insert(context,favorite)
-        //FavoritesRepository.insert(context,favorite)
-        Log.d("TAG","FisViewModel die: preparada el id: "+idBreed+"para añadir a favoritos a "+favorite.toString())
-        //isFavorite=true
-    }
+
 }

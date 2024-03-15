@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,13 +38,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import es.tipolisto.breeds.R
 import es.tipolisto.breeds.data.models.cat.Cat
+import es.tipolisto.breeds.data.preferences.PreferenceManager
 import es.tipolisto.breeds.data.providers.CatProvider
 import es.tipolisto.breeds.ui.navigation.AppScreens
 import es.tipolisto.breeds.ui.theme.BreedsTheme
@@ -49,32 +56,40 @@ import es.tipolisto.breeds.ui.viewModels.CatsViewModel
 
 @Composable
 fun ListCatsScreen(navController:NavController,catsViewModel:CatsViewModel) {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = "Cat list", color= Color.White, fontWeight = FontWeight.Bold)
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                navigationIcon={
-                    IconButton(onClick = { navController.popBackStack()}) {
-                        Icon(imageVector = Icons.Default.ArrowBack,contentDescription = "Back", tint = Color.White)
+    val context= LocalContext.current
+    val isDarkMode by remember {mutableStateOf(PreferenceManager.readPreferenceThemeDarkOnOff(context))}
+    BreedsTheme(darkTheme = isDarkMode) {
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.background,
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(text = stringResource(id = R.string.cat_list))
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon( imageVector = Icons.Default.ArrowBack,contentDescription = "Back")
+                        }
                     }
+                )
+            }
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val datos = catsViewModel.getAll()
+                items(datos) { item ->
+                    ListIntemRow(item, navController)
                 }
-            )
-        }
-    ) {
-        LazyColumn(modifier=Modifier.padding(it)){
-            val datos=CatProvider.listCats
-            items(datos){
-                    item->
-                listIntemRow(item, navController)
             }
         }
     }
-
 }
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -87,44 +102,40 @@ fun ListCatsScreenPreview() {
 
 
 @Composable
-fun listIntemRow(cat: Cat, navController: NavController){
-    Column(modifier= Modifier
-        .padding(30.dp)
-        .background(MaterialTheme.colorScheme.primary), horizontalAlignment = Alignment.CenterHorizontally){
-            getImageFromInternet(cat = cat, navController = navController)
-            //val imageUrl: String =cat.reference_image_id
-            //Text(text = ""+imageUrl?.isNotEmpty(), color= Color.White, fontSize = 10.sp )
-            Text(text = cat.name, color= Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp )
-            Text(text = cat.description, color= Color.White, fontSize = 20.sp )
+fun ListIntemRow(cat: Cat, navController: NavController){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+            .clickable{
+                navController.navigate(AppScreens.DetailCatScreen.route + "/${cat.reference_image_id}")
+            },
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CatImage(cat = cat)
+            Text(text = cat.name, style = MaterialTheme.typography.headlineLarge)
+            Text(text = cat.description, style = MaterialTheme.typography.bodyLarge)
+        }
     }
 }
 
 @Composable
-fun getImageFromInternet(cat: Cat, navController: NavController){
-    Column {
-        //Image(painter= rememberAsyncImagePainter(request="https://loremflickr.com/100/100"), contentDescription = null )
-        var url=cat.image?.url
-        var model by remember { mutableStateOf(url) }
-        val context= LocalContext.current
-        Spacer(
-            modifier = Modifier
-                .height(8.dp)
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.background)
-        )
-        AsyncImage(
-            model = model,
-            contentDescription = "Select a breed",
-            modifier = Modifier
-                .size(400.dp,300.dp)
-                .padding(top = 10.dp)
-                .clickable {
-                    Toast
-                        .makeText(context, "Go to detail cat", Toast.LENGTH_LONG)
-                        .show()
-                    navController.navigate(AppScreens.DetailCatScreen.route+"/${cat.reference_image_id}")
-                },
-            contentScale = ContentScale.Crop
-        )
-    }
+fun CatImage(cat: Cat){
+    //Image(painter= rememberAsyncImagePainter(request="https://loremflickr.com/100/100"), contentDescription = null )
+    var url=cat.image?.url
+    var model by remember { mutableStateOf(url) }
+    AsyncImage(
+        model = model,
+        contentDescription = "Select a breed",
+        modifier = Modifier
+            .size(300.dp, 200.dp)
+            .padding(10.dp),
+        contentScale = ContentScale.FillWidth
+    )
 }

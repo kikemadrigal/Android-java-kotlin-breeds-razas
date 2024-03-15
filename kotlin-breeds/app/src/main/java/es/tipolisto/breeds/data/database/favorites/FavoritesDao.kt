@@ -13,16 +13,26 @@ interface FavoritesDao {
 
     @Query("SELECT * FROM FavoritesEntity")
     fun getAll(): List<FavoritesEntity>
+    @Query("SELECT * FROM FavoritesEntity WHERE animal='Cat' ORDER BY nameBreed")
+    fun getAllFavoritesOnlyCats(): List<FavoritesEntity>
+    @Query("SELECT * FROM FavoritesEntity WHERE animal='Dog' ORDER BY nameBreed")
+    fun getAllFavoritesOnlyDogs(): List<FavoritesEntity>
+    @Query("SELECT * FROM FavoritesEntity WHERE animal='Fish' ORDER BY nameBreed")
+    fun getAllFavoritesOnlyFish(): List<FavoritesEntity>
 
-    @Query("SELECT * FROM FavoritesEntity WHERE id=(:id)")
-    fun getFavoriteById(id: Int): FavoritesEntity
 
-    @Query("SELECT * FROM FavoritesEntity WHERE idBreed IN (:idBreed)")
-    fun getFavoriteByIdBreed(idBreed: String): List<FavoritesEntity>
+
+
+    @Query("SELECT * FROM FavoritesEntity WHERE idAnimal=(:id)")
+    fun getFavoriteById(id: String): FavoritesEntity?
+    @Query("SELECT * FROM FavoritesEntity WHERE idAnimal IN (:id) ORDER BY nameBreed")
+    fun getFavoriteByIdAnimal(id: String): List<FavoritesEntity>
+
+
+
 
     @Insert
     fun insert(favoritesEntity: FavoritesEntity)
-
     @Insert
     fun insertAll(vararg favoritesEntity: FavoritesEntity)
 

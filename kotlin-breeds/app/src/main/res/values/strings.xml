@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Breeds</string>
+    <string name="app_name">Breeds % species</string>
     <string name="next">Continue</string>
     <string name="cat_indoor">indoor</string>
     <string name="cat_adaptability">adaptability</string>
@@ -31,4 +31,27 @@
 
     <string name="settings_description">Choose whether you want to guess the breed of the cat or the dog. You have 7 lives. Choose settings to change the game characteristics.</string>
     <string name="cat_game_playing_cat_breeds">Playing cat breeds</string>
+    <string name="dog_game_playing_dog_breeds">Playing dog breeds</string>
+    <string name="fish_game_Playing_fish_species">Playing fish species</string>
+    <string name="cat_list">cat list</string>
+    <string name="cat_detail">Cat detail</string>
+    <string name="wait_loading_list">Wait, loading list...</string>
+    <string name="lives">"Lives: "</string>
+    <string name="score">"  Score: "</string>
+    <string name="empty_list">Empty list</string>
+    <string name="are_you_sure_you_want_to_go_out">Are you sure you want to go out?</string>
+    <string name="breeds_says">Breeds says</string>
+    <string name="playing_dog_breeds">Playing dog breeds</string>
+    <string name="fish_species">Fish species</string>
+    <string name="dog_list">Dog list</string>
+    <string name="fish_list">Fish list</string>
+    <string name="dog_detail">Dog detail</string>
+    <string name="added_to_favorites">Added to favorites</string>
+    <string name="fish_detail">Fish detail</string>
+    <string name="favorites">Favorites</string>
+    <string name="all">All</string>
+    <string name="cats">Cats</string>
+    <string name="dogs">Dogs</string>
+    <string name="fish">Fish</string>
+    <string name="upload_to_internet">Upload points to the internet</string>
 </resources>

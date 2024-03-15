@@ -57,14 +57,13 @@ import es.tipolisto.breeds.utils.MediaPlayerClient
 @Composable
 fun SettingsScreen(navController:NavController, mediaPlayerClient: MediaPlayerClient) {
     val context = LocalContext.current
+    //val mediaPlayerClient by remember{ mutableStateOf(MediaPlayerClient(context))}
     var switchmusicChecked by remember {mutableStateOf(PreferenceManager.readPreferenceMusicOnOff(context))}
     var isEnabledMusic by remember {mutableStateOf(PreferenceManager.readPreferenceMusicOnOff(context))}
     //Está es la variable que le pasamos al theme
     var isDarkMode by remember {mutableStateOf(PreferenceManager.readPreferenceThemeDarkOnOff(context))}
     //Nos sirve para poner el switch a la derecha si está ativado el modo noche
     var switchThemeDarkChecked by remember {mutableStateOf(PreferenceManager.readPreferenceThemeDarkOnOff(context))}
-    //var themeDarkChecked=PreferenceManager.readPreferenceThemeDarkOnOff(context)
-    val scrollState= rememberScrollState()
     //En settingsScreen hace falta el tema ya que solo cambia donde está la variable mutable
     BreedsTheme(darkTheme = isDarkMode) {
         Scaffold(
@@ -90,7 +89,7 @@ fun SettingsScreen(navController:NavController, mediaPlayerClient: MediaPlayerCl
                     modifier = Modifier
                         .padding(it)
                         .fillMaxSize()
-                        .verticalScroll(scrollState)
+                        .verticalScroll(rememberScrollState()),
                     ){
                 Row(
                     modifier = Modifier
@@ -111,8 +110,8 @@ fun SettingsScreen(navController:NavController, mediaPlayerClient: MediaPlayerCl
                             switchmusicChecked=it
                             isEnabledMusic=!isEnabledMusic
                             PreferenceManager.savePreferenceMusicOnOff(context,isEnabledMusic)
-                            if(!isEnabledMusic) mediaPlayerClient.stopMenuMusic()
-                            else mediaPlayerClient.playMenuMusic()
+                            //if(!isEnabledMusic) mediaPlayerClient.stopMenuMusic()
+                            //else mediaPlayerClient.playMenuMusic()
                         },
                     )
                 }
