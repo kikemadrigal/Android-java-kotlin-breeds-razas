@@ -9,14 +9,30 @@ import es.tipolisto.breeds.data.database.records.RecordEntity
 class RecordsRepository() {
 
     companion object{
-        fun getLast10(recordDao: RecordDao):List<RecordEntity>{
-            return recordDao.getLast10RecordEntities()
+        fun getFirst20(recordDao: RecordDao):List<RecordEntity>{
+            return recordDao.getFirst20RecordEntities()
         }
+
+
+
+        fun getFirst10RecordsByPosition(recordDao: RecordDao):List<RecordEntity>?{
+            return recordDao.getFirst10RecordsByPosition()
+        }
+        fun getNewRecordPosition (recordDao: RecordDao,score:Int):RecordEntity?{
+            return recordDao.getNewRecordPosition(score)
+        }
+        fun getFollowingRecords(recordDao: RecordDao,newPosition:Int):List<RecordEntity>?{
+            return recordDao.getFollowingRecords(newPosition)
+        }
+
+
 
         fun insert(recordDao: RecordDao,recordEntities: RecordEntity){
             recordDao.insert(recordEntities)
         }
 
-
+        fun update(recordDao: RecordDao,recordEntity: RecordEntity){
+            recordDao.update(recordEntity)
+        }
     }
 }

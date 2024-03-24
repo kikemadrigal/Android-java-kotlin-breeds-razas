@@ -93,7 +93,7 @@ fun Login(loginViewModel: LoginViewModel){
 
     Column (modifier=Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally){
         HeadImage(Modifier.align(Alignment.CenterHorizontally))
-        Spacer(modifier = Modifier.padding(16.dp))
+       //Spacer(modifier = Modifier.padding(16.dp))
         EmailField(email, {loginViewModel.onLoginChange(it,password)})
         Spacer(modifier = Modifier.padding(4.dp))
         PasswordField(password,{loginViewModel.onLoginChange(email,it)})
@@ -129,7 +129,7 @@ fun ForgotPassword() {
 
 @Composable
 fun HeadImage(modifier: Modifier){
-    Image(modifier=modifier.height(400.dp),painter = painterResource(id = R.drawable.splash_screen), contentDescription = "Header")
+    Image(modifier=modifier.height(400.dp),painter = painterResource(id = R.drawable.login), contentDescription = "Header")
 }
 
 

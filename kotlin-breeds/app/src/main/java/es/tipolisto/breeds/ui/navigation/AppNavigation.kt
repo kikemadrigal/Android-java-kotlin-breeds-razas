@@ -87,7 +87,7 @@ fun AppNavigation(
          * CATS
          */
         composable(AppScreens.GameCatScreen.route){
-            GameCatScreen(navController,catsViewModel, mediaPlayerClient)
+            GameCatScreen(navController,catsViewModel,recordsViewModel, mediaPlayerClient)
         }
         composable(AppScreens.ListCatsScreen.route){
             ListCatsScreen(navController,catsViewModel)

@@ -1,15 +1,7 @@
 
-settings
-room para records
-music and effects
+. Termina lo de los records en dogs y fish
+-termina la camara y fotos
+-empieza la el backend
 
 
-
-1 Modifica el titulo y ponle breeds and species y el titulo tambien en español
-2 pon un pez en la imagen del splash
-3 Mejora la presentacion en general
-4 ponle un alert dialog quelal pulsar back 2 veces se saldrá
-5. Aumenta el tamaño de letra de los texts en los games
-6. POnle un search al detail
-7.implementa el bosxwithcontraints para distinguir entre landscape y portrait
 

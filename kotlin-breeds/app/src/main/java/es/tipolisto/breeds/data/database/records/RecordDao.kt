@@ -16,14 +16,30 @@ interface RecordDao {
     @Query("SELECT * FROM RecordEntity WHERE name LIKE (:userEntityName)")
     fun getRecordByName(userEntityName: String): RecordEntity
 
-    //Dame todos los records de un usuarios a través del id
+    //Dame el record que sea mayor que la puntuación maxima que le pasamos de los últimos 10 records
+    //@Query("SELECT * FROM RecordEntity WHERE score >= (:newScore) ORDER BY score ASC LIMIT 1")
 
+    /*
+    @Query("SELECT * FROM (SELECT * FROM RecordEntity ORDER BY score DESC LIMIT 10) WHERE score >= (:newScore) ORDER BY score ASC LIMIT 1")
+    fun getRecordGreaterThanScore(newScore: Int): RecordEntity?
+    */
+
+    @Query("SELECT * FROM RecordEntity WHERE score >= (:newScore) ORDER BY score ASC LIMIT 1 ")
+    fun getNewRecordPosition(newScore: Int): RecordEntity?
+
+    @Query("SELECT * FROM RecordEntity WHERE position >= (:newPosition) ORDER BY score DESC")
+    fun getFollowingRecords(newPosition: Int): List<RecordEntity>?
+    @Query("SELECT * FROM RecordEntity WHERE position<11 ORDER BY score DESC LIMIT 10")
+    fun getFirst10RecordsByPosition(): List<RecordEntity>?
+    //Obtener los últimos 10 registros ordenados por record de mayor a menor
+    @Query("SELECT * FROM RecordEntity ORDER BY score DESC LIMIT 21")
+    fun getFirst20RecordEntities(): List<RecordEntity>
+
+    //Dame todos los records de un usuarios a través del id
     @Query("SELECT * FROM RecordEntity WHERE id=(:userEntityName)")
     fun getRecordById(userEntityName: Int): RecordEntity
 
-    //Obtener los últimos 10 registros ordenados por record de mayor a menor
-    @Query("SELECT * FROM RecordEntity ORDER BY score DESC LIMIT 10")
-    fun getLast10RecordEntities(): List<RecordEntity>
+
 
     @Query("SELECT * FROM RecordEntity WHERE name IN (:name)")
     fun loadAllByIds(name:Array<Int>): List<RecordEntity>

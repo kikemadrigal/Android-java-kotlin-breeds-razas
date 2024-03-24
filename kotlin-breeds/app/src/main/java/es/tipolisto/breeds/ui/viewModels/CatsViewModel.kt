@@ -2,15 +2,20 @@ package es.tipolisto.breeds.ui.viewModels
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import es.tipolisto.breeds.data.database.AppDataBaseClient
 import es.tipolisto.breeds.data.database.favorites.FavoritesEntity
+import es.tipolisto.breeds.data.database.records.RecordDao
 import es.tipolisto.breeds.data.models.cat.Cat
 import es.tipolisto.breeds.data.preferences.PreferenceManager
 import es.tipolisto.breeds.data.providers.CatProvider
@@ -29,7 +34,7 @@ import java.util.Date
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class CatsViewModel: ViewModel() {
+class CatsViewModel(private val recordDao:RecordDao): ViewModel() {
     var state by mutableStateOf(CatsScreenState())
         private set
     //Para que solo se carga una vez la lista de internet
@@ -40,6 +45,8 @@ class CatsViewModel: ViewModel() {
         private set
     var clickPressed by mutableStateOf(false)
     var clicksToExit=0
+
+
 
     suspend fun loadAndInsertBuffer(){
         stateIsloading=true
@@ -88,16 +95,9 @@ class CatsViewModel: ViewModel() {
         else {
             state.lives--
             if(state.lives<=0){
-
                 gameOver=true
             }
         }
-    }
-
-    @Composable
-    private fun checkRecord() {
-
-
     }
 
 
@@ -105,9 +105,6 @@ class CatsViewModel: ViewModel() {
         Log.d("TAG", "CatViewModel dice: Vamos a ver hay un gato con este breed id "+referenceImageId)
         return CatRepository.getCatFromIdImageCatInBuffer(referenceImageId)
     }
-
-
-
 }
 
 

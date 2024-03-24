@@ -94,7 +94,7 @@ val itemsBottomBar= listOf(
         unselectedIcon = Icons.Outlined.PhotoLibrary,
         hasNews = false,
         badgeCount = 0,
-        destination = AppScreens.LoginScreen.route
+        destination = AppScreens.BeautiesScreen.route
     ),
     BottomNavigationItem(
         title = "Records",

@@ -55,12 +55,30 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     //Corrutinas de las activities
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    //Aki detro está el image picker selector de fotos
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    //CameraX:https://developer.android.com/jetpack/androidx/releases/camera?hl=es-419
+    // CameraX core library using the camera2 implementation
+    val camerax_version = "1.4.0-alpha04"
+    // The following line is optional, as the core library is included indirectly by camera-camera2
+    implementation("androidx.camera:camera-core:${camerax_version}")
+    implementation("androidx.camera:camera-camera2:${camerax_version}")
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation("androidx.camera:camera-lifecycle:${camerax_version}")
+    // If you want to additionally use the CameraX VideoCapture library
+    implementation("androidx.camera:camera-video:${camerax_version}")
+    // If you want to additionally use the CameraX View class
+    implementation("androidx.camera:camera-view:${camerax_version}")
+    // If you want to additionally add CameraX ML Kit Vision Integration
+    //implementation("androidx.camera:camera-mlkit-vision:${camerax_version}")
+    // If you want to additionally use the CameraX Extensions library
+    implementation("androidx.camera:camera-extensions:${camerax_version}")
+
     //LiveData para engancharse desde el composable screen al viewModel
     //Si no lo pones, esto no los puedes hacer: val email: String by loginViewModel.email.observeAsState(initial = "")
     implementation ("androidx.compose.runtime:runtime-livedata:1.6.3")

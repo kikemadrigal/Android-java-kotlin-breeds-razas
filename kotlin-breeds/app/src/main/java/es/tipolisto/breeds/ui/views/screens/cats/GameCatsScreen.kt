@@ -1,12 +1,14 @@
 package es.tipolisto.breeds.ui.views.screens.cats
 
 
+
+import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -43,30 +46,34 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import es.tipolisto.breeds.R
+import es.tipolisto.breeds.data.database.records.RecordEntity
 import es.tipolisto.breeds.data.preferences.PreferenceManager
+import es.tipolisto.breeds.data.repositories.RecordsRepository
+import es.tipolisto.breeds.ui.components.MyAlertDialogNewRecord
 import es.tipolisto.breeds.ui.components.MyCircularProgressIndicator
 import es.tipolisto.breeds.ui.components.onBackPressed
 import es.tipolisto.breeds.ui.navigation.AppScreens
 import es.tipolisto.breeds.ui.theme.BreedsTheme
 import es.tipolisto.breeds.ui.viewModels.CatsViewModel
+import es.tipolisto.breeds.ui.viewModels.RecordsViewModel
 import es.tipolisto.breeds.utils.AudioEffectsType
 import es.tipolisto.breeds.utils.MediaPlayerClient
-import kotlinx.coroutines.android.awaitFrame
-import kotlinx.coroutines.launch
+import es.tipolisto.breeds.utils.Util
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameCatScreen(navController: NavController, catsViewModel:CatsViewModel, mediaPlayerClient: MediaPlayerClient) {
+fun GameCatScreen(navController: NavController, catsViewModel:CatsViewModel, recordsViewModel: RecordsViewModel, mediaPlayerClient: MediaPlayerClient) {
     val context= LocalContext.current
+    //if(stateNewRecord) checkNewRecord(context)
     //Esto es para que solo se ejecute 1 vez
     LaunchedEffect(key1 = true){
         if (!catsViewModel.justOnce) {
@@ -118,9 +125,13 @@ fun GameCatScreen(navController: NavController, catsViewModel:CatsViewModel, med
                 )
             }
         ){
-            GameCatScreenContent(it,catsViewModel, navController, mediaPlayerClient)
+            GameCatScreenContent(it,catsViewModel,recordsViewModel, navController,mediaPlayerClient)
         }
     }
+}
+
+fun checkNewRecord(context:Context) {
+    Toast.makeText(context, "Nuevo record!!",Toast.LENGTH_LONG).show()
 }
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -132,7 +143,11 @@ fun GameCatScreen() {
 }
 
 @Composable
-fun GameCatScreenContent(paddingsValues:PaddingValues, catsViewModel:CatsViewModel, navController: NavController, mediaPlayerClient: MediaPlayerClient){
+fun GameCatScreenContent(paddingsValues:PaddingValues, catsViewModel:CatsViewModel, recordsViewModel: RecordsViewModel, navController: NavController, mediaPlayerClient: MediaPlayerClient){
+    var showNewRecordDialog by rememberSaveable { mutableStateOf(true) }
+    val stateNewRecord: Boolean by recordsViewModel.stateNewrecord.observeAsState(false)
+
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -145,9 +160,27 @@ fun GameCatScreenContent(paddingsValues:PaddingValues, catsViewModel:CatsViewMod
         }else
             MyCircularProgressIndicator(isDisplayed = false)
         if(catsViewModel.gameOver) {
-            catsViewModel.initGame()
-            navController.popBackStack()
-            navController.navigate(AppScreens.MenuScreen.route)
+            recordsViewModel.checkRecord(catsViewModel.state.score)
+            //Obtenemos el record que hay encima
+            if(stateNewRecord) {
+                MyAlertDialogNewRecord(
+                    stateNewRecord,
+                    {
+                        showNewRecordDialog = false
+                    },
+                    {
+                        name->
+                        recordsViewModel.insertNewRecord(name,catsViewModel.state.score)
+                        catsViewModel.initGame()
+                        navController.popBackStack()
+                        navController.navigate(AppScreens.MenuScreen.route)
+                    }
+                )
+            }else{
+                catsViewModel.initGame()
+                navController.popBackStack()
+                navController.navigate(AppScreens.MenuScreen.route)
+            }
         }else{
             //catsViewModel.initGame()
             Hud(catsViewModel)
@@ -267,7 +300,6 @@ fun CatTest(catsViewModel: CatsViewModel, mediaPlayerClient: MediaPlayerClient){
         }
     }//fin del for
 }
-
 
 
 

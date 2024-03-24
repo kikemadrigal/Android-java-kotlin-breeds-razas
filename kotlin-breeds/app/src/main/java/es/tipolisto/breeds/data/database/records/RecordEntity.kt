@@ -9,6 +9,7 @@ import androidx.room.Entity
 data class RecordEntity (
     @PrimaryKey(autoGenerate = true) val id:Int?,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "date") val date: String,
-    @ColumnInfo(name = "score") val score: Int
+    @ColumnInfo(name = "score") val score: Int,
+    @ColumnInfo(name = "position") var position: Int,
+    @ColumnInfo(name = "date") val date: String
 )

@@ -82,7 +82,7 @@ fun RecordsScreen(recordsViewModel: RecordsViewModel,navController:NavController
             }
         ) {
             val context = LocalContext.current
-            val listRecords: List<RecordEntity> = recordsViewModel.getLas10()
+            val listRecords: List<RecordEntity> = recordsViewModel.getFirst20()
             if (listRecords.isEmpty())
                 Text(text = stringResource(id = R.string.empty_list))
             else{
@@ -124,6 +124,7 @@ fun listIntemRow(recordEntity: RecordEntity, navController: NavController){
     Row(modifier= Modifier
         .padding(10.dp, 5.dp, 10.dp, 5.dp)
         ){
+        Text(text = recordEntity.position.toString(),modifier=Modifier.weight(0.5f),style = MaterialTheme.typography.bodyMedium)
         Text(text = recordEntity.score.toString(),modifier=Modifier.weight(1f),style = MaterialTheme.typography.bodyMedium )
         Text(text = recordEntity.name,modifier=Modifier.weight(1f),style = MaterialTheme.typography.bodyMedium)
         Text(text = trimString(recordEntity.date),modifier=Modifier.weight(1f),style = MaterialTheme.typography.bodySmall)
